@@ -19,15 +19,12 @@ export class SubscriptionPreview extends React.Component<Props> {
                 </PricingPlanTitle>
 
                 <PricingPlanItem className={''}>
-                            📲 Encrypted Sync with your iOS or Android phone
+                    📲 Encrypted Sync with your iOS or Android phone
                 </PricingPlanItem>
-
                 <PricingPlanItem className={''}>
                     💾 Automatic Backups
                 </PricingPlanItem>
-
                 <WhiteSpacer30/>
-
                 <SubscriptionInnerOptions
                     openCheckoutBackupMonthly={this.props.onPress}
                     openCheckoutBackupYearly={this.props.onPress}

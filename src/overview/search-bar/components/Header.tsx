@@ -108,19 +108,6 @@ class Header extends PureComponent<Props> {
                         </div>
                     </div>
                     <div className={styles.links}>
-                        <BackupStatus />
-                        <InboxButton
-                            toggleInbox={this.props.toggleInbox}
-                            showInbox={this.props.showInbox}
-                            unreadNotifCount={this.props.unreadNotifCount}
-                            showUnreadCount={this.props.showUnreadCount}
-                        />
-                        <Link to={this.props.settingsRoute}>
-                            <span
-                                title="Settings"
-                                className={styles.settingsIcon}
-                            />
-                        </Link>
                     </div>
                 </div>
                 {this.props.showFilterBar && <SearchFilters />}

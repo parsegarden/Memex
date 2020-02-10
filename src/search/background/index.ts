@@ -12,6 +12,7 @@ import { BookmarksInterface } from 'src/bookmarks/background/types'
 import { SearchIndex } from '../types'
 import TagsBackground from 'src/tags/background'
 import { PageIndexingBackground } from 'src/page-indexing/background'
+import { bindMethod } from 'src/util/functions'
 
 export default class SearchBackground {
     storage: SearchStorage
@@ -89,17 +90,25 @@ export default class SearchBackground {
                 delPageBookmark: this.searchIndex.delBookmark,
             },
             search: {
-                search: this.searchIndex.search,
-                suggest: this.storage.suggest,
-                extendedSuggest: this.storage.suggestExtended,
-                delPages: this.searchIndex.delPages,
-
-                delPagesByDomain: this.searchIndex.delPagesByDomain,
-                delPagesByPattern: this.searchIndex.delPagesByPattern,
-                getMatchingPageCount: this.searchIndex.getMatchingPageCount,
-                searchAnnotations: this.searchAnnotations.bind(this),
-                searchPages: this.searchPages.bind(this),
-                searchSocial: this.searchSocial.bind(this),
+                search: bindMethod(this.searchIndex, 'search'),
+                suggest: bindMethod(this.storage, 'suggest'),
+                extendedSuggest: bindMethod(this.storage, 'suggestExtended'),
+                delPages: bindMethod(this.searchIndex, 'delPages'),
+                delPagesByDomain: bindMethod(
+                    this.searchIndex,
+                    'delPagesByDomain',
+                ),
+                delPagesByPattern: bindMethod(
+                    this.searchIndex,
+                    'delPagesByPattern',
+                ),
+                getMatchingPageCount: bindMethod(
+                    this.searchIndex,
+                    'getMatchingPageCount',
+                ),
+                searchAnnotations: bindMethod(this, 'searchAnnotations'),
+                searchPages: bindMethod(this, 'searchPages'),
+                searchSocial: bindMethod(this, 'searchSocial'),
             },
         }
     }

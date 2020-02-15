@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { browser } from 'webextension-polyfill-ts'
 import StorageManager from '@worldbrain/storex'
 import PageStorage from './storage'
@@ -41,6 +43,7 @@ export class PageIndexingBackground {
         pageDoc,
         rejectNoContent,
     }: Partial<PageAddRequest>): Promise<void> {
+        console.log('VIJX', 'page-indexing', 'background', 'addPage')
         const { favIconURI, ...pageData } = await pipeline({
             pageDoc,
             rejectNoContent,

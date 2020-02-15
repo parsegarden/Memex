@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { Tabs } from 'webextension-polyfill-ts'
 import moment from 'moment'
 
@@ -98,6 +100,14 @@ export default class PageVisitLogger {
             // Don't index full-text in this stage
             delete analysisRes.content.fullText
 
+            console.log(
+                'VIJX',
+                'activity-logger',
+                'background',
+                'log-page-visit',
+                'logPageStub',
+                { url: tab.url },
+            )
             await this._createPage({
                 pageDoc: { url: tab.url, ...analysisRes },
                 visits: [internalTabState.visitTime],

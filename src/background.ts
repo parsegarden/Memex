@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import 'babel-polyfill'
 import 'core-js/es7/symbol'
 import { browser } from 'webextension-polyfill-ts'
@@ -33,10 +35,14 @@ import fetchPageData from 'src/page-analysis/background/fetch-page-data'
 import pipeline from 'src/search/pipeline'
 
 export async function main() {
+    console.log('VIJX', 'background', 'main')
+
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,
     })
     initSentry({ storageChangesManager: localStorageChangesManager })
+
+    console.log('VIJX', 'background', 'main', 'A')
 
     const getSharedSyncLog = createLazySharedSyncLog()
     const fetchPageDataProcessor = new FetchPageDataProcessor({
@@ -106,15 +112,6 @@ export async function main() {
         services: {
             sync: backgroundModules.sync,
         },
-        // auth: {
-        //     setUser: async ({ id }) => {
-        //         ;(backgroundModules.auth
-        //             .authService as MemoryAuthService).setUser({
-        //             ...TEST_USER,
-        //             id: id as string,
-        //         })
-        //     },
-        // },
         intergrationTestData: {
             insert: async () => {
                 console['log']('Inserting integration test data')

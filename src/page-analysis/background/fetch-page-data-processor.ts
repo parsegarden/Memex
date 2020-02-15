@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { PagePipeline } from 'src/search/pipeline'
 import { FetchPageData } from './fetch-page-data'
 import { FetchPageDataError } from './fetch-page-data-error'
@@ -9,9 +11,12 @@ export class FetchPageDataProcessor implements FetchPageProcessor {
             fetchPageData: FetchPageData
             pagePipeline: PagePipeline
         },
-    ) {}
+    ) {
+        console.log('VIJX', 'fetch-page-data-processor', 'constructor')
+    }
 
     async process(url: string): Promise<PageContent> {
+        console.log('VIJX', 'fetch-page-data-processor', 'process', { url })
         const fetch = this.props.fetchPageData({
             url,
             opts: { includePageContent: true, includeFavIcon: true },

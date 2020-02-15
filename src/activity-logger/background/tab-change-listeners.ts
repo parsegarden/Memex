@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { browser, Storage, Tabs, Browser } from 'webextension-polyfill-ts'
 import throttle from 'lodash/throttle'
 
@@ -205,6 +207,14 @@ export default class TabChangeListeners {
 
         // Run stage 1 of visit indexing immediately (depends on user settings)
         await this._pageDOMLoaded({ tabId })
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'tab-change-listeners',
+            '_handleVisitIndexing',
+            { tabId, tab },
+        )
         if (indexingPrefs.shouldLogStubs) {
             await this._pageVisitLogger.logPageStub(
                 tab,

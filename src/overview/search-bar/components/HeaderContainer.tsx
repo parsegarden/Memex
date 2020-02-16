@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { connect } from 'react-redux'
 
 import * as acts from '../actions'
@@ -25,6 +27,14 @@ const mapDispatch: (dispatch: any) => Partial<Props> = dispatch => ({
     toggleInbox: () => dispatch(notifActs.toggleInbox()),
     onQueryChange: e => {
         const el = e.target as HTMLInputElement
+        console.log(
+            'VIJX',
+            'overview',
+            'search-bar',
+            'components',
+            'HeaderContainer',
+            { value: el.value },
+        )
         dispatch(acts.setQueryTagsDomains(el.value, false))
     },
     onQueryKeyDown: e => {
@@ -54,7 +64,4 @@ const mapDispatch: (dispatch: any) => Partial<Props> = dispatch => ({
     },
 })
 
-export default connect(
-    mapState,
-    mapDispatch,
-)(Header)
+export default connect(mapState, mapDispatch)(Header)

@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import Storex from '@worldbrain/storex'
 import { Browser } from 'webextension-polyfill-ts'
 
@@ -191,6 +193,11 @@ export default class SearchBackground {
         }
 
         const docs = await this.storage.searchPages(searchParams)
+
+        console.log('VIJX', 'search', 'background', 'searchPages', {
+            searchParams,
+            docs,
+        })
 
         return SearchBackground.shapePageResult(docs, searchParams.limit)
     }

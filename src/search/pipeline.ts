@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { normalizeUrl } from '@worldbrain/memex-url-utils'
 
 import transformPageText from '../util/transform-page-text'
@@ -115,10 +117,18 @@ const pipeline: PagePipeline = ({
         )
     }
 
+    console.log('VIJX', 'search', 'pipeline', 'pipeline => (A)', { content })
+
     // Extract all terms out of processed content
     const terms = [...extractTerms(content.fullText)]
     const titleTerms = [...extractTerms(content.title)]
     const urlTerms = [...extractTerms(pathname)]
+
+    console.log('VIJX', 'search', 'pipeline', 'pipeline => (B)', {
+        terms,
+        titleTerms,
+        urlTerms,
+    })
 
     return Promise.resolve({
         url: normalizeUrl(url),

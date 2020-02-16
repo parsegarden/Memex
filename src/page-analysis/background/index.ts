@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { whenPageDOMLoaded } from 'src/util/tab-events'
 import whenAllSettled from 'when-all-settled'
 
@@ -28,6 +30,10 @@ const analysePage: PageAnalyzer = async ({
 }) => {
     // Wait until its DOM has loaded, in case we got invoked before that.
     await whenPageDOMLoaded({ tabId })
+
+    console.log('VIJX', 'page-analysis', 'background', 'analysePage =>', {
+        tabId,
+    })
 
     // Set up to run these functions in the content script in the tab.
     const extractPageContent = runInTab<PageAnalyzerInterface>(tabId)

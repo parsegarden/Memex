@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 // A Remote Procedure Call abstraction around the message passing available to
 // WebExtension scripts. Usable to call a function in the background script from
 // a tab's content script, or vice versa.
@@ -160,6 +162,11 @@ async function incomingRPCListener(message, sender) {
     if (!message || message[RPC_CALL] !== RPC_CALL) {
         return
     }
+
+    console.log('VIJX', 'util', 'webextensionRPC', 'incomingRPCListener =>', {
+        message,
+        sender,
+    })
 
     const funcName = message.funcName
     const args = message.hasOwnProperty('args') ? message.args : []

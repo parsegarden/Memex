@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { Browser } from 'webextension-polyfill-ts'
 import StorageManager from '@worldbrain/storex'
 import { SyncPostReceiveProcessor } from '@worldbrain/storex-sync'

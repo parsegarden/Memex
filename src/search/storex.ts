@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import Storex from '@worldbrain/storex'
 import {
     DexieStorageBackend,
@@ -12,6 +14,9 @@ export default function initStorex(options: {
     dbName: string
     idbImplementation?: IndexedDbImplementation
 }): Storex {
+    console.log('VIJX', 'search', 'storex', 'initStore', {
+        dbName: options.dbName,
+    })
     const backend = new DexieStorageBackend({
         stemmerSelector,
         schemaPatcher,

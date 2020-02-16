@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import Storex from '@worldbrain/storex'
 import {
     StorageModule,
@@ -164,11 +166,10 @@ export default class SearchStorage extends StorageModule {
         const postIds: number[] = []
 
         // Split into post and page annots
-        pageUrls.forEach(
-            url =>
-                url.startsWith(postPrefix)
-                    ? postIds.push(Number(url.split(postPrefix)[1]))
-                    : pageIds.push(url),
+        pageUrls.forEach(url =>
+            url.startsWith(postPrefix)
+                ? postIds.push(Number(url.split(postPrefix)[1]))
+                : pageIds.push(url),
         )
 
         const pages: AnnotPage[] = await this.operation(
@@ -308,10 +309,12 @@ export default class SearchStorage extends StorageModule {
     }
 
     private async searchTermsAnnots(params: AnnotSearchParams) {
-        const results: Map<string, Annotation[]> = await this.operation(
-            AnnotationsListPlugin.TERMS_SEARCH_OP_ID,
-            { params },
-        )
+        const results: Map<
+            string,
+            Annotation[]
+        > = await this.operation(AnnotationsListPlugin.TERMS_SEARCH_OP_ID, {
+            params,
+        })
 
         const pages: AnnotPage[] = await this.getMergedAnnotsPages(
             [...results.keys()],
@@ -348,6 +351,10 @@ export default class SearchStorage extends StorageModule {
     async searchPages(params: AnnotSearchParams): Promise<AnnotPage[]> {
         const searchParams = reshapeParamsForOldSearch(params)
 
+        console.log('VIJX', 'search', 'background', 'storage', 'searchPages', {
+            searchParams,
+        })
+
         const { ids } = await this.legacySearch(searchParams)
 
         if (!ids.length) {
@@ -368,10 +375,10 @@ export default class SearchStorage extends StorageModule {
     }
 
     async searchSocial(params: SocialSearchParams) {
-        const results: Map<number, SocialPage> = await this.operation(
-            SocialSearchPlugin.SEARCH_OP_ID,
-            { params },
-        )
+        const results: Map<
+            number,
+            SocialPage
+        > = await this.operation(SocialSearchPlugin.SEARCH_OP_ID, { params })
 
         if (!results.size) {
             return []

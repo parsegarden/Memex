@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import EventModel from './event-model'
 
 export default class Visit extends EventModel {
@@ -65,6 +67,7 @@ export default class Visit extends EventModel {
      * @returns {[number, string]}
      */
     async save() {
+        console.log('VIJX', 'search', 'models', 'visit', { data: this.data })
         const { object } = await this.db
             .collection('visits')
             .createObject(this.data)

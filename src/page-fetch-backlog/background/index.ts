@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import Storex from '@worldbrain/storex'
 import { RecurringTask } from '@worldbrain/storex-sync/lib/utils/recurring-task'
 

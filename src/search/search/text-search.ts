@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import {
     SearchParams,
     FilteredIDs,
@@ -30,6 +32,10 @@ const termQuery = (term: string, excluded: string[], getDb: DBGet) => async (
         opValue: term,
     }
 
+    console.log('VIJX', 'search', 'search', 'text-search', 'termQuery =>', {
+        opts,
+    })
+
     if (excluded.length) {
         // Adding a `.filter/.and` clause slows down a query a lot
         opts.filter = page => {
@@ -56,6 +62,13 @@ const lookupTerm = (excluded: string[], getDb: DBGet) =>
         const content = await queryIndex('terms')
         const title = await queryIndex('titleTerms')
         const url = await queryIndex('urlTerms')
+
+        console.log('VIJX', 'search', 'search', 'text-search', 'lookupTerm', {
+            term,
+            content,
+            title,
+            url,
+        })
 
         return { content, title, url }
     }

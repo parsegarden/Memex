@@ -43,10 +43,12 @@ export class PageIndexingBackground {
         pageDoc,
         rejectNoContent,
     }: Partial<PageAddRequest>): Promise<void> {
-        console.log('VIJX', 'page-indexing', 'background', 'addPage')
         const { favIconURI, ...pageData } = await pipeline({
             pageDoc,
             rejectNoContent,
+        })
+        console.log('VIJX', 'page-indexing', 'background', 'addPage', {
+            pageData,
         })
 
         await this.storage.createOrUpdatePage(pageData)
@@ -110,6 +112,10 @@ export class PageIndexingBackground {
     }
 
     async addVisit(url: string, time = Date.now()) {
+        console.log('VIJX', 'page-indexing', 'background', 'addVisit', {
+            url,
+            time,
+        })
         const pageExists = await this.storage.pageExists(url)
         if (!pageExists) {
             throw new Error(`Cannot add visit for non-existent page: ${url}`)
@@ -148,6 +154,13 @@ export class PageIndexingBackground {
     }
 
     async createPageFromTab(props: PageCreationProps) {
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'createPageFromTab',
+            { props },
+        )
         if (!props.tabId) {
             throw new Error(
                 `No tabID provided to extract content: ${props.url}`,
@@ -178,6 +191,13 @@ export class PageIndexingBackground {
     }
 
     async createPageFromUrl(props: PageCreationProps) {
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'createPageFromUrl',
+            { props },
+        )
         const fetchRes = await fetchPageData({
             url: props.url,
             opts: {
@@ -222,6 +242,13 @@ export class PageIndexingBackground {
      * TODO: Better name?
      */
     async createPageViaBmTagActs(props: PageCreationProps) {
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'createPageViaBmTagActs',
+            { props },
+        )
         const {
             [IDXING_PREF_KEYS.BOOKMARKS]: fullyIndex,
         } = await browser.storage.local.get(IDXING_PREF_KEYS.BOOKMARKS)

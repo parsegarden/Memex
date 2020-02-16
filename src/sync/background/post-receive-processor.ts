@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { SyncPostReceiveProcessor } from '@worldbrain/storex-sync'
 import { COLLECTION_NAMES as PAGES_COLLECTION_NAMES } from '@worldbrain/memex-storage/lib/pages/constants'
 
@@ -11,7 +13,11 @@ export class PostReceiveProcessor {
             fetchPageData: FetchPageProcessor
             pageFetchBacklog?: PageFetchBacklogBackground
         },
-    ) {}
+    ) {
+        console.log('VIJX', 'sync', 'background', 'post-receive-processor', {
+            props,
+        })
+    }
 
     private async handleFailure(
         entry: SharedSyncLogEntry<'deserialized-data'>,
@@ -26,6 +32,14 @@ export class PostReceiveProcessor {
     private shouldPostProcess({
         data,
     }: SharedSyncLogEntry<'deserialized-data'>): boolean {
+        console.log(
+            'VIJX',
+            'sync',
+            'background',
+            'post-receive-processor',
+            'shouldPostProcess',
+            { data },
+        )
         if (
             data.collection !== PAGES_COLLECTION_NAMES.page ||
             data.operation !== 'create'
@@ -41,6 +55,14 @@ export class PostReceiveProcessor {
     }
 
     processor: SyncPostReceiveProcessor = async ({ entry, ...params }) => {
+        console.log(
+            'VIJX',
+            'sync',
+            'background',
+            'post-receive-processor',
+            'processor',
+            { entry },
+        )
         if (this.shouldPostProcess(entry)) {
             try {
                 const value = await this.props.fetchPageData.process(

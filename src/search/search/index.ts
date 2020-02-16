@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { SearchParams, PageResultsMap, DBGet } from '..'
 import QueryBuilder from '../query-builder'
 import { initErrHandler } from '../storage'
@@ -100,6 +102,7 @@ export const fullSearch = (getDb: DBGet) => async ({
     termsExclude = [],
     ...params
 }: SearchParams) => {
+    console.log('VIJX', 'search', 'search', 'fullSearch', { params, terms })
     const filteredUrls = await findFilteredUrls(getDb)(params)
 
     let totalCount: number = null

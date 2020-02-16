@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { normalizeUrl } from '@worldbrain/memex-url-utils'
 
 import extractPageContent from 'src/page-analysis/content_script/extract-page-content'
@@ -40,6 +42,14 @@ const fetchPageData: FetchPageData = ({
     timeout = 10000,
     opts = defaultOpts,
 }) => {
+    console.log(
+        'VIJX',
+        'page-analysis',
+        'background',
+        'fetch-page-data',
+        'fetchPageData',
+        { url },
+    )
     let normalizedUrl
 
     try {

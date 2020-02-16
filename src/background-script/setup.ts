@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { browser, Browser } from 'webextension-polyfill-ts'
 import StorageManager from '@worldbrain/storex'
 import { SignalTransportFactory } from '@worldbrain/memex-common/lib/sync'
@@ -76,6 +78,17 @@ export function createBackgroundModules(options: {
     includePostSyncProcessor?: boolean
     disableSyncEnryption?: boolean
 }): BackgroundModules {
+    console.log(
+        'VIJX',
+        'background-script',
+        'setup',
+        'createBackgroundModules',
+        {
+            includePostSyncProcessor: options.includePostSyncProcessor,
+            disableSyncEncryption: options.disableSyncEnryption,
+        },
+    )
+
     const { storageManager } = options
     const tabManager = options.tabManager || new TabManager()
 

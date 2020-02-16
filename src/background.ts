@@ -35,14 +35,12 @@ import fetchPageData from 'src/page-analysis/background/fetch-page-data'
 import pipeline from 'src/search/pipeline'
 
 export async function main() {
-    console.log('VIJX', 'background', 'main')
+    console.log('VIJX', 'background', 'main', 'BEGIN')
 
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,
     })
     initSentry({ storageChangesManager: localStorageChangesManager })
-
-    console.log('VIJX', 'background', 'main', 'A')
 
     const getSharedSyncLog = createLazySharedSyncLog()
     const fetchPageDataProcessor = new FetchPageDataProcessor({

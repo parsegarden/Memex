@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import Storex from '@worldbrain/storex'
 
 import { VisitInteraction } from '..'
@@ -60,6 +62,7 @@ export default class Page extends AbstractModel
     public pouchMigrationError?: boolean
 
     constructor(db: Storex, props: PageConstructorOptions) {
+        console.log('VIJX', 'search', 'models', 'page', { props })
         super(db)
         this.url = props.url
         this.fullUrl = props.fullUrl
@@ -358,6 +361,10 @@ export default class Page extends AbstractModel
     }
 
     async save() {
+        console.log('VIJX', 'search', 'models', 'page', 'save', {
+            url: this.url,
+            data: this.data,
+        })
         return this.db.operation(
             'transaction',
             { collections: this.collections },

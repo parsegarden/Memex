@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { createAction } from 'redux-act'
 
 import { remoteFunction } from '../../util/webextensionRPC'
@@ -13,6 +15,7 @@ import {
 } from '../../search-filters'
 import { actions as notifActs } from '../../notifications'
 import { EVENT_NAMES } from '../../analytics/internal/constants'
+import { isSocialPost, isAnnotsSearch } from '../results/selectors'
 
 const processEventRPC = remoteFunction('processEvent')
 const pageSearchRPC = remoteFunction('searchPages')
@@ -36,6 +39,14 @@ export const setQueryTagsDomains: (
     input: string,
     isEnter?: boolean,
 ) => Thunk = (input, isEnter = true) => dispatch => {
+    console.log(
+        'VIJX',
+        'overview',
+        'search-bar',
+        'actions',
+        'setQueryTagsDomains',
+        { input },
+    )
     const removeFromInputVal = term =>
         (input = input.replace(isEnter ? term : `${term} `, ''))
 
@@ -97,6 +108,10 @@ export const search: (args?: any) => Thunk = (
     const startDate = selectors.startDate(firstState)
     const endDate = selectors.endDate(firstState)
 
+    console.log('VIJX', 'overview', 'search-bar', 'actions', 'search', 'A', {
+        query,
+    })
+
     // const showTooltip = selectors.showTooltip(firstState)
 
     if (query.includes('#')) {
@@ -148,14 +163,35 @@ export const search: (args?: any) => Thunk = (
     }
 
     try {
+        console.log(
+            'VIJX',
+            'overview',
+            'search-bar',
+            'actions',
+            'search',
+            'B',
+            {
+                isSocialPost: results.isSocialPost(state),
+                isAnnotsSearch: results.isAnnotsSearch(state),
+            },
+        )
         const searchRPC = results.isSocialPost(state)
             ? socialSearchRPC
             : results.isAnnotsSearch(state)
-                ? annotSearchRPC
-                : pageSearchRPC
+            ? annotSearchRPC
+            : pageSearchRPC
 
         // Tell background script to search
         const searchResult = await searchRPC(searchParams)
+        console.log(
+            'VIJX',
+            'overview',
+            'search-bar',
+            'actions',
+            'search',
+            'C',
+            { searchResult },
+        )
         dispatch(resultsActs.updateSearchResult({ overwrite, searchResult }))
 
         if (searchResult.docs.length) {

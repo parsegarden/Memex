@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import {
     StorageModule,
     StorageModuleConfig,
@@ -203,6 +205,14 @@ export default class PageStorage extends StorageModule {
     }
 
     async getPage(url: string): Promise<PipelineRes | null> {
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'storage',
+            'getPage =>',
+            { url },
+        )
         const normalizedUrl = normalizeUrl(url, {})
         return this.operation('findPageByUrl', { url: normalizedUrl })
     }

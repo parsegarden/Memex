@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { Storage } from 'webextension-polyfill-ts'
 
 export interface StorageChanges {
@@ -16,6 +18,9 @@ export class StorageChangesManager {
     private storage: Storage.Static
 
     constructor({ storage }: Props) {
+        console.log('VIJX', 'util', 'storage-changes', 'constructor', {
+            storage,
+        })
         this.resetListeners()
         this.storage = storage
 
@@ -29,7 +34,11 @@ export class StorageChangesManager {
         this.listeners = new Map<
             StorageAreaName,
             Map<string, StorageKeyListener>
-        >([['sync', new Map()], ['local', new Map()], ['managed', new Map()]])
+        >([
+            ['sync', new Map()],
+            ['local', new Map()],
+            ['managed', new Map()],
+        ])
     }
 
     /**

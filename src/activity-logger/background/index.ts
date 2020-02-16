@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { Runtime, WebNavigation, Tabs, Browser } from 'webextension-polyfill-ts'
 
 import { makeRemotelyCallable } from 'src/util/webextensionRPC'
@@ -77,6 +79,13 @@ export default class ActivityLoggerBackground {
         const tabs = await this.tabsAPI.query({})
 
         await mapChunks<Tabs.Tab>(tabs, CONCURR_TAB_LOAD, async browserTab => {
+            console.log(
+                'VIJX',
+                'activity-logger',
+                'background',
+                'trackExistingTabs',
+                { url: browserTab.url },
+            )
             this.tabManager.trackTab(browserTab, {
                 isLoaded: ActivityLoggerBackground.isTabLoaded(browserTab),
                 isBookmarked: await this.tabChangeListener.checkBookmark(
@@ -105,6 +114,9 @@ export default class ActivityLoggerBackground {
     }
 
     private async trackNewTab(id: number) {
+        console.log('VIJX', 'activity-logger', 'background', 'trackNewTab', {
+            id,
+        })
         const browserTab = await this.tabsAPI.get(id)
 
         this.tabManager.trackTab(browserTab, {

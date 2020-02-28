@@ -12,6 +12,15 @@ export default function setupChangeTracking(
 ) {
     const dexie = backend['dexieInstance']
 
+    console.log(
+        'VIJX',
+        'backup-restore',
+        'background',
+        'change-hooks',
+        'setupChangeTracking',
+        dexie,
+    )
+
     if (dexie == null) {
         throw new Error(
             'Storex instance with Dexie backend is not yet properly initialized.',

@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { Tabs, Storage } from 'webextension-polyfill-ts'
 import Storex from '@worldbrain/storex'
 import {
@@ -239,6 +241,14 @@ export default class AnnotationStorage extends StorageModule {
     }
 
     async indexPageFromTab({ id, url }: Tabs.Tab) {
+        console.log(
+            'VIJX',
+            'direct-linking',
+            'background',
+            'storage',
+            'indexPageFromTab =>',
+            { id, url },
+        )
         const indexingPrefs = await this.fetchIndexingPrefs()
 
         const page = await this.searchIndex.createPageFromTab({

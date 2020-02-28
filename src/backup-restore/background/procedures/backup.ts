@@ -190,6 +190,14 @@ export default class BackupProcedure {
     }
 
     async _queueInitialBackup(chunkSize = 1000) {
+        console.log(
+            'VIJX',
+            'backup-restore',
+            'background',
+            'procedures',
+            'backup',
+            { chunkSize },
+        )
         const collections = this._getCollectionsToBackup().map(
             coll => coll.name,
         )
@@ -270,6 +278,14 @@ export default class BackupProcedure {
     }
 
     _getCollectionsToBackup(): { name: string; version: Date }[] {
+        console.log(
+            'VIJX',
+            'backup-restore',
+            'background',
+            'procedures',
+            'backup',
+            { name, version },
+        )
         return Object.entries(this.storageManager.registry.collections)
             .filter(([key, value]) => !isExcludedFromBackup(value))
             .map(([key, value]) => ({

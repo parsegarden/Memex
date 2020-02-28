@@ -54,6 +54,14 @@ export default class PageVisitLogger {
         allowScreenshot: boolean,
         secsSinceLastVisit = 20,
     ) {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'log-page-visit',
+            'logPageStub =>',
+            { tab, allowScreenshot, secsSinceLastVisit },
+        )
         const internalTabState = this._tabManager.getTabState(tab.id)
 
         // Cannot process if tab not tracked
@@ -124,6 +132,14 @@ export default class PageVisitLogger {
         allowScreenshot: boolean,
         textOnly = true,
     ) {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'log-page-visit',
+            'logPageVisit =>',
+            { tab, allowScreenshot, textOnly },
+        )
         let analysisRes
         try {
             analysisRes = await this._analyzePage({

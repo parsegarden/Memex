@@ -212,8 +212,13 @@ export default class TabChangeListeners {
             'activity-logger',
             'background',
             'tab-change-listeners',
-            '_handleVisitIndexing',
-            { tabId, tab },
+            '_handleVisitIndexing =>',
+            {
+                tabId,
+                tab,
+                shouldLogStubs: indexingPrefs.shouldLogStubs,
+                shouldLogVisits: indexingPrefs.shouldLogVisits,
+            },
         )
         if (indexingPrefs.shouldLogStubs) {
             await this._pageVisitLogger.logPageStub(

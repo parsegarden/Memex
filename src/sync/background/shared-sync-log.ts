@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import StorageManager from '@worldbrain/storex'
 import { SharedSyncLogStorage } from '@worldbrain/storex-sync/lib/shared-sync-log/storex'
 import { createServerStorageManager } from 'src/storage/server'

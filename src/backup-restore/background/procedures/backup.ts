@@ -196,6 +196,8 @@ export default class BackupProcedure {
             'background',
             'procedures',
             'backup',
+            'BackupProcedure',
+            '_queueInitialBackup',
             { chunkSize },
         )
         const collections = this._getCollectionsToBackup().map(
@@ -284,7 +286,8 @@ export default class BackupProcedure {
             'background',
             'procedures',
             'backup',
-            { name, version },
+            'PageIndexingBackground',
+            '_getCollectionsToBackup',
         )
         return Object.entries(this.storageManager.registry.collections)
             .filter(([key, value]) => !isExcludedFromBackup(value))

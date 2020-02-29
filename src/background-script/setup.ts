@@ -86,6 +86,7 @@ export function createBackgroundModules(options: {
         {
             includePostSyncProcessor: options.includePostSyncProcessor,
             disableSyncEncryption: options.disableSyncEnryption,
+            getSharedSyncLog: options.getSharedSyncLog,
         },
     )
 

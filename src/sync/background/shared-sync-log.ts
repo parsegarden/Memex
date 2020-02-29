@@ -5,6 +5,14 @@ import { registerModuleMapCollections } from '@worldbrain/storex-pattern-modules
 
 export function createLazySharedSyncLog(): () => Promise<SharedSyncLogStorage> {
     let sharedSyncLog: SharedSyncLogStorage
+    console.log(
+        'VIJX',
+        'src',
+        'sync',
+        'background',
+        'shared-sync-log',
+        'createLazySharedSyncLog',
+    )
     return async () => {
         if (!sharedSyncLog) {
             const serverStorageManager = createServerStorageManager()

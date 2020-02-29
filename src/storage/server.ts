@@ -5,6 +5,13 @@ import StorageManager from '@worldbrain/storex'
 import { FirestoreStorageBackend } from '@worldbrain/storex-backend-firestore'
 
 export function createServerStorageManager() {
+    console.log(
+        'VIJX',
+        'src',
+        'storage',
+        'server',
+        'createServerStorageManager',
+    )
     const firebase = getFirebase()
     const serverStorageBackend = new FirestoreStorageBackend({
         firebase: firebase as any,

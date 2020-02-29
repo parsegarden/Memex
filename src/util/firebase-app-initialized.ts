@@ -10,6 +10,14 @@ const firebaseConfig = {
 }
 
 export const getFirebase = () => {
+    console.log(
+        'VIJX',
+        'src',
+        'util',
+        'firebase-app-initialized',
+        'getFirebase',
+        firebase.apps,
+    )
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig)
     }

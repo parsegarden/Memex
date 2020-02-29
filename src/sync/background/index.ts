@@ -63,6 +63,17 @@ export default class SyncBackground extends SyncService {
             postReceiveProcessor: options.postReceiveProcessor,
         })
 
+        console.log(
+            'VIJX',
+            'src',
+            'sync',
+            'background',
+            'index',
+            'SyncBackground',
+            'constructor',
+            options.getSharedSyncLog,
+        )
+
         this.auth = options.auth
 
         this.remoteFunctions = {

@@ -28,6 +28,14 @@ export class PageIndexingBackground {
             bookmarksStorage: BookmarksStorage
         },
     ) {
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'PageIndexingBackground',
+            'constructor',
+            options.storageManager,
+        )
         this.storage = new PageStorage({
             storageManager: options.storageManager,
         })
@@ -47,9 +55,16 @@ export class PageIndexingBackground {
             pageDoc,
             rejectNoContent,
         })
-        console.log('VIJX', 'page-indexing', 'background', 'addPage', {
-            pageData,
-        })
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'PageIndexingBackground',
+            'addPage',
+            {
+                pageData,
+            },
+        )
 
         await this.storage.createOrUpdatePage(pageData)
 
@@ -74,6 +89,14 @@ export class PageIndexingBackground {
 
     async addPageTerms(pipelineReq: PipelineReq): Promise<void> {
         const pageData = await pipeline(pipelineReq)
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'PageIndexingBackground',
+            'addPageTerms',
+            pageData,
+        )
         await this.storage.createOrUpdatePage(pageData)
     }
 
@@ -112,10 +135,17 @@ export class PageIndexingBackground {
     }
 
     async addVisit(url: string, time = Date.now()) {
-        console.log('VIJX', 'page-indexing', 'background', 'addVisit', {
-            url,
-            time,
-        })
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            'PageIndexingBackground',
+            'addVisit',
+            {
+                url,
+                time,
+            },
+        )
         const pageExists = await this.storage.pageExists(url)
         if (!pageExists) {
             throw new Error(`Cannot add visit for non-existent page: ${url}`)
@@ -158,6 +188,7 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
+            'PageIndexingBackground',
             'createPageFromTab',
             { props },
         )
@@ -195,6 +226,7 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
+            'PageIndexingBackground',
             'createPageFromUrl',
             { props },
         )
@@ -246,6 +278,7 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
+            'PageIndexingBackground',
             'createPageViaBmTagActs',
             { props },
         )

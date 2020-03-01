@@ -151,6 +151,16 @@ export default class CustomListStorage extends StorageModule {
 
         const prepared = lists.map(list => this.prepareList(list))
 
+        console.log(
+            'VIJX',
+            'custom-lists',
+            'background',
+            'storage',
+            '<CustomListStorage>',
+            'fetchAllLists =>',
+            { lists, prepared },
+        )
+
         if (skipMobileList) {
             return this.filterMobileList(prepared)
         }
@@ -184,6 +194,15 @@ export default class CustomListStorage extends StorageModule {
 
     async fetchListPagesByUrl({ url }: { url: string }) {
         const pages = await this.operation('findListEntriesByUrl', { url })
+        console.log(
+            'VIJX',
+            'custom-lists',
+            'background',
+            'storage',
+            '<CustomListStorage>',
+            'fetchListPagesByUrl =>',
+            { url, pages },
+        )
 
         const entriesByListId = new Map<number, any[]>()
         const listIds = new Set<string>()

@@ -39,6 +39,15 @@ export default class TagStorage extends StorageModule {
         }> = await this.operation('findAllTagsOfPage', {
             url: normalizeUrl(url, {}),
         })
+        console.log(
+            'VIJX',
+            'tags',
+            'background',
+            'storage',
+            '<TagStorage>',
+            'fetchPageTags =>',
+            { url, tags },
+        )
         return tags.map(({ name }) => name)
     }
 

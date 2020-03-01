@@ -14,7 +14,7 @@ export default function initStorex(options: {
     dbName: string
     idbImplementation?: IndexedDbImplementation
 }): Storex {
-    console.log('VIJX', 'search', 'storex', 'initStore', {
+    console.trace('VIJX', 'search', 'storex', 'initStorex =>', {
         dbName: options.dbName,
     })
     const backend = new DexieStorageBackend({

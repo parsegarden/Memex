@@ -32,8 +32,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'constructor',
+            '<PageIndexingBackground>',
+            'constructor =>',
             options.storageManager,
         )
         this.storage = new PageStorage({
@@ -59,8 +59,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'addPage',
+            '<PageIndexingBackground>',
+            'addPage =>',
             {
                 pageData,
             },
@@ -93,8 +93,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'addPageTerms',
+            '<PageIndexingBackground>',
+            'addPageTerms =>',
             pageData,
         )
         await this.storage.createOrUpdatePage(pageData)
@@ -139,8 +139,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'addVisit',
+            '<PageIndexingBackground>',
+            'addVisit =>',
             {
                 url,
                 time,
@@ -188,8 +188,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'createPageFromTab',
+            '<PageIndexingBackground>',
+            'createPageFromTab =>',
             { props },
         )
         if (!props.tabId) {
@@ -226,8 +226,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'createPageFromUrl',
+            '<PageIndexingBackground>',
+            'createPageFromUrl =>',
             { props },
         )
         const fetchRes = await fetchPageData({
@@ -278,8 +278,8 @@ export class PageIndexingBackground {
             'VIJX',
             'page-indexing',
             'background',
-            'PageIndexingBackground',
-            'createPageViaBmTagActs',
+            '<PageIndexingBackground>',
+            'createPageViaBmTagActs =>',
             { props },
         )
         const {

@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import { DBGet, SearchIndex } from './types'
 import { addBookmark, delBookmark, pageHasBookmark } from './bookmarks'
 // import { addTag, delTag, fetchPageTags } from './tags'
@@ -15,6 +17,14 @@ export function combineSearchIndex(dependenices: {
     tabManager: TabManager
 }): SearchIndex {
     const pageStorage = dependenices.pages.storage
+
+    console.log(
+        'VIJX',
+        'search',
+        'search-index',
+        'combineSearchIndex =>',
+        dependenices,
+    )
 
     return {
         search: search(dependenices.getDb),

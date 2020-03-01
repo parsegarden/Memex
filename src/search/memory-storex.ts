@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import inMemoryDb from '@worldbrain/storex-backend-dexie/lib/in-memory'
 
 import initStorex from './storex'

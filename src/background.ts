@@ -33,9 +33,10 @@ import { FeatureOptIns } from 'src/feature-opt-in/background/feature-opt-ins'
 import { FetchPageDataProcessor } from 'src/page-analysis/background/fetch-page-data-processor'
 import fetchPageData from 'src/page-analysis/background/fetch-page-data'
 import pipeline from 'src/search/pipeline'
+import StorageManager from '../external/@worldbrain/storex/ts/index'
 
 export async function main() {
-    console.log('VIJX', 'background', 'main', 'BEGIN')
+    console.log('VIJX', 'background', 'main => (A)')
 
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,
@@ -47,8 +48,10 @@ export async function main() {
         fetchPageData,
         pagePipeline: pipeline,
     })
+    console.log('VIJX', 'background', 'main => (B)', { fetchPageDataProcessor })
 
     const storageManager = initStorex()
+    console.log('VIJX', 'background', 'main => (C)', { storageManager })
     const backgroundModules = createBackgroundModules({
         storageManager,
         localStorageChangesManager,

@@ -59,6 +59,7 @@ export default class PageVisitLogger {
             'activity-logger',
             'background',
             'log-page-visit',
+            '<PageVisitLogger>',
             'logPageStub =>',
             { tab, allowScreenshot, secsSinceLastVisit },
         )
@@ -137,6 +138,7 @@ export default class PageVisitLogger {
             'activity-logger',
             'background',
             'log-page-visit',
+            '<PageVisitLogger>',
             'logPageVisit =>',
             { tab, allowScreenshot, textOnly },
         )

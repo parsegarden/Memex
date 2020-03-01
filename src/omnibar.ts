@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 import debounce from 'lodash/fp/debounce'
 import escapeHtml from 'lodash/fp/escape'
 import urlRegex from 'url-regex'
@@ -23,6 +25,7 @@ import { registerModuleMapCollections } from '@worldbrain/storex-pattern-modules
 import { PageIndexingBackground } from './page-indexing/background'
 
 export async function main() {
+    console.log('VIJX', 'omnibar', 'main =>')
     const storageManager = initStorex()
     const bookmarksStorage = new BookmarksStorage({ storageManager })
     const pages = new PageIndexingBackground({

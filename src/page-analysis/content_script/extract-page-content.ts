@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { getMetadata } from 'page-metadata-parser'
 
 import transformPageHTML from 'src/util/transform-page-html'
@@ -22,12 +20,12 @@ export default async function extractPageContent(
     doc = document,
     url = location.href,
 ) {
-    console.trace(
+    console.log(
         'VIJX',
         'page-analysis',
         'content_script',
         'extract-page-content',
-        'extractPageContent',
+        'extractPageContent => (A)',
         { doc, url },
     )
     // If it is a PDF, run code for pdf instead.

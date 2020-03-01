@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import Storex from '@worldbrain/storex'
 
 export type ChangeTracker<PK = any> = (args: {

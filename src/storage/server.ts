@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { getFirebase } from 'src/util/firebase-app-initialized'
 import 'firebase/database'
 import 'firebase/firestore'

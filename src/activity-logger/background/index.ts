@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { Runtime, WebNavigation, Tabs, Browser } from 'webextension-polyfill-ts'
 
 import { makeRemotelyCallable } from 'src/util/webextensionRPC'
@@ -60,6 +58,13 @@ export default class ActivityLoggerBackground {
     static isTabLoaded = (tab: Tabs.Tab) => tab.status === 'complete'
 
     setupRemoteFunctions() {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            '<ActivityLoggerBackground>',
+            'setupRemoteFunctions =>',
+        )
         makeRemotelyCallable({
             toggleLoggingPause: this.toggleLoggingPause,
             fetchTab: id => this.tabManager.getTabState(id),

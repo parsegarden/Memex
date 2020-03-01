@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import 'babel-polyfill'
 import 'core-js/es7/symbol'
 import { browser } from 'webextension-polyfill-ts'

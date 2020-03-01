@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { SignalTransport } from 'simple-signalling/lib/types'
 import { FirebaseSignalTransport } from 'simple-signalling/lib/firebase'
 import { getFirebase } from 'src/util/firebase-app-initialized'

@@ -237,6 +237,15 @@ export default class DirectLinkingBackground {
             },
         )
 
+        console.log(
+            'VIJX',
+            'direct-linking',
+            'background',
+            '<DirectLinkingBackground>',
+            'getAllAnnotationsByUrl =>',
+            { url, annotations },
+        )
+
         const annotResults = await Promise.all(
             annotations.map(
                 async ({ createdWhen, lastEdited, ...annotation }) => ({

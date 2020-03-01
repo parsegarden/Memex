@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { createAction } from 'redux-act'
 
 import { remoteFunction } from '../../util/webextensionRPC'

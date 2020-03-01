@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { normalizeUrl } from '@worldbrain/memex-url-utils'
 
 import transformPageText from '../util/transform-page-text'

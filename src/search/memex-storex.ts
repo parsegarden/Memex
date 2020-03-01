@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import initStorex from './storex'
 
 console.log('VIJX', 'search', 'memex-storex', 'default =>')

@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 import { fetchUserId } from '../utils'
 import { AnalyticsBackend } from './types'
 import { AnalyticsEvent, AnalyticsTrackEventOptions } from '../types'

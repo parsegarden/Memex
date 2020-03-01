@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { connect } from 'react-redux'
 
 import * as acts from '../actions'

@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { SearchParams, PageResultsMap, DBGet } from '..'
 import QueryBuilder from '../query-builder'
 import { initErrHandler } from '../storage'

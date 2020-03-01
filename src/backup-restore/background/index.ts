@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 import Storex from '@worldbrain/storex'
 import Queue, { Options as QueueOpts } from 'queue'
 
@@ -154,7 +153,7 @@ export class BackupBackgroundModule {
                 },
                 isBackupBackendAuthenticated: async () => {
                     /* Check if restoreProcedure's backend is present.
-                        Restore's backend is only present during restore. */
+              Restore's backend is only present during restore. */
                     if (
                         this.restoreProcedure &&
                         this.restoreProcedure.backend != null

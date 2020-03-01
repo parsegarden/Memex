@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 import * as firebase from 'firebase/app'
 
 const firebaseConfig = {

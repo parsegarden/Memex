@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { browser, Browser } from 'webextension-polyfill-ts'
 import StorageManager from '@worldbrain/storex'
 import { SignalTransportFactory } from '@worldbrain/memex-common/lib/sync'

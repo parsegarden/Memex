@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { browser } from 'webextension-polyfill-ts'
 import StorageManager from '@worldbrain/storex'
 import PageStorage from './storage'

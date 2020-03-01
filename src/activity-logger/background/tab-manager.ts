@@ -36,10 +36,28 @@ export class TabManager {
      * @returns {Tab|undefined} The state for tab stored under given ID, or undefined if no matching tab.
      */
     getTabState(id: number) {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'tab-manager',
+            '<TabManager>',
+            'getTabState=>',
+            { id, tab: this._tabs.get(id) },
+        )
         return this._tabs.get(id)
     }
 
     getTabStateByUrl(url: string) {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'tab-manager',
+            '<TabManager>',
+            'getTabStateByUrl =>',
+            { url },
+        )
         const tabs = new Map<string, Tab>()
         this._tabs.forEach(tab => tabs.set(tab.url, tab))
         return tabs.get(url)

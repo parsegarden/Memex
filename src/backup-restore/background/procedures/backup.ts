@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-import Storex from '@worldbrain/storex'
 import * as AllRaven from 'raven-js'
 import { EventEmitter } from 'events'
 

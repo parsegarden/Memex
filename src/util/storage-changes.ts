@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { Storage } from 'webextension-polyfill-ts'
 
 export interface StorageChanges {

@@ -29,6 +29,14 @@ function checkBlacklist(url = '', blacklist = []) {
  */
 export async function isURLBlacklisted(url = '') {
     const blacklist = await fetchBlacklist()
+    console.log(
+        'VIJX',
+        'blacklist',
+        'background',
+        'interface',
+        'isURLBlacklisted =>',
+        { url, blacklist },
+    )
 
     return checkBlacklist(url, blacklist)
 }

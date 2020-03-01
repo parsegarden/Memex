@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { DBGet, SearchIndex } from './types'
 import { addBookmark, delBookmark, pageHasBookmark } from './bookmarks'
 // import { addTag, delTag, fetchPageTags } from './tags'

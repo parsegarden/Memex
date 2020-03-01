@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import Storex from '@worldbrain/storex'
 import {
     StorageModule,
@@ -309,12 +307,12 @@ export default class SearchStorage extends StorageModule {
     }
 
     private async searchTermsAnnots(params: AnnotSearchParams) {
-        const results: Map<
-            string,
-            Annotation[]
-        > = await this.operation(AnnotationsListPlugin.TERMS_SEARCH_OP_ID, {
-            params,
-        })
+        const results: Map<string, Annotation[]> = await this.operation(
+            AnnotationsListPlugin.TERMS_SEARCH_OP_ID,
+            {
+                params,
+            },
+        )
 
         const pages: AnnotPage[] = await this.getMergedAnnotsPages(
             [...results.keys()],

@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { whenPageDOMLoaded } from 'src/util/tab-events'
 import whenAllSettled from 'when-all-settled'
 

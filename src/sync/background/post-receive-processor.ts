@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { SyncPostReceiveProcessor } from '@worldbrain/storex-sync'
 import { COLLECTION_NAMES as PAGES_COLLECTION_NAMES } from '@worldbrain/memex-storage/lib/pages/constants'
 

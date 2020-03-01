@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { browser, Storage, Tabs, Browser } from 'webextension-polyfill-ts'
 import throttle from 'lodash/throttle'
 

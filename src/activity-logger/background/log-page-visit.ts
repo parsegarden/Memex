@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { Tabs } from 'webextension-polyfill-ts'
 import moment from 'moment'
 

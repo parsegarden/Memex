@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import EventModel from './event-model'
 
 export default class Visit extends EventModel {

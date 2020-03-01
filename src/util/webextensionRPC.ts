@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 // A Remote Procedure Call abstraction around the message passing available to
 // WebExtension scripts. Usable to call a function in the background script from
 // a tab's content script, or vice versa.

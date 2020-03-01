@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import { Tabs, Storage } from 'webextension-polyfill-ts'
 import Storex from '@worldbrain/storex'
 import {

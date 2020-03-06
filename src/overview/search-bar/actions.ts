@@ -13,8 +13,6 @@ import {
 } from '../../search-filters'
 import { actions as notifActs } from '../../notifications'
 import { EVENT_NAMES } from '../../analytics/internal/constants'
-import { isSocialPost, isAnnotsSearch } from '../results/selectors'
-import { startDate, endDate } from './selectors'
 
 const processEventRPC = remoteFunction('processEvent')
 const pageSearchRPC = remoteFunction('searchPages')

@@ -1,10 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import OverlayMenu from 'src/common-ui/components/design-library/overlay-menu/OverlayMenu'
-import {
-    TypographyHeadingSmall,
-    TypographyHeadingBig,
-} from 'src/common-ui/components/design-library/typography'
+import { TypographyHeadingBig } from 'src/common-ui/components/design-library/typography'
 import { auth } from 'src/util/remote-functions-background'
 import {
     UserProps,
@@ -13,24 +10,24 @@ import {
 import { LOGIN_URL } from 'src/constants'
 import { ButtonSideMenu } from 'src/common-ui/components/design-library/buttons'
 import { MemexLogo } from 'src/common-ui/components/MemexLogo'
+import { connect } from 'react-redux'
+import { show } from 'src/overview/modals/actions'
 
 const handleLoginClick = () => {
     window.location.href = LOGIN_URL
 }
 
 const handleAccountClick = () => {
-    window.location.href = 'https://getmemex.com/subscriptions'
-}
-
-const handleUpgradeClick = () => {
-    window.location.href = 'https://getmemex.com/#pricingSection'
+    window.location.href = LOGIN_URL
 }
 
 const handleLogOutClick = () => {
     return auth.signOut()
 }
 
-const AccountMenu = (props: UserProps) => {
+const AccountMenu = (
+    props: UserProps & { showSubscriptionModal: () => void },
+) => {
     if (props.currentUser === null) {
         return (
             <BottomLeft>
@@ -52,7 +49,10 @@ const AccountMenu = (props: UserProps) => {
                     </ButtonSideMenu>
                 }
                 menuItems={[
-                    { label: '⭐️ Upgrade', handler: handleUpgradeClick },
+                    {
+                        label: '⭐️ Upgrade',
+                        handler: props.showSubscriptionModal,
+                    },
                     { label: 'Account Info', handler: handleAccountClick },
                     { label: 'Log Out', handler: handleLogOutClick },
                 ]}
@@ -69,4 +69,6 @@ const BottomLeft = styled.div`
     min-width: 260px;
 `
 
-export default withCurrentUser(AccountMenu)
+export default connect(null, dispatch => ({
+    showSubscriptionModal: () => dispatch(show({ modalId: 'Subscription' })),
+}))(withCurrentUser(AccountMenu))

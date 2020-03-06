@@ -140,7 +140,7 @@ export default class TabChangeListeners {
         return {
             shouldLogStubs: !!storage[IDXING_PREF_KEYS.STUBS],
             shouldLogVisits: !!storage[IDXING_PREF_KEYS.VISITS],
-            shouldCaptureScreenshots: !!storage[IDXING_PREF_KEYS.SCREENSHOTS],
+            shouldCaptureScreenshots: false,
             logDelay: storage[IDXING_PREF_KEYS.VISIT_DELAY],
         }
     }
@@ -203,13 +203,22 @@ export default class TabChangeListeners {
     _handleVisitIndexing: TabChangeListener = async (tabId, _, tab) => {
         const indexingPrefs = await this.fetchIndexingPrefs()
 
-        // Run stage 1 of visit indexing immediately (depends on user settings)
+        if (!indexingPrefs.shouldLogStubs && !indexingPrefs.shouldLogVisits) {
+            return
+        }
+
         await this._pageDOMLoaded({ tabId })
+        const preparation = await this._pageVisitLogger.preparePageLogging({
+            tab,
+            allowScreenshot: indexingPrefs.shouldCaptureScreenshots,
+        })
+        if (!preparation) {
+            return
+        }
+
+        // Run stage 1 of visit indexing immediately (depends on user settings)
         if (indexingPrefs.shouldLogStubs) {
-            await this._pageVisitLogger.logPageStub(
-                tab,
-                indexingPrefs.shouldCaptureScreenshots,
-            )
+            await this._pageVisitLogger.logPageStub(tab, preparation)
         }
 
         // Schedule stage 2 of visit indexing soon after - if user stays on page
@@ -220,7 +229,7 @@ export default class TabChangeListeners {
                     this._tabActive({ tabId }).then(() =>
                         this._pageVisitLogger.logPageVisit(
                             tab,
-                            indexingPrefs.shouldCaptureScreenshots,
+                            preparation,
                             indexingPrefs.shouldLogStubs,
                         ),
                     ),

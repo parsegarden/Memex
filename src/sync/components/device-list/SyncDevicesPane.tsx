@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import ToggleSwitch from 'src/common-ui/components/ToggleSwitch'
 import { SyncDevicesList } from 'src/sync/components/device-list/SyncDevicesList'
 import { SyncDevice } from 'src/sync/components/types'
-import { UPGRADE_URL, LOGIN_URL } from 'src/constants'
+import { LOGIN_URL } from 'src/constants'
 import {
     UserProps,
     withCurrentUser,
 } from 'src/authentication/components/AuthConnector'
-import { features, sync } from 'src/util/remote-functions-background'
+import { sync } from 'src/util/remote-functions-background'
 import InitialSyncSetup from 'src/sync/components/initial-sync/initial-sync-setup'
 import { getRemoteEventEmitter } from 'src/util/webextensionRPC'
 import ButtonTooltip from 'src/common-ui/components/button-tooltip'
 import { SecondaryAction } from 'src/common-ui/components/design-library/actions/SecondaryAction'
+import { connect } from 'react-redux'
+import { show } from 'src/overview/modals/actions'
+
 const settingsStyle = require('src/options/settings/components/settings.css')
 const styles = require('../styles.css')
 
@@ -24,6 +27,8 @@ interface Props {
     waitForInitialSync: () => Promise<void>
     waitForInitialSyncConnected: () => Promise<void>
     refreshDevices: () => Promise<void>
+    handleUpgradeNeeded: () => void
+    abortInitialSync: () => Promise<void>
 }
 
 interface State {
@@ -36,13 +41,9 @@ export class SyncDevicesPane extends Component<Props, State> {
 
     enableSync = () => {
         this.setState({ isTogglingSync: true })
-
-        this.setState({ isTogglingSync: false })
     }
 
     disableSync = () => {
-        this.setState({ isTogglingSync: true })
-
         this.setState({ isTogglingSync: false })
     }
 
@@ -53,10 +54,6 @@ export class SyncDevicesPane extends Component<Props, State> {
         this.setState({
             isAddingNewDevice: false,
         })
-    }
-
-    handleUpgradeNeeded = () => {
-        window.open(UPGRADE_URL, '_blank')
     }
 
     handleLoginNeeded = () => {
@@ -114,7 +111,7 @@ export class SyncDevicesPane extends Component<Props, State> {
                     position="bottom"
                 >
                     <SecondaryAction
-                        onClick={this.handleUpgradeNeeded}
+                        onClick={this.props.handleUpgradeNeeded}
                         label={` Pair New Device`}
                     />
                 </ButtonTooltip>
@@ -185,6 +182,7 @@ export class SyncDevicesPane extends Component<Props, State> {
                     this.props.waitForInitialSyncConnected
                 }
                 waitForInitialSync={this.props.waitForInitialSync}
+                abortInitialSync={this.props.abortInitialSync}
                 getSyncEventEmitter={() => getRemoteEventEmitter('sync')}
                 open={this.state.isAddingNewDevice}
                 onClose={this.handleCloseNewDevice}
@@ -203,8 +201,11 @@ export class SyncDevicesPane extends Component<Props, State> {
 }
 
 class SyncDevicesPaneContainer extends React.Component<
-    UserProps,
-    { devices: SyncDevice[]; featureSyncEnabled: boolean }
+    UserProps & { showSubscriptionModal: () => void },
+    {
+        devices: SyncDevice[]
+        featureSyncEnabled: boolean
+    }
 > {
     state = { devices: [], featureSyncEnabled: true }
 
@@ -229,9 +230,15 @@ class SyncDevicesPaneContainer extends React.Component<
         await sync.waitForInitialSyncConnected()
     }
 
+    abortInitialSync = async () => sync.abortInitialSync()
+
     refreshDevices = async () => {
         const devices = (await sync.listDevices()) as SyncDevice[]
         this.setState({ devices })
+    }
+
+    handleUpgradeNeeded = async () => {
+        this.props.showSubscriptionModal()
     }
 
     render() {
@@ -244,7 +251,10 @@ class SyncDevicesPaneContainer extends React.Component<
                 <div className={settingsStyle.section}>
                     <div className={settingsStyle.sectionTitle}>
                         Sync your mobile phone
-                        <span className={styles.labelFree}>
+                        <span
+                            className={styles.labelFree}
+                            onClick={this.handleUpgradeNeeded}
+                        >
                             ⭐️ Pro Feature
                         </span>
                     </div>
@@ -259,39 +269,55 @@ class SyncDevicesPaneContainer extends React.Component<
                             'sync',
                         )}
                         handleRemoveDevice={this.handleRemoveDevice}
+                        handleUpgradeNeeded={this.handleUpgradeNeeded}
                         getInitialSyncMessage={this.getInitialSyncMessage}
                         waitForInitialSync={this.waitForInitialSync}
                         waitForInitialSyncConnected={
                             this.waitForInitialSyncConnected
                         }
                         refreshDevices={this.refreshDevices}
+                        abortInitialSync={this.abortInitialSync}
                     />
                 </div>
                 <div className={settingsStyle.section}>
                     <div className={styles.mobileSection}>
                         <div className={styles.contentSection}>
-                            <div className={settingsStyle.sectionTitle}>
-                                Download Memex GO
+                            <div className={styles.textSection}>
+                                <div className={settingsStyle.sectionTitle}>
+                                    Download Memex GO
+                                </div>
+                                <div className={settingsStyle.infoText}>
+                                    Our mobile app to save and organise websites
+                                    on the Go
+                                </div>
                             </div>
-                            <div className={settingsStyle.infoText}>
-                                Our mobile app to save and organise websites on
-                                the Go
-                            </div>
-                            <div>
+                            <div className={styles.storeSection}>
                                 <img
                                     className={styles.downloadImg}
                                     src={'img/appStore.png'}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://apps.apple.com/app/id1471860331',
+                                        )
+                                    }}
                                 />
                                 <img
                                     className={styles.downloadImg}
                                     src={'img/googlePlay.png'}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://play.google.com/store/apps/details?id=io.worldbrain',
+                                        )
+                                    }}
                                 />
                             </div>
                         </div>
-                        <img
-                            src={'img/mobilehalf.png'}
-                            className={styles.mobileImg}
-                        />
+                        <div className={styles.mobileContainer}>
+                            <img
+                                src={'img/mobileHalf.svg'}
+                                className={styles.mobileImg}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,4 +325,6 @@ class SyncDevicesPaneContainer extends React.Component<
     }
 }
 
-export default withCurrentUser(SyncDevicesPaneContainer)
+export default connect(null, dispatch => ({
+    showSubscriptionModal: () => dispatch(show({ modalId: 'Subscription' })),
+}))(withCurrentUser(SyncDevicesPaneContainer))

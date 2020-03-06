@@ -7,6 +7,8 @@ import {
 } from 'src/authentication/components/AuthConnector'
 import { WhiteSpacer20 } from 'src/common-ui/components/design-library/typography'
 import { SyncDevice } from 'src/sync/components/types'
+import { connect } from 'react-redux'
+import { show } from 'src/overview/modals/actions'
 
 interface Props {
     onClickSync: () => void
@@ -47,11 +49,11 @@ export class SyncNowOverlayPane extends Component<Props> {
     }
 }
 
-interface ContainerProps {}
+interface ContainerProps {
+    showSubscriptionModal: () => void
+}
 interface ContainerState {
     showSync: boolean
-    syncEnabled: boolean
-    syncAllowed: boolean
     syncResults: any
     syncError: any
     isSyncing: boolean
@@ -63,8 +65,6 @@ export class SyncNowOverlayPaneContainer extends Component<
 > {
     state = {
         showSync: false,
-        syncEnabled: true,
-        syncAllowed: false,
         syncResults: [],
         syncError: null,
         isSyncing: false,
@@ -76,24 +76,8 @@ export class SyncNowOverlayPaneContainer extends Component<
         this.setState({ devices })
     }
 
-    async componentDidMount() {
-        const syncFeatureAllowed = this.props.authorizedFeatures.includes(
-            'sync',
-        )
-        await this.refreshDevices()
-
-        this.setState({
-            syncAllowed: syncFeatureAllowed,
-        })
-    }
-
-    async componentDidUpdate() {
-        const syncFeatureAllowed = this.props.authorizedFeatures.includes(
-            'sync',
-        )
-        this.setState({
-            syncAllowed: syncFeatureAllowed,
-        })
+    componentDidMount() {
+        this.refreshDevices()
     }
 
     handleOnClickSync = async () => {
@@ -105,7 +89,7 @@ export class SyncNowOverlayPaneContainer extends Component<
     }
 
     handleUpgrade = async () => {
-        window.open('https://getmemex.com/#pricingSection')
+        this.props.showSubscriptionModal()
     }
 
     handleLogin = async () => {
@@ -117,9 +101,13 @@ export class SyncNowOverlayPaneContainer extends Component<
     }
 
     render() {
+        const syncFeatureAllowed = this.props.authorizedFeatures.includes(
+            'sync',
+        )
+
         return (
             <div>
-                {this.state.devices.length === 0 && this.state.syncAllowed && (
+                {this.state.devices.length === 0 && syncFeatureAllowed && (
                     <div className={settingsStyle.buttonArea}>
                         <div>
                             <div className={settingsStyle.sectionTitle}>
@@ -137,14 +125,14 @@ export class SyncNowOverlayPaneContainer extends Component<
                     </div>
                 )}
 
-                {this.state.syncEnabled && !this.state.syncAllowed && (
+                {this.props.currentUser === null && (
                     <div className={settingsStyle.buttonArea}>
                         <div>
                             <div className={settingsStyle.sectionTitle}>
                                 Sync Status
                             </div>
                             <div className={settingsStyle.infoText}>
-                                Login to continue syncing
+                                Login to enable sync
                             </div>
                         </div>
                         <SyncNowOverlayPane
@@ -154,7 +142,7 @@ export class SyncNowOverlayPaneContainer extends Component<
                         />
                     </div>
                 )}
-                {!this.state.syncEnabled && !this.state.syncAllowed && (
+                {!syncFeatureAllowed && this.props.currentUser && (
                     <div className={settingsStyle.buttonArea}>
                         <div>
                             <div className={settingsStyle.sectionTitle}>
@@ -172,7 +160,7 @@ export class SyncNowOverlayPaneContainer extends Component<
                     </div>
                 )}
 
-                {this.state.syncAllowed &&
+                {syncFeatureAllowed &&
                     this.state.devices.length > 0 &&
                     !this.state.isSyncing && (
                         <div className={settingsStyle.buttonArea}>
@@ -181,7 +169,7 @@ export class SyncNowOverlayPaneContainer extends Component<
                                     Sync Enabled
                                 </div>
                                 <div className={settingsStyle.infoText}>
-                                    Syncs every 5 min.
+                                    Syncs every 2 minutes
                                 </div>
                             </div>
                             <SyncNowOverlayPane
@@ -231,4 +219,6 @@ export class SyncNowOverlayPaneContainer extends Component<
     }
 }
 
-export default withCurrentUser(SyncNowOverlayPaneContainer)
+export default connect(null, dispatch => ({
+    showSubscriptionModal: () => dispatch(show({ modalId: 'Subscription' })),
+}))(withCurrentUser(SyncNowOverlayPaneContainer))

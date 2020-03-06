@@ -3,51 +3,54 @@ import {
     UserProps,
     withCurrentUser,
 } from 'src/authentication/components/AuthConnector'
-import SubscribeModal from 'src/authentication/components/Subscription/SubscribeModal'
-import { TypographyHeadingPage } from 'src/common-ui/components/design-library/typography'
+import {
+    TypographyHeadingPage,
+    TypographyInputTitle,
+} from 'src/common-ui/components/design-library/typography'
 import { FullPage } from 'src/common-ui/components/design-library/FullPage'
 import { PrimaryButton } from 'src/common-ui/components/primary-button'
 import Link from 'src/common-ui/components/link'
+import { connect } from 'react-redux'
+import { show } from 'src/overview/modals/actions'
+import { InputTextField } from 'src/common-ui/components/design-library/form/InputTextField'
 
 interface Props {
     initiallyShowSubscriptionModal?: boolean
+    showSubscriptionModal: () => void
 }
 
-interface State {
-    showSubscriptionModal: boolean
-}
-
-export class AccountInfo extends React.Component<Props & UserProps, State> {
-    state = { showSubscriptionModal: false }
-
-    hideSubscriptionModal = () => {
-        this.setState({ showSubscriptionModal: false })
-        // If the url has subscription, remove it
-    }
-
-    showSubscriptionModal = () => this.setState({ showSubscriptionModal: true })
-    // if the url does not have subscription, add it
-
+export class AccountInfo extends React.PureComponent<Props & UserProps> {
     componentDidMount(): void {
         if (this.props.initiallyShowSubscriptionModal) {
-            this.setState({ showSubscriptionModal: true })
+            this.props.showSubscriptionModal()
         }
     }
 
     render() {
         const user = this.props.currentUser
         const features = this.props.authorizedFeatures
-        const url = 'https://getmemex.com/subscriptions'
         return (
             <FullPage>
                 <TypographyHeadingPage>My Account</TypographyHeadingPage>
-                {this.state.showSubscriptionModal === true && (
-                    <SubscribeModal onClose={this.hideSubscriptionModal} />
-                )}
+                <br />
                 {user != null && (
                     <div>
-                        <PrimaryButton>
-                            <Link url={url} text={'Manage Subscriptions'} />
+                        <TypographyInputTitle>
+                            {' '}
+                            Email Address{' '}
+                        </TypographyInputTitle>
+
+                        <InputTextField
+                            type={'text'}
+                            defaultValue={user.email}
+                            readonly
+                            disabled
+                        />
+
+                        <PrimaryButton
+                            onClick={this.props.showSubscriptionModal}
+                        >
+                            {'Manage Subscriptions'}
                         </PrimaryButton>
 
                         <input
@@ -83,4 +86,6 @@ export class AccountInfo extends React.Component<Props & UserProps, State> {
     }
 }
 
-export default withCurrentUser(AccountInfo)
+export default connect(null, dispatch => ({
+    showSubscriptionModal: () => dispatch(show({ modalId: 'Subscription' })),
+}))(withCurrentUser(AccountInfo))

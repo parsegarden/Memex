@@ -1,9 +1,19 @@
 import React, { PureComponent } from 'react'
-import { Props } from './result-item'
+import { browser } from 'webextension-polyfill-ts'
 import cx from 'classnames'
-import ButtonTooltip from './button-tooltip'
+
+import { Props } from './result-item'
+import SemiCircularRibbon from './semi-circular-ribbon'
+import ResultItemActionBtn from './result-item-action-btn'
 
 const styles = require('./result-item.css')
+const tagEmpty = browser.extension.getURL('/img/tag_empty.svg')
+const tagFull = browser.extension.getURL('/img/tag_full.svg')
+const heartEmpty = browser.extension.getURL('/img/star_empty.svg')
+const heartFull = browser.extension.getURL('/img/star_full.svg')
+const commentEmpty = browser.extension.getURL('/img/comment_empty.svg')
+const commentFull = browser.extension.getURL('/img/comment_full.svg')
+const deleteItem = browser.extension.getURL('/img/trash.svg')
 
 class ResultItemActions extends PureComponent<Props> {
     get bookmarkClass() {
@@ -27,48 +37,56 @@ class ResultItemActions extends PureComponent<Props> {
                         e.stopPropagation()
                     }}
                 >
-                    <ButtonTooltip
-                        position="bottom"
+                    <ResultItemActionBtn
+                        imgSrc={deleteItem}
+                        onClick={this.props.onTrashBtnClick}
                         tooltipText="Delete this page & all related content"
-                    >
-                        <button
-                            disabled={this.props.isDeleting}
-                            className={cx(styles.button, styles.trash)}
-                            onClick={this.props.onTrashBtnClick}
+                        className={styles.trash}
+                    />
+                    <ResultItemActionBtn
+                        permanent={this.props.tags.length > 0}
+                        imgSrc={this.props.tags.length > 0 ? tagFull : tagEmpty}
+                        className={
+                            this.props.tags.length > 0
+                                ? styles.commentActive
+                                : styles.tag
+                        }
+                        onClick={this.props.onTagBtnClick}
+                        tooltipText="Add/View Notes"
+                        refHandler={this.props.setTagButtonRef}
+                    />
+                    <ResultItemActionBtn
+                        permanent={this.props.annotsCount > 0}
+                        imgSrc={
+                            this.props.annotsCount > 0
+                                ? commentFull
+                                : commentEmpty
+                        }
+                        className={
+                            this.props.annotsCount > 0
+                                ? styles.commentActive
+                                : styles.comment
+                        }
+                        onClick={this.props.onCommentBtnClick}
+                        tooltipText="Add/View Notes"
+                    />
+
+                    <ResultItemActionBtn
+                        permanent={this.props.hasBookmark}
+                        imgSrc={this.props.hasBookmark ? heartFull : heartEmpty}
+                        className={
+                            this.props.hasBookmark
+                                ? styles.bookmark
+                                : styles.notBookmark
+                        }
+                        onClick={this.props.onToggleBookmarkClick}
+                        tooltipText="Bookmark"
+                    />
+                    {this.props.isListFilterActive && (
+                        <SemiCircularRibbon
+                            onClick={this.props.handleCrossRibbonClick}
                         />
-                    </ButtonTooltip>
-                    <ButtonTooltip
-                        position="bottom"
-                        tooltipText="Add/View Tags"
-                    >
-                        <button
-                            className={cx(styles.button, styles.tag)}
-                            onClick={this.props.onTagBtnClick}
-                            ref={this.props.setTagButtonRef}
-                            title="Add/View Tags"
-                        />
-                    </ButtonTooltip>
-                    <ButtonTooltip
-                        position="bottom"
-                        tooltipText="Add/View Commments & Annotations"
-                    >
-                        <button
-                            className={cx(styles.button, styles.comment, {
-                                [styles.commentActive]:
-                                    this.props.annotsCount > 0,
-                            })}
-                            onClick={this.props.onCommentBtnClick}
-                            title="Add/View Commments & Annotations"
-                        />
-                    </ButtonTooltip>
-                    <ButtonTooltip position="bottom" tooltipText="Bookmark">
-                        <button
-                            disabled={this.props.isDeleting}
-                            className={this.bookmarkClass}
-                            onClick={this.props.onToggleBookmarkClick}
-                            title="Bookmark this page"
-                        />
-                    </ButtonTooltip>
+                    )}
                 </div>
             </div>
         )

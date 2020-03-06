@@ -1,12 +1,16 @@
+import update from 'immutability-helper'
 import { Tabs } from 'webextension-polyfill-ts'
 import moment from 'moment'
 
 import { TabManager } from './tab-manager'
 // @ts-ignore
-import analyzePage, { PageAnalyzer } from '../../page-analysis/background'
+import analyzePage, {
+    PageAnalyzer,
+    PageAnalysis,
+} from '../../page-analysis/background'
 
 import { FavIconChecker } from './types'
-import { SearchIndex } from 'src/search'
+import { SearchIndex, PageDoc } from 'src/search'
 
 interface Props {
     tabManager: TabManager
@@ -15,6 +19,7 @@ interface Props {
     favIconCheck?: FavIconChecker
     pageAnalyzer?: PageAnalyzer
 }
+type PageLoggingPreparation = PageAnalysis
 
 export default class PageVisitLogger {
     private _tabManager: TabManager
@@ -42,6 +47,29 @@ export default class PageVisitLogger {
         this._moment = momentLib
     }
 
+    async preparePageLogging(params: {
+        tab: Tabs.Tab
+        allowScreenshot: boolean
+    }): Promise<PageLoggingPreparation | null> {
+        const internalTabState = this._tabManager.getTabState(params.tab.id)
+        if (internalTabState == null) {
+            return null
+        }
+
+        const allowFavIcon = !(await this._checkFavIcon(params.tab.url))
+        try {
+            const analysisRes = await this._analyzePage({
+                tabId: params.tab.id,
+                allowFavIcon,
+                allowScreenshot: params.allowScreenshot,
+            })
+            return analysisRes
+        } catch (err) {
+            console.error(err)
+            return null
+        }
+    }
+
     /**
      * Performs page data indexing for a browser tab. Immediately
      * indexes display data, and searchable title/URL terms, but returns
@@ -49,7 +77,7 @@ export default class PageVisitLogger {
      */
     async logPageStub(
         tab: Tabs.Tab,
-        allowScreenshot: boolean,
+        pageAnalysis: PageLoggingPreparation,
         secsSinceLastVisit = 20,
     ) {
         console.log(
@@ -58,8 +86,8 @@ export default class PageVisitLogger {
             'background',
             'log-page-visit',
             '<PageVisitLogger>',
-            'logPageStub =>',
-            { tab, allowScreenshot, secsSinceLastVisit },
+            'logPageStub => (A)',
+            { tab, secsSinceLastVisit },
         )
         const internalTabState = this._tabManager.getTabState(tab.id)
 
@@ -91,32 +119,26 @@ export default class PageVisitLogger {
                 }
             }
 
-            const allowFavIcon = !(await this._checkFavIcon(tab.url))
-            let analysisRes
-            try {
-                analysisRes = await this._analyzePage({
-                    tabId: tab.id,
-                    allowFavIcon,
-                    allowScreenshot,
-                })
-            } catch (err) {
-                console.error(err)
-                return
-            }
-
             // Don't index full-text in this stage
-            delete analysisRes.content.fullText
+            const pageDoc: PageDoc = {
+                url: tab.url,
+                ...update(pageAnalysis, {
+                    content: { $unset: ['fullText'] },
+                    $unset: ['getFullText'],
+                }),
+            }
 
             console.log(
                 'VIJX',
                 'activity-logger',
                 'background',
                 'log-page-visit',
-                'logPageStub',
+                '<PageVisitLogger>',
+                'logPageStub => (B)',
                 { url: tab.url },
             )
             await this._createPage({
-                pageDoc: { url: tab.url, ...analysisRes },
+                pageDoc,
                 visits: [internalTabState.visitTime],
                 rejectNoContent: false,
             })
@@ -128,7 +150,7 @@ export default class PageVisitLogger {
 
     async logPageVisit(
         tab: Tabs.Tab,
-        allowScreenshot: boolean,
+        pageAnalysis: PageLoggingPreparation,
         textOnly = true,
     ) {
         console.log(
@@ -138,21 +160,21 @@ export default class PageVisitLogger {
             'log-page-visit',
             '<PageVisitLogger>',
             'logPageVisit =>',
-            { tab, allowScreenshot, textOnly },
+            { tab, textOnly },
         )
-        let analysisRes
-        try {
-            analysisRes = await this._analyzePage({
-                tabId: tab.id,
-                allowFavIcon: false,
-                allowScreenshot,
-            })
-        } catch (err) {
-            console.error(err)
-            return
+        const pageDoc: PageDoc = {
+            url: tab.url,
+            ...update(pageAnalysis, {
+                content: {
+                    fullText: {
+                        $set:
+                            pageAnalysis.content.fullText ||
+                            (await pageAnalysis.getFullText()),
+                    },
+                },
+                $unset: ['getFullText'],
+            }),
         }
-
-        const pageDoc = { url: tab.url, ...analysisRes }
 
         if (textOnly) {
             return this._addPageTerms({ pageDoc })

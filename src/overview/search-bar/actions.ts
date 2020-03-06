@@ -14,6 +14,7 @@ import {
 import { actions as notifActs } from '../../notifications'
 import { EVENT_NAMES } from '../../analytics/internal/constants'
 import { isSocialPost, isAnnotsSearch } from '../results/selectors'
+import { startDate, endDate } from './selectors'
 
 const processEventRPC = remoteFunction('processEvent')
 const pageSearchRPC = remoteFunction('searchPages')
@@ -36,26 +37,27 @@ const stripTagPattern = tag =>
 export const setQueryTagsDomains: (
     input: string,
     isEnter?: boolean,
-) => Thunk = (input, isEnter = true) => dispatch => {
+) => Thunk = (input, isEnter = true) => (dispatch, getState) => {
+    const state = getState()
     console.log(
         'VIJX',
         'overview',
         'search-bar',
         'actions',
-        'setQueryTagsDomains',
-        { input },
+        'setQueryTagsDomains =>',
+        { input, state },
     )
-    const removeFromInputVal = term =>
-        (input = input.replace(isEnter ? term : `${term} `, ''))
 
     if (input[input.length - 1] === ' ' || isEnter) {
         // Split input into terms and try to extract any tag/domain patterns to add to filters
         const terms = input.toLowerCase().match(/\S+/g) || []
 
         terms.forEach(term => {
-            // If '#tag' pattern in input, remove it and add to filter state
-            if (constants.HASH_TAG_PATTERN.test(term)) {
-                removeFromInputVal(term)
+            // If '#tag' pattern in input, and not already tracked, add to filter state
+            if (
+                constants.HASH_TAG_PATTERN.test(term) &&
+                !filters.tags(state).includes(stripTagPattern(term))
+            ) {
                 dispatch(filterActs.toggleTagFilter(stripTagPattern(term)))
                 analytics.trackEvent({
                     category: 'Tag',
@@ -63,16 +65,25 @@ export const setQueryTagsDomains: (
                 })
             }
 
-            // If 'domain.tld.cctld?' pattern in input, remove it and add to filter state
+            // If 'domain.tld.cctld?' pattern in input, and not already tracked, add to filter state
             if (constants.DOMAIN_TLD_PATTERN.test(term)) {
-                removeFromInputVal(term)
+                let act
+                let currentState
 
                 // Choose to exclude or include domain, basead on pattern
-                const act = constants.EXCLUDE_PATTERN.test(term)
-                    ? filterActs.toggleExcDomainFilter
-                    : filterActs.toggleIncDomainFilter
+                if (constants.EXCLUDE_PATTERN.test(term)) {
+                    currentState = filters.domainsExc(state)
+                    act = filterActs.toggleExcDomainFilter
+                } else {
+                    currentState = filters.domainsInc(state)
+                    act = filterActs.toggleIncDomainFilter
+                }
 
                 term = term.replace(constants.TERM_CLEAN_PATTERN, '')
+                if (currentState.includes(term)) {
+                    return
+                }
+
                 dispatch(act(term))
 
                 analytics.trackEvent({
@@ -106,15 +117,11 @@ export const search: (args?: any) => Thunk = (
     const startDate = selectors.startDate(firstState)
     const endDate = selectors.endDate(firstState)
 
-    console.log('VIJX', 'overview', 'search-bar', 'actions', 'search', 'A', {
+    console.log('VIJX', 'overview', 'search-bar', 'actions', 'search => (A)', {
         query,
+        startDate,
+        endDate,
     })
-
-    // const showTooltip = selectors.showTooltip(firstState)
-
-    if (query.includes('#')) {
-        return
-    }
 
     if (fromOverview) {
         dispatch(sidebarActs.closeSidebar())
@@ -166,8 +173,7 @@ export const search: (args?: any) => Thunk = (
             'overview',
             'search-bar',
             'actions',
-            'search',
-            'B',
+            'search => (B)',
             {
                 isSocialPost: results.isSocialPost(state),
                 isAnnotsSearch: results.isAnnotsSearch(state),
@@ -186,8 +192,7 @@ export const search: (args?: any) => Thunk = (
             'overview',
             'search-bar',
             'actions',
-            'search',
-            'C',
+            'search => (C)',
             { searchResult },
         )
         dispatch(resultsActs.updateSearchResult({ overwrite, searchResult }))
@@ -203,4 +208,5 @@ export const search: (args?: any) => Thunk = (
 
 export const init = () => dispatch => {
     dispatch(notifActs.updateUnreadNotif())
+    dispatch(search({ overwrite: true, fromOverview: false }))
 }

@@ -72,8 +72,9 @@
     } */
 
     &.tooltipBubble {
-        right: 29px;
-        top: -3px;
+        right: 20px;
+        top: 0px;
+        overflow: visible;
     }
 }
 
@@ -99,7 +100,7 @@
 }
 
 .inPageTooltip {
-    right: 220px;
+    right: 100px;
     top: -24px;
     z-index: 1;
 }

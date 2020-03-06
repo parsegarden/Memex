@@ -321,14 +321,14 @@ const mapDispatch: (dispatch, props: OwnProps) => DispatchProps = dispatch => ({
             sidebarActs.openSidebar({
                 url,
                 title,
-                forceFetch: false,
+                forceFetch: true,
                 isSocialPost,
             }),
         )
     },
-    handleToggleBm: ({ url }, index) => event => {
+    handleToggleBm: ({ url, fullUrl }, index) => event => {
         event.preventDefault()
-        dispatch(acts.toggleBookmark(url, index))
+        dispatch(acts.toggleBookmark({ url, fullUrl, index }))
     },
     handleTrashBtnClick: ({ url }, index) => event => {
         event.preventDefault()

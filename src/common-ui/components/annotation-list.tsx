@@ -184,10 +184,12 @@ class AnnotationList extends Component<Props, State> {
             <div
                 className={cx({
                     [styles.parentExpanded]: isExpanded,
+                    [styles.parentExpandedSidebar]:
+                        isExpanded && this.props.env === 'inpage',
                 })}
             >
                 {/* Annotation count text and toggle arrow */}
-                <p
+                <div
                     className={cx(styles.resultCount, {
                         [styles.expandedCount]: this.state.isExpanded,
                     })}
@@ -200,7 +202,7 @@ class AnnotationList extends Component<Props, State> {
                             [styles.inverted]: this.state.isExpanded,
                         })}
                     />
-                </p>
+                </div>
 
                 {/* Container for displaying AnnotationBox */}
                 <div className={styles.annotationList}>

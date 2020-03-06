@@ -133,7 +133,7 @@ export default class DirectLinkingBackground {
                 // it off.
                 await runInTab<RibbonInteractionsInterface>(
                     tabId,
-                ).insertRibbon()
+                ).insertRibbon({ forceExpandRibbon: true })
                 await remoteFunction('goToAnnotation', { tabId })(annotation)
                 this.options.browserAPIs.tabs.onUpdated.removeListener(listener)
             }
@@ -286,10 +286,7 @@ export default class DirectLinkingBackground {
         }
 
         const pageTitle = title == null ? tab.title : title
-        const uniqueUrl = this._normalizeUrl(`${pageUrl}/#${Date.now()}`, {
-            stripHash: false,
-            removeTrailingSlash: false,
-        })
+        const uniqueUrl = `${pageUrl}/#${Date.now()}`
 
         await this.annotationStorage.createAnnotation({
             pageUrl,

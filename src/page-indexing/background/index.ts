@@ -194,7 +194,7 @@ export class PageIndexingBackground {
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
-            'createPageFromTab =>',
+            'createPageFromTab => (A)',
             { props },
         )
         if (!props.tabId) {
@@ -209,6 +209,15 @@ export class PageIndexingBackground {
             ...props,
         })
 
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            '<PageIndexingBackground>',
+            'createPageFromTab => (B)',
+            { analysisRes },
+        )
+
         if (props.stubOnly && analysisRes.content) {
             delete analysisRes.content.fullText
         }
@@ -222,6 +231,15 @@ export class PageIndexingBackground {
         if (props.visitTime) {
             await this.storage.addPageVisit(pageData.url, props.visitTime)
         }
+
+        console.log(
+            'VIJX',
+            'page-indexing',
+            'background',
+            '<PageIndexingBackground>',
+            'createPageFromTab => (C)',
+            { pageData },
+        )
 
         return pageData
     }

@@ -57,12 +57,32 @@ export default class PageVisitLogger {
         }
 
         const allowFavIcon = !(await this._checkFavIcon(params.tab.url))
+
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'log-page-visit',
+            '<PageVisitLogger>',
+            'preparePageLogging => (A)',
+            { tab: params.tab, allowScreenshot: params.allowScreenshot },
+        )
+
         try {
             const analysisRes = await this._analyzePage({
                 tabId: params.tab.id,
                 allowFavIcon,
                 allowScreenshot: params.allowScreenshot,
             })
+            console.log(
+                'VIJX',
+                'activity-logger',
+                'background',
+                'log-page-visit',
+                '<PageVisitLogger>',
+                'preparePageLogging => (B)',
+                { analysisRes },
+            )
             return analysisRes
         } catch (err) {
             console.error(err)

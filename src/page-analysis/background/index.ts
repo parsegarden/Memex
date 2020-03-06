@@ -36,8 +36,11 @@ const analysePage: PageAnalyzer = async ({
     // Wait until its DOM has loaded, in case we got invoked before that.
     await whenPageDOMLoaded({ tabId })
 
-    console.log('VIJX', 'page-analysis', 'background', 'analysePage =>', {
+    console.log('VIJX', 'page-analysis', 'background', 'analysePage => (A)', {
         tabId,
+        allowContent,
+        allowScreenshot,
+        allowFavIcon,
     })
 
     // Set up to run these functions in the content script in the tab.
@@ -47,6 +50,18 @@ const analysePage: PageAnalyzer = async ({
         ).extractRawPageContent()
         const metadata = await extractPageMetadataFromRawContent(rawContent)
         const getFullText = async () => getPageFullText(rawContent, metadata)
+        console.log(
+            'VIJX',
+            'page-analysis',
+            'background',
+            'analysePage => (B)',
+            'extractPageContent =>',
+            {
+                rawContent,
+                metadata,
+                getFullText,
+            },
+        )
         return { metadata, getFullText }
     }
 
@@ -64,6 +79,14 @@ const analysePage: PageAnalyzer = async ({
             onRejection: err => undefined,
         },
     )
+
+    console.log('VIJX', 'page-analysis', 'background', 'analysePage => (C)', {
+        favIconURI,
+        screenshotURI,
+        content: content.metadata || {},
+        getFullText: content.getFullText,
+    })
+
     return {
         favIconURI,
         screenshotURI,

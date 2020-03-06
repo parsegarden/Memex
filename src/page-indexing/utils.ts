@@ -13,6 +13,11 @@ export async function maybeIndexTabs(
         time: number
     },
 ) {
+    console.log('VIJX', 'page-indexing', 'maybeIndexTabs =>', {
+        tabs,
+        options,
+    })
+
     const indexed: { fullUrl: string }[] = []
     await Promise.all(
         tabs.map(async tab => {

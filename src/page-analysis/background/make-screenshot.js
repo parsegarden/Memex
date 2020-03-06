@@ -29,7 +29,7 @@ async function resizeImage(image, scale, maxHeight) {
                 resolve(canvas.toDataURL())
             }
 
-            const newWidth = Math.floor(img.width / img.height * newHeight)
+            const newWidth = Math.floor((img.width / img.height) * newHeight)
 
             if (newHeight >= maxHeight) {
                 canvas.width = newWidth
@@ -54,5 +54,16 @@ export default async function makeScreenshotOfTabAsap({ tabId }) {
     // to complete some rendering before the screen is captured?
     await delay(300)
     const image = await snapNow({ tabId })
+    console.log(
+        'VIJX',
+        'page-analysis',
+        'background',
+        'make-screenshot',
+        'makeScreenshotOfTabAsap',
+        {
+            tabId,
+            image,
+        },
+    )
     return image
 }

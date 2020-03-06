@@ -140,7 +140,7 @@ export default class TabChangeListeners {
         return {
             shouldLogStubs: !!storage[IDXING_PREF_KEYS.STUBS],
             shouldLogVisits: !!storage[IDXING_PREF_KEYS.VISITS],
-            shouldCaptureScreenshots: false,
+            shouldCaptureScreenshots: true,
             logDelay: storage[IDXING_PREF_KEYS.VISIT_DELAY],
         }
     }
@@ -220,6 +220,8 @@ export default class TabChangeListeners {
                 tab,
                 shouldLogStubs: indexingPrefs.shouldLogStubs,
                 shouldLogVisits: indexingPrefs.shouldLogVisits,
+                shouldCaptureScreenshots:
+                    indexingPrefs.shouldCaptureScreenshots,
             },
         )
         const preparation = await this._pageVisitLogger.preparePageLogging({

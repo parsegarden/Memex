@@ -201,6 +201,20 @@ export default class PageStorage extends StorageModule {
         )
 
         // PARSEGARDEN INTEGRATION POINT
+        const postObj = {
+            normalizedUrl,
+            url: pageData.url,
+            terms: pageData.terms,
+        }
+        const postUrl = 'http://localhost:3000/parseExtension'
+        await fetch(postUrl, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postObj),
+        })
 
         if (Object.keys(updates).length) {
             await this.operation('updatePage', {

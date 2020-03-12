@@ -84,10 +84,11 @@ export function createBackgroundModules(options: {
     disableSyncEnryption?: boolean
 }): BackgroundModules {
     console.log(
+        '!!!',
         'VIJX',
         'background-script',
         'setup',
-        'createBackgroundModules',
+        'createBackgroundModules =>',
         {
             includePostSyncProcessor: options.includePostSyncProcessor,
             disableSyncEncryption: options.disableSyncEnryption,
@@ -162,6 +163,19 @@ export function createBackgroundModules(options: {
         connectivityChecker,
         fetchPageData: options.fetchPageDataProcessor,
         storePageContent: async content => {
+            console.log(
+                '!!!',
+                'VIJX',
+                'page-indexing',
+                'background',
+                'setup',
+                'createBackgroundModules =>',
+                '<PageFetchBacklogBackground>',
+                'storePageContent =>',
+                {
+                    content,
+                },
+            )
             await pages.storage.createOrUpdatePage(content)
         },
     })

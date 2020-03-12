@@ -59,20 +59,6 @@ class IndexingPrefs extends React.PureComponent<Props> {
                         max={this.props.visitDelayMax}
                     />
                 </Checkbox>
-                <Checkbox
-                    id="index-bookmarks"
-                    isChecked={this.props.bookmarks}
-                    handleChange={this.props.toggleBookmarks}
-                >
-                    bookmarked, tagged, or sorted into collections
-                </Checkbox>
-                <Checkbox
-                    id="index-links"
-                    isChecked={this.props.memexLinks}
-                    handleChange={this.props.toggleLinks}
-                >
-                    annotated or added notes to
-                </Checkbox>
             </div>
         )
     }

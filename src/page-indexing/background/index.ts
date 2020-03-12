@@ -33,7 +33,9 @@ export class PageIndexingBackground {
             'background',
             '<PageIndexingBackground>',
             'constructor =>',
-            options.storageManager,
+            {
+                ...options,
+            },
         )
         this.storage = new PageStorage({
             storageManager: options.storageManager,
@@ -55,11 +57,13 @@ export class PageIndexingBackground {
             rejectNoContent,
         })
         console.log(
+            '!!!',
             'VIJX',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
             'addPage =>',
+            'this.storage.createOrUpdatePage =>',
             {
                 pageData,
             },
@@ -95,12 +99,16 @@ export class PageIndexingBackground {
     async addPageTerms(pipelineReq: PipelineReq): Promise<void> {
         const pageData = await pipeline(pipelineReq)
         console.log(
+            '!!!',
             'VIJX',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
             'addPageTerms =>',
-            pageData,
+            'this.storage.createOrUpdatePage =>',
+            {
+                pageData,
+            },
         )
         await this.storage.createOrUpdatePage(pageData)
     }

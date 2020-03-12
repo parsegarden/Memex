@@ -113,7 +113,37 @@ export default class PageStorage extends StorageModule {
 
         const normalizedUrl = normalizeUrl(pageData.url, {})
 
+        console.log(
+            '!!!',
+            'VIJX',
+            'page-indexing',
+            'background',
+            'storage',
+            '<PageStorage>',
+            'createOrUpdatePage => (A)',
+            'getPage =>',
+            {
+                normalizedUrl,
+                pageData,
+            },
+        )
+
         const existingPage = await this.getPage(pageData.url)
+
+        console.log(
+            '!!!',
+            'VIJX',
+            'page-indexing',
+            'background',
+            'storage',
+            '<PageStorage>',
+            'createOrUpdatePage => (B)',
+            'MAYBE this.operation(createPage) =>',
+            {
+                existingPage,
+            },
+        )
+
         if (!existingPage) {
             await this.operation('createPage', {
                 ...pageData,
@@ -152,6 +182,25 @@ export default class PageStorage extends StorageModule {
                 updates[fieldName] = pageData[fieldName]
             }
         }
+
+        console.log(
+            '!!!',
+            'VIJX',
+            'page-indexing',
+            'background',
+            'storage',
+            '<PageStorage>',
+            'createOrUpdatePage => (C)',
+            'MAYBE this.operation(createPage) =>',
+            {
+                normalizedUrl,
+                updates,
+                pageData,
+                existingPage,
+            },
+        )
+
+        // PARSEGARDEN INTEGRATION POINT
 
         if (Object.keys(updates).length) {
             await this.operation('updatePage', {
@@ -216,11 +265,14 @@ export default class PageStorage extends StorageModule {
 
     async getPage(url: string): Promise<PipelineRes | null> {
         console.log(
+            '!!!',
             'VIJX',
             'page-indexing',
             'background',
             'storage',
+            '<PageStorage>',
             'getPage =>',
+            'this.operation(findPageByUrl) =>',
             { url },
         )
         const normalizedUrl = normalizeUrl(url, {})

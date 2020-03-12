@@ -145,6 +145,20 @@ export class TabManager {
     setTabLoaded(id: number, isLoaded: boolean) {
         const tab = this.getTabState(id)
 
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'tab-manager',
+            '<TabManager>',
+            'setTabLoaded =>',
+            {
+                id,
+                isLoaded,
+                tab,
+            },
+        )
+
         if (tab != null) {
             tab.setLoadedState(isLoaded)
         }

@@ -1,6 +1,4 @@
-import ImportContainer from './imports'
 import SettingsContainer from './containers/settings'
-import BackupSettingsContainer from '../backup-restore/ui/backup-pane'
 import Privacy from './privacy'
 import Statistics from './statistics'
 import Settings from './settings'
@@ -8,7 +6,6 @@ import Overview from '../overview'
 import UserScreen from '../authentication/components/UserScreen'
 import { FeaturesOptInScreen } from '../feature-opt-in/ui/components/FeaturesOptInScreen'
 import React from 'react'
-import SyncDevicesPaneContainer from '../sync/components/device-list/SyncDevicesPane'
 
 export default [
     {
@@ -31,24 +28,6 @@ export default [
         icon: 'settings',
     },
     {
-        name: 'Import',
-        pathname: '/import',
-        component: ImportContainer,
-        icon: 'import',
-    },
-    {
-        name: 'Backup & Restore',
-        pathname: '/backup',
-        component: BackupSettingsContainer,
-        icon: 'backup',
-    },
-    {
-        name: 'Sync',
-        pathname: '/sync',
-        component: SyncDevicesPaneContainer,
-        icon: 'sync',
-    },
-    {
         name: 'Blocklist',
         pathname: '/blocklist',
         component: SettingsContainer,
@@ -60,24 +39,11 @@ export default [
         component: Privacy,
         icon: 'privacy',
     },
-    // {
-    //     name: 'Memex Team',
-    //     pathname: 'https://worldbrain.io/team',
-    //     icon: 'team',
-    //     isExternal: true,
-    // },
     {
         name: 'Help',
         pathname: 'https://worldbrain.io/help',
         icon: 'help',
         isExternal: true,
-    },
-    {
-        name: 'Tutorial',
-        pathname:
-            'https://www.notion.so/worldbrain/Tutorials-fa44dcbf41654ceb910c5952b6097f8d',
-        isExternal: true,
-        icon: 'info',
     },
     {
         name: 'User Account',

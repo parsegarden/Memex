@@ -152,38 +152,11 @@ class PopupContainer extends PureComponent<Props> {
                         Go to Dashboard
                     </LinkButton>
                 </div>
-                <hr />
-                <div className={styles.item}>
-                    <BookmarkButton closePopup={this.closePopup} />
-                </div>
-
-                <div className={styles.item}>
-                    <TagsButton />
-                </div>
-
-                <div className={styles.item}>
-                    <CollectionsButton />
-                </div>
-                <hr />
-
-                <div className={styles.item}>
-                    <HistoryPauser />
-                </div>
 
                 <div className={styles.item}>
                     <BlacklistButton />
                 </div>
-                <hr />
 
-                <div className={styles.item}>
-                    <SidebarButton closePopup={this.closePopup} />
-                </div>
-
-                <div className={styles.item}>
-                    <TooltipButton closePopup={this.closePopup} />
-                </div>
-
-                <hr />
                 <div className={styles.buttonContainer}>
                     <ButtonIcon
                         href={`${constants.OPTIONS_URL}#/settings`}

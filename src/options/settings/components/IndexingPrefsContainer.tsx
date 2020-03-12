@@ -30,6 +30,17 @@ class IndexingPrefsContainer extends React.PureComponent<Props> {
     private async hydrateStateFromStorage() {
         const keys = Object.values(KEYS)
         const storedVals = await this.props.storage.get(keys)
+        console.log(
+            'VIJX',
+            'options',
+            'settings',
+            'components',
+            '<IndexingPrefsContainer>',
+            'hydrateStateFromStorage =>',
+            {
+                storedVals,
+            },
+        )
 
         // Set default values if nothing present in storage
         const grabVal = (key: string, defVal: any) =>

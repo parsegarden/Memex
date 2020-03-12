@@ -21,6 +21,10 @@ export const setSearchVal = createAction<string>('popup/setSearchVal')
 
 const getCurrentTab = async () => {
     let currentTab
+    console.log('!!!', 'VIJX', 'popup', 'actions', 'getCurrentTab =>', {
+        ...browser,
+        href: window.location.href,
+    })
     if (browser.tabs) {
         ;[currentTab] = await browser.tabs.query({
             active: true,

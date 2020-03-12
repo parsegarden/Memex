@@ -174,6 +174,7 @@ export default class PageVisitLogger {
         textOnly = true,
     ) {
         console.log(
+            '!!!',
             'VIJX',
             'activity-logger',
             'background',

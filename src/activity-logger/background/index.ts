@@ -68,7 +68,22 @@ export default class ActivityLoggerBackground {
         makeRemotelyCallable({
             toggleLoggingPause: this.toggleLoggingPause,
             fetchTab: id => this.tabManager.getTabState(id),
-            fetchTabByUrl: url => this.tabManager.getTabStateByUrl(url),
+            fetchTabByUrl: url => {
+                console.log(
+                    '!!!',
+                    'VIJX',
+                    'activity-logger',
+                    'background',
+                    '<ActivityLoggerBackground>',
+                    'setupRemoteFunctions =>',
+                    'FROM TAB fetchTabByUrl =>',
+                    'fetchTabByUrl =>',
+                    {
+                        url,
+                    },
+                )
+                return this.tabManager.getTabStateByUrl(url)
+            },
         })
     }
 

@@ -65,5 +65,5 @@
         "page": "./options.html#/settings",
         "open_in_tab": true
     },
-    "manifest_version": 1
+    "manifest_version": 2
 }

@@ -112,6 +112,13 @@ export default function transform({ text = '', lang = 'en' }) {
     // Removes all words 20+ characters long
     searchableText = removeLongWords(searchableText)
 
+    console.log('VIJX', 'util', 'transform-page-text', 'transform =>', {
+        text,
+        searchableText,
+        lenBefore: text.length,
+        lenAfter: searchableText.length,
+    })
+
     return {
         text: searchableText,
         lenBefore: text.length,

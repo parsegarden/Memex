@@ -1,9 +1,9 @@
 {
-    "name": "WorldBrain's Memex",
-    "short_name": "Memex",
-    "version": "0.3.3",
+    "name": "Parsegarden Browser Extension",
+    "short_name": "Parsegarden",
+    "version": "0.0.1",
     "offline_enabled": true,
-    "description": "Search, annotate and organize what you've read online.",
+    "description": "Parse every page you visit.",
     "background": {
         "scripts": ["lib/browser-polyfill.js", "background.js"]
     },
@@ -17,7 +17,7 @@
     ],
     "content_security_policy": "script-src 'self' https://js.chargebee.com/v2/chargebee.js https://js.chargebee.com https://www.gstatic.com https://*.firebaseio.com https://www.googleapis.com; object-src 'self' https://js.chargebee.com/v2/chargebee.js https://js.chargebee.com https://www.gstatic.com https://*.firebaseio.com https://www.googleapis.com;",
     "browser_action": {
-        "default_title": "WorldBrain's Memex",
+        "default_title": "Parsegarden",
         "default_popup": "./popup.html"
     },
     "commands": {
@@ -27,7 +27,7 @@
     },
     "applications": {
         "gecko": {
-            "id": "info@worldbrain.io"
+            "id": "vijay@parsegarden.com"
         }
     },
     "icons": {
@@ -65,5 +65,5 @@
         "page": "./options.html#/settings",
         "open_in_tab": true
     },
-    "manifest_version": 2
+    "manifest_version": 1
 }

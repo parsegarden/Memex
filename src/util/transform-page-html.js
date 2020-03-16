@@ -48,5 +48,12 @@ export default function transformHTML({ html = '' }) {
         .replace(/ (?! )/g, '')
         .replace(/[ \t\v\u00A0]{2,}/g, ' ')
 
+    console.log('VIJX', 'util', 'transform-page-html', 'transformHTML =>', {
+        html,
+        text,
+        lenBefore: html.length,
+        lenAfter: text.length,
+    })
+
     return { text, lenBefore: html.length, lenAfter: text.length }
 }

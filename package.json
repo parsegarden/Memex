@@ -1,11 +1,10 @@
 {
-    "name": "worldbrain-extension",
+    "name": "parsegarden-extension",
     "version": "2.0.7",
-    "homepage": "https://worldbrain.io",
-    "license": "MIT",
+    "homepage": "https://parsegarden.com",
     "repository": {
         "type": "git",
-        "url": "https://github.com/WorldBrain/Memex"
+        "url": "https://github.com/parsegarden/Memex"
     },
     "scripts": {
         "build": "npm run build:clean && webpack",
@@ -35,10 +34,11 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged"
+            "pre-commit": "pretty-quick --staged --pattern '**/*.*(js|ts)'"
         }
     },
     "dependencies": {
+        "@tensorflow/tfjs": "^1.7.0",
         "@types/socket.io-client": "^1.4.32",
         "babel-polyfill": "^6.26.0",
         "blob-util": "^1.2.1",
@@ -63,6 +63,7 @@
         "jsdom": "^16.2.0",
         "json-date-parser": "^1.0.1",
         "lodash": "^4.17.4",
+        "lz-string": "^1.4.4",
         "moment": "^2.18.1",
         "moment-timezone": "^0.5.14",
         "mousetrap": "^1.6.5",

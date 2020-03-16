@@ -16,8 +16,14 @@ export const collections = (db: Storex) => Object.keys(db.registry.collections)
 export const extractContent = (
     content,
     { separator = DEFAULT_TERM_SEPARATOR },
-) =>
-    content
+) => {
+    const lowercasedTerms = content
         .split(separator)
         .map(word => word.toLowerCase())
         .filter(term => term.length)
+    console.log('VIJX', 'search', 'utils', 'extractContent =>', {
+        content,
+        lowercasedTerms,
+    })
+    return lowercasedTerms
+}

@@ -4,6 +4,28 @@ import transformPageText from '../util/transform-page-text'
 import { DEFAULT_TERM_SEPARATOR, extractContent } from './util'
 import { PipelineReq, PipelineRes } from './types'
 
+import loadModels from '../../parsegarden'
+let wordEmbeddings
+loadModels().then(value => {
+    wordEmbeddings = value.wordEmbeddings
+    console.log('VIJX', 'search', 'pipeline', 'DEBUG', {
+        wordEmbeddings,
+        getVector: wordEmbeddings.getVector,
+    })
+})
+
+//const wordVectors = require('../../parsegarden/wordvecs25000.js')
+//console.log('VIJX', 'search', 'pipeline', 'DEBUG', wordVectors)
+//const wordVectors = {};
+/*
+fetch('../../parsegarden/wordvecs25000.js')
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+    })
+    .catch(err => console.error(err));
+    */
+
 export type PagePipeline = (req: PipelineReq) => Promise<PipelineRes>
 
 export class PipelineError extends Error {}
@@ -115,7 +137,10 @@ const pipeline: PagePipeline = ({
         )
     }
 
-    console.log('VIJX', 'search', 'pipeline', 'pipeline => (A)', { content })
+    console.log('VIJX', 'search', 'pipeline', 'pipeline => (A)', {
+        pathname,
+        content,
+    })
 
     // Extract all terms out of processed content
     const terms = [...extractTerms(content.fullText)]
@@ -127,6 +152,19 @@ const pipeline: PagePipeline = ({
         titleTerms,
         urlTerms,
     })
+
+    // PARSEGARDEN INTEGRATION POINT
+    if (wordEmbeddings) {
+        const termVectors = terms.map(term => [
+            term,
+            wordEmbeddings.getVector(term),
+            wordEmbeddings.getNearestNeighbors(term),
+        ])
+
+        console.log('VIJX', 'search', 'pipeline', 'pipeline => (C)', {
+            termVectors,
+        })
+    }
 
     return Promise.resolve({
         url: normalizeUrl(url),

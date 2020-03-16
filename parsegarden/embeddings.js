@@ -68,13 +68,14 @@ class WordEmbeddings {
         let neighbors = tf.tensor1d([])
         const abs = vector.norm(2).asScalar()
         // Precompute distances
-        console.log('precompute_distances')
+        //console.log('precompute_distances')
         const lookupTable = this._computeDistances(vector)
-        console.log('precompute_distances')
-        await tf.nextFrame()
+        //console.log('precompute_distances')
+        //await tf.nextFrame()
+        await utils.wait(100)
 
         // Calculate distance for each word vector
-        console.log('calulate')
+        //console.log('calulate')
         const subdims = this.centroids.shape[0]
         const searchIndices = tf
             .range(0, subdims, 1, 'int32')
@@ -90,14 +91,16 @@ class WordEmbeddings {
         dotProducts = dotProducts.sum([1])
         abs1 = abs1.sum([1])
         neighbors = dotProducts.div(abs.mul(abs1.sqrt()))
-        console.log('calulate')
-        await tf.nextFrame()
+        //console.log('calulate')
+        //await tf.nextFrame()
+        await utils.wait(100)
 
         // Get top K distances
-        console.log('topk')
+        //console.log('topk')
         let { values, indices } = tf.topk(neighbors, k + 1)
-        console.log('topk')
-        await tf.nextFrame()
+        //console.log('topk')
+        //await tf.nextFrame()
+        await utils.wait(100)
         values = values.dataSync()
         indices = indices.dataSync()
         const nearestNeighbors = []
@@ -152,8 +155,10 @@ export const loadModel = async function(url) {
     const codes = utils.unpackVectors(model.codes, 'int32')
     console.log('Unpacked codes', codes)
     //await tf.nextFrame();
+    await utils.wait(100)
     console.log('Unpacking centroids')
     const centroids = utils.unpackVectors(model.centroids, 'float32')
     //await tf.nextFrame();
+    await utils.wait(100)
     return new WordEmbeddings(codes, centroids, model.vocabulary)
 }

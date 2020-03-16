@@ -83,6 +83,7 @@ export default ({ mode, context, isCI = false, injectStyles = false }) => {
     const main = {
         test: /\.(j|t)sx?$/,
         include: [
+            path.resolve(context, './parsegarden'),
             path.resolve(context, './src'),
             ...externalTsModules.map(mod =>
                 path.resolve(context, `./external/${mod}`),

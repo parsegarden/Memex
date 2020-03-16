@@ -8,23 +8,21 @@ import loadModels from '../../parsegarden'
 let wordEmbeddings
 loadModels().then(value => {
     wordEmbeddings = value.wordEmbeddings
-    console.log('VIJX', 'search', 'pipeline', 'DEBUG', {
+    console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordEmbeddings)', {
         wordEmbeddings,
         getVector: wordEmbeddings.getVector,
     })
 })
-
-//const wordVectors = require('../../parsegarden/wordvecs25000.js')
-//console.log('VIJX', 'search', 'pipeline', 'DEBUG', wordVectors)
-//const wordVectors = {};
-/*
-fetch('../../parsegarden/wordvecs25000.js')
-    .then(res => res.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(err => console.error(err));
-    */
+import WordPOS from '../../parsegarden/wordpos/src/wordpos'
+const wordpos = new WordPOS({
+    preload: true,
+    dictPath: 'parsegarden/wordpos/dict',
+    profile: true,
+})
+console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordpos)', {
+    WordPOS,
+    wordpos,
+})
 
 export type PagePipeline = (req: PipelineReq) => Promise<PipelineRes>
 
@@ -119,7 +117,7 @@ export function extractTerms(text: string): Set<string> {
  *
  * @returns Resolves to an object containing all data needed for Page model.
  */
-const pipeline: PagePipeline = ({
+const pipeline: PagePipeline = async ({
     pageDoc: { content = {}, url, ...data },
     rejectNoContent = true,
 }) => {
@@ -153,16 +151,26 @@ const pipeline: PagePipeline = ({
         urlTerms,
     })
 
+    const wordEmbedAsyncFunc = async term => {
+        const vector = wordEmbeddings.getVector(term)
+        const isEmpty = !vector.filter(num => num !== 0).length
+        const neighbors = await wordEmbeddings.getNearestNeighbors(term)
+        return {
+            term,
+            vector: isEmpty ? null : vector,
+            neighbors: isEmpty ? null : neighbors,
+            isEmpty,
+        }
+    }
+
     // PARSEGARDEN INTEGRATION POINT
     if (wordEmbeddings) {
-        const termVectors = terms.map(term => [
-            term,
-            wordEmbeddings.getVector(term),
-            wordEmbeddings.getNearestNeighbors(term),
-        ])
+        const termVectors = async () => {
+            return Promise.all(terms.map(term => wordEmbedAsyncFunc(term)))
+        }
 
         console.log('VIJX', 'search', 'pipeline', 'pipeline => (C)', {
-            termVectors,
+            termVectors: await termVectors(),
         })
     }
 

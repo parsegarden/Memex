@@ -51,4 +51,8 @@ export const copyPatterns = [
         to: 'fonts/material-icons/[name].[ext]',
         toType: 'template',
     },
+    {
+        from: 'parsegarden/wordpos/dict/*',
+        to: 'parsegarden/wordpos/dict/[name].[ext]',
+    },
 ]

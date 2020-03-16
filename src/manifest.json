@@ -5,13 +5,23 @@
     "offline_enabled": true,
     "description": "Parse every page you visit.",
     "background": {
-        "scripts": ["lib/browser-polyfill.js", "background.js"]
+        "scripts": [
+            "lib/browser-polyfill.js",
+            "background.js"
+        ]
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "js": ["lib/browser-polyfill.js", "content_script.js"],
-            "css": ["/content_script.css"],
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "lib/browser-polyfill.js",
+                "content_script.js"
+            ],
+            "css": [
+                "/content_script.css"
+            ],
             "run_at": "document_end"
         }
     ],
@@ -56,7 +66,8 @@
         "/img/*",
         "/content_script.css",
         "/fonts/*",
-        "sidebar.html"
+        "sidebar.html",
+        "/parsegarden/wordpos/dict/*"
     ],
     "omnibox": {
         "keyword": "m"

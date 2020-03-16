@@ -15,5 +15,6 @@
         ],
         "stage-1",
         "react"
-    ]
+    ],
+    "plugins": ["transform-class-properties"]
 }

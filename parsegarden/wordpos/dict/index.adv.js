@@ -8,7 +8,7 @@ Princeton University "About WordNet." WordNet (https://wordnet.princeton.edu/). 
   WordNet DB version 3.1
 
 */
-export default {
+module.exports = {
     "'tween": 'r 1 0 1 0 00252367',
     "'tween_decks": 'r 1 0 1 0 00500491',
     'a.d.': 'r 1 0 1 0 00001885',

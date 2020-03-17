@@ -43,8 +43,8 @@ class WordEmbeddings {
     }
 
     // _getVector returns a Promise the vector representation of a word as a float array
-    getVector(word) {
-        return this._getVector(word).dataSync()
+    async getVector(word) {
+        return this._getVector(word).data()
     }
 
     // getCosineDistance returns the cosine distance between two word vectors
@@ -101,8 +101,8 @@ class WordEmbeddings {
         //console.log('topk')
         //await tf.nextFrame()
         await utils.wait(100)
-        values = values.dataSync()
-        indices = indices.dataSync()
+        values = await values.data()
+        indices = await indices.data()
         const nearestNeighbors = []
         for (let i = 1; i < indices.length; i++) {
             nearestNeighbors.push({

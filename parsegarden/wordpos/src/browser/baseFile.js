@@ -9,8 +9,6 @@
 // import dict from '../../dict/index.noun'
 // console.log('VIJX', 'parsegarden', 'wordpos', 'src', 'browser', { dict })
 
-let isTest = window.__mocha
-
 class BaseFile {
     /**
      * file contents - in browser it's just a string & not a file!
@@ -28,7 +26,7 @@ class BaseFile {
 
     constructor(type, dictPath, posName, options) {
         this.type = type
-        this.filePath = `${dictPath}/${type}.${posName}.js`
+        this.filePath = `${dictPath}/${type}.${posName}.json`
         this.posName = posName
         this.loadError = null
         this.options = Object.assign({}, options)
@@ -41,19 +39,13 @@ class BaseFile {
         this.options.debug && console.time('index load ' + this.posName)
 
         const url = chrome.runtime.getURL(this.filePath)
-        console.log('VIJX', 'parsegarden', 'wordpos', 'src', 'browser', {
-            __dirname,
-            filePath: this.filePath,
-            url,
-        })
-        let promise = isTest
-            ? Promise.resolve(require(this.filePath))
-            : fetch(url) // prevent parcel from clobbering dynamic import
 
         this.options.debug && console.timeEnd('index load ' + this.posName)
-        return (this.loaded = promise
-            .then(exports => {
-                this.file = exports.default
+        return (this.loaded = fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                // eslint-disable-next-line no-eval
+                this.file = json
                 return this
             })
             .catch(err => {

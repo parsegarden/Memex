@@ -8,7 +8,7 @@ Princeton University "About WordNet." WordNet (https://wordnet.princeton.edu/). 
   WordNet DB version 3.1
 
 */
-export default {
+module.exports = {
     '00001740':
         '02 r 02 a_cappella 0 a_capella 0 002 \\ 02260096 a 0202 \\ 02260096 a 0101 | without musical accompaniment; "they performed a cappella"',
     '00001885':

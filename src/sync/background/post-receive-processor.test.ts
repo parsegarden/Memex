@@ -49,6 +49,7 @@ function setupTest({
         terms: [],
         urlTerms: [],
         titleTerms: [],
+        parsegardenTerms: [],
         text: pageDoc.content.fullText,
         favIconURI: pageDoc.content.favIconURI,
     })

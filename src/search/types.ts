@@ -92,6 +92,9 @@ export interface PipelineRes {
     urlTerms: string[]
     titleTerms: string[]
 
+    // Parsegarden
+    parsegardenTerms: string[]
+
     // Misc.
     favIconURI?: string
     screenshotURI?: string

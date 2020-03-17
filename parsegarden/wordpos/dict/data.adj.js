@@ -8,7 +8,7 @@ Princeton University "About WordNet." WordNet (https://wordnet.princeton.edu/). 
   WordNet DB version 3.1
 
 */
-export default {
+module.exports = {
     '00001740':
         '00 a 01 able 0 005 = 05207437 n 0000 = 05624029 n 0000 + 05624029 n 0101 + 05207437 n 0101 ! 00002098 a 0101 | (usually followed by `to\') having the necessary means or skill or know-how or authority to do something; "able to swim"; "she was able to program her computer"; "we were at last able to buy a car"; "able to get a grant for the project"',
     '00002098':

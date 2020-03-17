@@ -11,6 +11,7 @@ export class MockFetchPageDataProcessor implements FetchPageProcessor {
         terms: [],
         urlTerms: [],
         titleTerms: [],
+        parsegardenTerms: [],
         text: 'test',
     }
 

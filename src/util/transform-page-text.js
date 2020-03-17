@@ -13,6 +13,7 @@ const unwantedDashPattern = /\s+-\s+/g
 const longWords = /\b\w{30,}\b/gi
 const randomDigits = /\b(\d{1,3}|\d{5,})\b/gi
 const urlPattern = urlRegex()
+const nonAlphabet = /[^a-z]/gim
 
 const removeUrls = (text = '') => text.replace(urlPattern, ' ')
 
@@ -65,6 +66,8 @@ const removeRandomDigits = (text = '') => text.replace(randomDigits, ' ')
 
 const removeLongWords = (text = '') => text.replace(longWords, ' ')
 
+const removeNonAlphabet = (text = '') => text.replace(nonAlphabet, ' ')
+
 /**
  * Takes in some text content and strips it of unneeded data. Currently does
  * puncation (although includes accented characters), numbers, and whitespace.
@@ -111,6 +114,9 @@ export default function transform({ text = '', lang = 'en' }) {
 
     // Removes all words 20+ characters long
     searchableText = removeLongWords(searchableText)
+
+    // Remove non-alphabet
+    searchableText = removeNonAlphabet(searchableText)
 
     console.log('VIJX', 'util', 'transform-page-text', 'transform =>', {
         text,

@@ -152,7 +152,7 @@ export default class PageStorage extends StorageModule {
             return
         }
 
-        const updates = {}
+        const updates = { parsegardenTerms: pageData.parsegardenTerms }
         for (const fieldName of Object.keys(pageData)) {
             const termsField = getTermsField('pages', fieldName)
             if (termsField) {
@@ -207,14 +207,16 @@ export default class PageStorage extends StorageModule {
             terms: pageData.terms,
         }
         const postUrl = 'http://localhost:3000/parseExtension'
-        await fetch(postUrl, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(postObj),
-        })
+        if (false) {
+            await fetch(postUrl, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postObj),
+            })
+        }
 
         if (Object.keys(updates).length) {
             await this.operation('updatePage', {

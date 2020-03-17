@@ -4,6 +4,7 @@ import transformPageText from '../util/transform-page-text'
 import { DEFAULT_TERM_SEPARATOR, extractContent } from './util'
 import { PipelineReq, PipelineRes } from './types'
 
+import { wait } from '../../parsegarden/utils'
 import loadModels from '../../parsegarden'
 let wordEmbeddings
 loadModels().then(value => {
@@ -13,9 +14,11 @@ loadModels().then(value => {
         getVector: wordEmbeddings.getVector,
     })
 })
+
 import WordPOS from '../../parsegarden/wordpos/src/wordpos'
-const wordpos = new WordPOS({
+const wordpos: any = new WordPOS({
     preload: true,
+    includeData: true,
     dictPath: 'parsegarden/wordpos/dict',
     profile: true,
 })
@@ -23,6 +26,58 @@ console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordpos)', {
     WordPOS,
     wordpos,
 })
+
+import nlp from 'compromise'
+nlp.extend(require('compromise-dates'))
+nlp.extend(require('compromise-numbers'))
+
+async function testPOSTaggers() {
+    const words = [
+        'run',
+        'apple',
+        'reported',
+        'finally',
+        'javascript',
+        'exciting',
+        'coronavirus',
+        'Cate',
+        'stock',
+        'Vijay',
+        'candies',
+        'nov',
+        'march',
+        'twelve',
+        '1992',
+    ]
+    const wordposMethods = [
+        wordpos.isNoun.bind(wordpos),
+        wordpos.isVerb.bind(wordpos),
+        wordpos.isAdverb.bind(wordpos),
+        wordpos.isAdjective.bind(wordpos),
+    ]
+
+    const wordposObj = {}
+    words.forEach(async word => {
+        wordposObj[word] = await Promise.all(
+            wordposMethods.map(method => method(word)),
+        )
+    })
+    const compromiseObj = {}
+    words.forEach(async word => {
+        const nlpWord = nlp(word)
+        compromiseObj[word] = nlpWord.json('0')[0].terms[0].tags
+    })
+    console.log(
+        'VIJX',
+        'TEST',
+        'WORDPOS & COMPROMISE',
+        wordposObj,
+        compromiseObj,
+    )
+}
+testPOSTaggers()
+
+import humannames from 'humannames'
 
 export type PagePipeline = (req: PipelineReq) => Promise<PipelineRes>
 
@@ -136,8 +191,8 @@ const pipeline: PagePipeline = async ({
     }
 
     console.log('VIJX', 'search', 'pipeline', 'pipeline => (A)', {
-        pathname,
-        content,
+        url,
+        fullText: content.fullText,
     })
 
     // Extract all terms out of processed content
@@ -146,15 +201,20 @@ const pipeline: PagePipeline = async ({
     const urlTerms = [...extractTerms(pathname)]
 
     console.log('VIJX', 'search', 'pipeline', 'pipeline => (B)', {
+        url,
         terms,
         titleTerms,
         urlTerms,
     })
 
+    const wordposAsyncFunc = async term => {
+        return wordpos.isNoun(term)
+    }
     const wordEmbedAsyncFunc = async term => {
-        const vector = wordEmbeddings.getVector(term)
+        const vector = await wordEmbeddings.getVector(term)
         const isEmpty = !vector.filter(num => num !== 0).length
         const neighbors = await wordEmbeddings.getNearestNeighbors(term)
+        await wait(100)
         return {
             term,
             vector: isEmpty ? null : vector,
@@ -164,13 +224,42 @@ const pipeline: PagePipeline = async ({
     }
 
     // PARSEGARDEN INTEGRATION POINT
-    if (wordEmbeddings) {
-        const termVectors = async () => {
-            return Promise.all(terms.map(term => wordEmbedAsyncFunc(term)))
+    let finalTerms
+    if (wordpos && wordEmbeddings) {
+        const nlpNounTerms = terms.filter(term => {
+            const nlpWord = nlp(term)
+            const tags = nlpWord.json('0')[0].terms[0].tags
+            return (
+                term.length > 2 &&
+                tags.includes('Noun') &&
+                !tags.includes('Month') &&
+                !tags.includes('Date') &&
+                !tags.includes('Abbreviation') &&
+                !tags.includes('Plural')
+            )
+        })
+
+        async function nlpWrapper() {
+            const wrapperTerms = []
+            for (const i in nlpNounTerms) {
+                const term = nlpNounTerms[i]
+                const wordposRes = await wordposAsyncFunc(term)
+                const humannamesRes =
+                    humannames[term.charAt(0).toUpperCase() + term.slice(1)]
+                if (!wordposRes && humannamesRes === 1) {
+                    // console.log('VIJX', 'search', 'pipeline', 'pipeline => nlpNounTerms', term)
+                } else {
+                    wrapperTerms.push(term)
+                }
+            }
+            return wrapperTerms
         }
+        finalTerms = await nlpWrapper()
 
         console.log('VIJX', 'search', 'pipeline', 'pipeline => (C)', {
-            termVectors: await termVectors(),
+            url,
+            nlpNounTerms,
+            finalTerms,
         })
     }
 
@@ -185,6 +274,7 @@ const pipeline: PagePipeline = async ({
         domain,
         hostname,
         tags: [],
+        parsegardenTerms: finalTerms,
         ...data,
     })
 }

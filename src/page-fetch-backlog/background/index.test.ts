@@ -46,6 +46,7 @@ async function setupTest({
         terms: [],
         urlTerms: [],
         titleTerms: [],
+        parsegardenTerms: [],
         text: pageDoc.content.fullText,
     })
 

@@ -520,6 +520,7 @@ function extensionSyncTests(suiteOptions: {
             terms: ['test'],
             titleTerms: ['test'],
             urlTerms: [],
+            parsegardenTerms: [],
         }
 
         fetchPageProcessor.mockPage = mockPage

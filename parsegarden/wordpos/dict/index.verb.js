@@ -8,7 +8,7 @@ Princeton University "About WordNet." WordNet (https://wordnet.princeton.edu/). 
   WordNet DB version 3.1
 
 */
-export default {
+module.exports = {
     aah: 'v 1 1 @ 1 0 00867440',
     abacinate: 'v 1 1 @ 1 0 02172822',
     abandon: 'v 5 4 @ ~ $ + 5 5 02232813 02232523 02080923 00614907 00615748',

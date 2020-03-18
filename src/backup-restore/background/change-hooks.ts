@@ -14,6 +14,7 @@ export default function setupChangeTracking(
 
     console.log(
         'VIJX',
+        '(DEXIE)',
         'backup-restore',
         'background',
         'change-hooks',

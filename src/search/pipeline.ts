@@ -213,8 +213,8 @@ const pipeline: PagePipeline = async ({
         terms,
         titleTerms,
         urlTerms,
-        wordpos,
-        wordEmbeddings,
+        //wordpos,
+        //wordEmbeddings,
     })
 
     const wordposAsyncFunc = async term => {

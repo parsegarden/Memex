@@ -10,6 +10,7 @@ import {
 } from 'src/background-script/setup'
 import { MemoryLocalStorage } from 'src/util/tests/local-storage'
 import { MockFetchPageDataProcessor } from 'src/page-analysis/background/mock-fetch-page-data-processor'
+import PageStorage from 'src/page-indexing/background/storage'
 
 type CommandLineArguments =
     | { command: 'list-collections' }
@@ -69,15 +70,13 @@ async function main() {
         fetchPageDataProcessor: new MockFetchPageDataProcessor(),
     })
 
-    console.log('DEBUG(1)')
     registerBackgroundModuleCollections(storageManager, backgroundModules)
-    console.log('DEBUG(2)')
     const storageModules = getBackgroundStorageModules(backgroundModules)
 
     console.log('DEBUG(A)')
     await storageManager.finishInitialization()
     console.log('DEBUG(B)')
-    await backgroundModules.search.searchIndex.addPage({
+    const testPage = {
         pageDoc: {
             url:
                 'http://highscalability.com/blog/2019/7/19/stuff-the-internet-says-on-scalability-for-july-19th-2019.html',
@@ -87,7 +86,8 @@ async function main() {
             },
         },
         visits: [],
-    })
+    }
+    await backgroundModules.search.searchIndex.addPage(testPage)
     console.log('DEBUG(C)')
 
     const display = console['log'].bind(console) // Circumvent linter
@@ -103,19 +103,39 @@ async function main() {
         )
         display(util.inspect(report, false, null, true))
     } else if (args.command === 'list-collections') {
+        const pageStorageModule: PageStorage = storageModules[
+            'pages'
+        ] as PageStorage
+        console.log(
+            'VIJX',
+            'list-collections',
+            'pageStorageModule',
+            pageStorageModule,
+        )
+        const existingPage = await pageStorageModule.getPage(
+            testPage.pageDoc.url,
+        )
+        console.log('VIJX', 'list-collections', 'existingPage', existingPage)
         for (const [storageModuleName, storageModule] of Object.entries(
             storageModules,
         )) {
+            if (storageModuleName !== 'pages') continue
             display(`MODULE ${storageModuleName}:`)
             for (const collectionName of Object.keys(
                 storageModule.getConfig().collections || {},
             )) {
+                const collection = storageModule.getConfig().collections[
+                    collectionName
+                ]
                 display(`  COLLECTION: ${collectionName}`)
-                for (const fieldName of Object.keys(
-                    storageModule.getConfig().collections[collectionName]
-                        .fields || {},
-                )) {
+                for (const fieldName of Object.keys(collection.fields || {})) {
                     display(`  FIELD: ${fieldName}`)
+                }
+                for (const indexName of Object.keys(collection.indices || {})) {
+                    const indexObj = collection.indices[indexName]
+                    display(
+                        `  INDEX: ${indexObj.field} ${indexObj.fullTextIndexName}`,
+                    )
                 }
             }
         }

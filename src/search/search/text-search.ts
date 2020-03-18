@@ -30,10 +30,6 @@ const termQuery = (term: string, excluded: string[], getDb: DBGet) => async (
         opValue: term,
     }
 
-    console.log('VIJX', 'search', 'search', 'text-search', 'termQuery =>', {
-        opts,
-    })
-
     if (excluded.length) {
         // Adding a `.filter/.and` clause slows down a query a lot
         opts.filter = page => {
@@ -46,6 +42,18 @@ const termQuery = (term: string, excluded: string[], getDb: DBGet) => async (
             return !some(excluded, t => uniqueTerms.has(t))
         }
     }
+
+    console.log(
+        'VIJX',
+        '(DEXIE)',
+        'search',
+        'search',
+        'text-search',
+        'termQuery =>',
+        {
+            opts,
+        },
+    )
 
     return db.operation(DexieUtilsPlugin.GET_PKS_OP, opts)
 }
@@ -104,9 +112,31 @@ export const textSearch = (getDb: DBGet) => async (
     { terms, termsExclude }: Partial<SearchParams>,
     filteredUrls: FilteredIDs,
 ): Promise<PageResultsMap> => {
+    console.log(
+        'VIJX',
+        '(DEXIE)',
+        'search',
+        'text-search',
+        'textSearch => (A)',
+        {
+            terms,
+        },
+    )
+
     // For each term create an object of with props of matched URL arrays for each index: content, title, and url
     const termResults = await Promise.all(
         [...terms].map(lookupTerm(termsExclude, getDb)),
+    )
+
+    console.log(
+        'VIJX',
+        '(DEXIE)',
+        'search',
+        'text-search',
+        'textSearch => (B)',
+        {
+            termResults,
+        },
     )
 
     // Creates a Map of URLs to score multipliers, based on if they were found in title, URL, or content terms,

@@ -14,6 +14,16 @@ export class StorexHubBackground {
     ) {}
 
     async connect(options?: { port?: number }) {
+        console.log(
+            'VIJX',
+            'storex-hub',
+            'background',
+            '<StorexHubBackground>',
+            'connect =>',
+            {
+                options,
+            },
+        )
         this.socket = io(`http://localhost:${options?.port || 3000}`)
         this.client = await createStorexHubSocketClient(this.socket, {
             callbacks: {

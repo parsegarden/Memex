@@ -166,7 +166,7 @@ export function createBackgroundModules(options: {
 
     let connectivityChecker
     if (typeof XMLHttpRequest !== 'undefined') {
-        const connectivityChecker = new ConnectivityCheckerBackground({
+        connectivityChecker = new ConnectivityCheckerBackground({
             xhr: new XMLHttpRequest(),
         })
     }
@@ -177,8 +177,8 @@ export function createBackgroundModules(options: {
         fetchPageData: options.fetchPageDataProcessor,
         storePageContent: async content => {
             console.log(
-                '!!!',
                 'VIJX',
+                '(DEXIE)',
                 'page-indexing',
                 'background',
                 'setup',

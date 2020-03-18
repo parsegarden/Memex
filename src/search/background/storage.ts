@@ -140,6 +140,18 @@ export default class SearchStorage extends StorageModule {
             annotUrls,
         })
 
+        console.log(
+            'VIJX',
+            '(DEXIE)',
+            'search',
+            'background',
+            'storage',
+            'findAnnotsDisplayData',
+            {
+                bookmarks,
+            },
+        )
+
         const bmUrls = new Set<string>(bookmarks.map(bm => bm.url))
 
         const tags = await this.operation('findAnnotTagsByUrl', { annotUrls })

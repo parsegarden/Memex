@@ -114,8 +114,8 @@ export default class PageStorage extends StorageModule {
         const normalizedUrl = normalizeUrl(pageData.url, {})
 
         console.log(
-            '!!!',
             'VIJX',
+            '(DEXIE)',
             'page-indexing',
             'background',
             'storage',
@@ -131,8 +131,8 @@ export default class PageStorage extends StorageModule {
         const existingPage = await this.getPage(pageData.url)
 
         console.log(
-            '!!!',
             'VIJX',
+            '(DEXIE)',
             'page-indexing',
             'background',
             'storage',
@@ -186,8 +186,8 @@ export default class PageStorage extends StorageModule {
         }
 
         console.log(
-            '!!!',
             'VIJX',
+            '(DEXIE)',
             'page-indexing',
             'background',
             'storage',
@@ -283,8 +283,8 @@ export default class PageStorage extends StorageModule {
 
     async getPage(url: string): Promise<PipelineRes | null> {
         console.log(
-            '!!!',
             'VIJX',
+            '(DEXIE)',
             'page-indexing',
             'background',
             'storage',

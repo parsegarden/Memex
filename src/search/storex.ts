@@ -14,9 +14,10 @@ export default function initStorex(options: {
 }): Storex {
     console.log(
         'VIJX',
+        '(DEXIE)',
         'search',
         'storex',
-        'initStorex => new DexieStorageBackend =>',
+        'initStorex => (A) new DexieStorageBackend =>',
         {
             options,
         },
@@ -31,6 +32,17 @@ export default function initStorex(options: {
     for (const plugin of createStorexPlugins()) {
         backend.use(plugin)
     }
+
+    console.log(
+        'VIJX',
+        '(DEXIE)',
+        'search',
+        'storex',
+        'initStorex => (B) new Storex =>',
+        {
+            backend,
+        },
+    )
 
     const storex = new Storex({ backend })
     return storex

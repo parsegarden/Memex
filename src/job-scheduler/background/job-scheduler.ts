@@ -23,7 +23,7 @@ export class JobScheduler {
     }
 
     constructor(private props: Props) {
-        props.alarmsAPI.onAlarm.addListener(this.handleAlarm)
+        props.alarmsAPI && props.alarmsAPI.onAlarm.addListener(this.handleAlarm)
     }
 
     private static calcTimeFromNow = (minutes: number, now = Date.now()) =>

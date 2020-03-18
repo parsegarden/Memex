@@ -10,6 +10,7 @@ const firebaseConfig = {
 }
 
 export const getFirebase = () => {
+    /*
     console.log(
         'VIJX',
         'src',
@@ -18,6 +19,7 @@ export const getFirebase = () => {
         'getFirebase',
         firebase.apps,
     )
+    */
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig)
     }

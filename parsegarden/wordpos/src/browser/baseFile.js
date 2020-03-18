@@ -38,11 +38,18 @@ class BaseFile {
 
         this.options.debug && console.time('index load ' + this.posName)
 
-        const url = chrome.runtime.getURL(this.filePath)
+        const url =
+            typeof chrome === 'undefined'
+                ? this.filePath
+                : chrome.runtime.getURL(this.filePath)
+        let promise =
+            typeof fetch === 'undefined'
+                ? Promise.resolve(require(url))
+                : fetch(url)
 
         this.options.debug && console.timeEnd('index load ' + this.posName)
-        return (this.loaded = fetch(url)
-            .then(response => response.json())
+        return (this.loaded = promise
+            .then(response => (response.json ? response.json() : response))
             .then(json => {
                 // eslint-disable-next-line no-eval
                 this.file = json

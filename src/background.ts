@@ -62,6 +62,10 @@ export async function main() {
             devAuthState: process.env.DEV_AUTH_STATE as DevAuthState,
         },
     })
+    console.log('VIJX', '(DEXIE)', 'background', 'main =>', {
+        storageManager,
+        backgroundModules,
+    })
     registerBackgroundModuleCollections(storageManager, backgroundModules)
     await storageManager.finishInitialization()
 

@@ -1,10 +1,12 @@
 import mapValues from 'lodash/mapValues'
 import util from 'util'
 import { URL } from 'whatwg-url'
+
 import initStorex from 'src/search/memory-storex'
 import {
     createBackgroundModules,
     getBackgroundStorageModules,
+    registerBackgroundModuleCollections,
 } from 'src/background-script/setup'
 import { MemoryLocalStorage } from 'src/util/tests/local-storage'
 import { MockFetchPageDataProcessor } from 'src/page-analysis/background/mock-fetch-page-data-processor'
@@ -66,7 +68,27 @@ async function main() {
         } as any,
         fetchPageDataProcessor: new MockFetchPageDataProcessor(),
     })
+
+    console.log('DEBUG(1)')
+    registerBackgroundModuleCollections(storageManager, backgroundModules)
+    console.log('DEBUG(2)')
     const storageModules = getBackgroundStorageModules(backgroundModules)
+
+    console.log('DEBUG(A)')
+    await storageManager.finishInitialization()
+    console.log('DEBUG(B)')
+    await backgroundModules.search.searchIndex.addPage({
+        pageDoc: {
+            url:
+                'http://highscalability.com/blog/2019/7/19/stuff-the-internet-says-on-scalability-for-july-19th-2019.html',
+            content: {
+                fullText: 'home page content',
+                title: 'bla.com title',
+            },
+        },
+        visits: [],
+    })
+    console.log('DEBUG(C)')
 
     const display = console['log'].bind(console) // Circumvent linter
     if (args.command === 'list-operations') {
@@ -89,6 +111,12 @@ async function main() {
                 storageModule.getConfig().collections || {},
             )) {
                 display(`  COLLECTION: ${collectionName}`)
+                for (const fieldName of Object.keys(
+                    storageModule.getConfig().collections[collectionName]
+                        .fields || {},
+                )) {
+                    display(`  FIELD: ${fieldName}`)
+                }
             }
         }
     }

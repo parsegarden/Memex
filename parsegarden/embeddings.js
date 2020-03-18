@@ -144,6 +144,7 @@ class WordEmbeddings {
 
 export const loadModel = async function(url) {
     const model = jsonData
+    /*
     console.log(
         'VIJX',
         'parsegarden',
@@ -152,8 +153,9 @@ export const loadModel = async function(url) {
         'Unpacking codes',
         model,
     )
+    */
     const codes = utils.unpackVectors(model.codes, 'int32')
-    console.log('Unpacked codes', codes)
+    //console.log('Unpacked codes', codes)
     //await tf.nextFrame();
     await utils.wait(100)
     console.log('Unpacking centroids')

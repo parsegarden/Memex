@@ -7,13 +7,6 @@ import { PipelineReq, PipelineRes } from './types'
 import { wait } from '../../parsegarden/utils'
 import loadModels from '../../parsegarden'
 let wordEmbeddings
-loadModels().then(value => {
-    wordEmbeddings = value.wordEmbeddings
-    console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordEmbeddings)', {
-        wordEmbeddings,
-        getVector: wordEmbeddings.getVector,
-    })
-})
 
 import WordPOS from '../../parsegarden/wordpos/src/wordpos'
 const wordpos: any = new WordPOS({
@@ -22,10 +15,12 @@ const wordpos: any = new WordPOS({
     dictPath: 'parsegarden/wordpos/dict',
     profile: true,
 })
+/*
 console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordpos)', {
     WordPOS,
     wordpos,
 })
+*/
 
 import nlp from 'compromise'
 nlp.extend(require('compromise-dates'))
@@ -67,6 +62,7 @@ async function testPOSTaggers() {
         const nlpWord = nlp(word)
         compromiseObj[word] = nlpWord.json('0')[0].terms[0].tags
     })
+    /*
     console.log(
         'VIJX',
         'TEST',
@@ -74,6 +70,7 @@ async function testPOSTaggers() {
         wordposObj,
         compromiseObj,
     )
+    */
 }
 testPOSTaggers()
 
@@ -200,11 +197,24 @@ const pipeline: PagePipeline = async ({
     const titleTerms = [...extractTerms(content.title)]
     const urlTerms = [...extractTerms(pathname)]
 
+    if (!wordEmbeddings) {
+        const wordEmbeddingsObj = await loadModels()
+        /*
+        console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordEmbeddings)', {
+            wordEmbeddings,
+            getVector: wordEmbeddings.getVector,
+        })
+        */
+        wordEmbeddings = wordEmbeddingsObj.wordEmbeddings
+    }
+
     console.log('VIJX', 'search', 'pipeline', 'pipeline => (B)', {
         url,
         terms,
         titleTerms,
         urlTerms,
+        wordpos,
+        wordEmbeddings,
     })
 
     const wordposAsyncFunc = async term => {

@@ -105,6 +105,16 @@ export function createBackgroundModules(options: {
         bookmarksStorage: bookmarks.storage,
         fetchPageData: options.fetchPageDataProcessor,
     })
+    console.log(
+        'VIJX',
+        '(DEXIE)',
+        'background-script',
+        'setup',
+        'createBackgroundModules =>',
+        {
+            pages,
+        },
+    )
     const searchIndex = combineSearchIndex({
         getDb: async () => storageManager,
         pages,
@@ -154,9 +164,12 @@ export function createBackgroundModules(options: {
         options.auth ||
         new AuthBackground(createAuthDependencies(options.authOptions))
 
-    const connectivityChecker = new ConnectivityCheckerBackground({
-        xhr: new XMLHttpRequest(),
-    })
+    let connectivityChecker
+    if (typeof XMLHttpRequest !== 'undefined') {
+        const connectivityChecker = new ConnectivityCheckerBackground({
+            xhr: new XMLHttpRequest(),
+        })
+    }
 
     const pageFetchBacklog = new PageFetchBacklogBackground({
         storageManager,

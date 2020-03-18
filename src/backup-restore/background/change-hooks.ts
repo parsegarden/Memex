@@ -17,8 +17,8 @@ export default function setupChangeTracking(
         'backup-restore',
         'background',
         'change-hooks',
-        'setupChangeTracking',
-        dexie,
+        'setupChangeTracking =>',
+        { dexie },
     )
 
     if (dexie == null) {

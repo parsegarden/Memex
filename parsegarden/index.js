@@ -94,9 +94,11 @@ export default async function loadModels() {
     const wordEmbeddings = await loadModel(
         './parsegarden/pretrained/word-embeddings.json',
     )
+    /*
     console.log('VIJX', 'parsegarden', 'index', 'loadModels =>', {
         wordEmbeddings,
-    })
+	})
+	*/
     // return { sentimentCNN, wordEmbeddings };
     return { wordEmbeddings }
 }

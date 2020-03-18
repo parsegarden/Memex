@@ -140,7 +140,9 @@ export default class PageStorage extends StorageModule {
             'createOrUpdatePage => (B)',
             'MAYBE this.operation(createPage) =>',
             {
+                normalizedUrl,
                 existingPage,
+                pageData,
             },
         )
 

@@ -12,9 +12,15 @@ export default function initStorex(options: {
     dbName: string
     idbImplementation?: IndexedDbImplementation
 }): Storex {
-    console.trace('VIJX', 'search', 'storex', 'initStorex =>', {
-        dbName: options.dbName,
-    })
+    console.log(
+        'VIJX',
+        'search',
+        'storex',
+        'initStorex => new DexieStorageBackend =>',
+        {
+            options,
+        },
+    )
     const backend = new DexieStorageBackend({
         stemmerSelector,
         schemaPatcher,

@@ -61,6 +61,7 @@ export default class SyncBackground extends SyncService {
             postReceiveProcessor: options.postReceiveProcessor,
         })
 
+        /*
         console.log(
             'VIJX',
             'src',
@@ -71,6 +72,7 @@ export default class SyncBackground extends SyncService {
             'constructor',
             options.getSharedSyncLog,
         )
+        */
 
         this.auth = options.auth
 

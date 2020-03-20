@@ -84,7 +84,6 @@ export function createBackgroundModules(options: {
     disableSyncEnryption?: boolean
 }): BackgroundModules {
     console.log(
-        '!!!',
         'VIJX',
         'background-script',
         'setup',
@@ -125,6 +124,7 @@ export function createBackgroundModules(options: {
         searchIndex,
         browserAPIs: options.browserAPIs,
         tabManager,
+        pageStorage: pages.storage,
     })
     const tags = new TagsBackground({
         storageManager,

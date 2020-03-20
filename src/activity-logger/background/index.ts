@@ -10,6 +10,7 @@ import TabChangeListeners from './tab-change-listeners'
 import PageVisitLogger from './log-page-visit'
 import { CONCURR_TAB_LOAD } from '../constants'
 import { SearchIndex } from 'src/search'
+import PageStorage from 'src/page-indexing/background/storage'
 
 export default class ActivityLoggerBackground {
     static SCROLL_UPDATE_FN = 'updateScrollState'
@@ -22,6 +23,7 @@ export default class ActivityLoggerBackground {
     private tabChangeListener: TabChangeListeners
     private pageVisitLogger: PageVisitLogger
     private toggleLoggingPause = initPauser()
+    private pageStorage: PageStorage
 
     /**
      * Used to stop of tab updated event listeners while the
@@ -36,12 +38,14 @@ export default class ActivityLoggerBackground {
             Browser,
             'tabs' | 'runtime' | 'webNavigation' | 'storage'
         >
+        pageStorage: PageStorage
     }) {
         this.tabManager = options.tabManager
         this.tabsAPI = options.browserAPIs.tabs
         this.runtimeAPI = options.browserAPIs.runtime
         this.webNavAPI = options.browserAPIs.webNavigation
         this.searchIndex = options.searchIndex
+        this.pageStorage = options.pageStorage
 
         this.pageVisitLogger = new PageVisitLogger({
             searchIndex: options.searchIndex,
@@ -70,7 +74,6 @@ export default class ActivityLoggerBackground {
             fetchTab: id => this.tabManager.getTabState(id),
             fetchTabByUrl: url => {
                 console.log(
-                    '!!!',
                     'VIJX',
                     'activity-logger',
                     'background',
@@ -103,7 +106,8 @@ export default class ActivityLoggerBackground {
                 'VIJX',
                 'activity-logger',
                 'background',
-                'trackExistingTabs',
+                '<ActivityLoggerBackground>',
+                'trackExistingTabs =>',
                 { url: browserTab.url },
             )
             this.tabManager.trackTab(browserTab, {
@@ -134,9 +138,16 @@ export default class ActivityLoggerBackground {
     }
 
     private async trackNewTab(id: number) {
-        console.log('VIJX', 'activity-logger', 'background', 'trackNewTab', {
-            id,
-        })
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            '<ActivityLoggerBackground>',
+            'trackNewTab =>',
+            {
+                id,
+            },
+        )
         const browserTab = await this.tabsAPI.get(id)
 
         this.tabManager.trackTab(browserTab, {
@@ -165,6 +176,15 @@ export default class ActivityLoggerBackground {
     }
 
     private setupTabLifecycleHandling() {
+        console.log(
+            'VIJX',
+            '(STARTUP)',
+            'activity-logger',
+            'background',
+            '<ActivityLoggerBackground>',
+            'setupTabLifecycleHandling =>',
+        )
+
         this.tabsAPI.onCreated.addListener(this.tabManager.trackTab)
 
         this.tabsAPI.onActivated.addListener(async ({ tabId }) => {
@@ -173,6 +193,23 @@ export default class ActivityLoggerBackground {
             }
 
             this.tabManager.activateTab(tabId)
+
+            // PARSEGARDEN INTEGRATION POINT
+            // This can be where the term index is compiled
+            const pageCount = await this.pageStorage.countPages()
+            const visitCount = await this.pageStorage.countVisits()
+            console.log(
+                'VIJX',
+                'activity-logger',
+                'background',
+                '<ActivityLoggerBackground>',
+                'setupTabLifecycleHandling =>',
+                {
+                    tabId,
+                    pageCount,
+                    visitCount,
+                },
+            )
         })
 
         // Runs stage 3 of the visit indexing
@@ -211,6 +248,20 @@ export default class ActivityLoggerBackground {
         changeInfo,
         tab,
     ) => {
+        console.log(
+            'VIJX',
+            '(START)',
+            'activity-logger',
+            'background',
+            '<ActivityLoggerBackground>',
+            'tabUpdatedListener =>',
+            {
+                tabId,
+                changeInfo,
+                tab,
+            },
+        )
+
         await this.tabQueryP
 
         if (changeInfo.status) {
@@ -227,6 +278,9 @@ export default class ActivityLoggerBackground {
         if (changeInfo.url) {
             await this.tabChangeListener.handleUrl(tabId, changeInfo, tab)
         }
+
+        // PARSEGARDEN INTEGRATION POINT
+        // This can be where the term index is compiled
     }
 }
 

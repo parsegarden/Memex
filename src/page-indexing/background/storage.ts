@@ -49,6 +49,16 @@ export default class PageStorage extends StorageModule {
                     url: '$url:string',
                 },
             },
+            countPages: {
+                operation: 'countObjects',
+                collection: 'pages',
+                args: {},
+            },
+            countVisits: {
+                operation: 'countObjects',
+                collection: 'visits',
+                args: {},
+            },
             createVisit: {
                 operation: 'createObject',
                 collection: 'visits',
@@ -250,6 +260,21 @@ export default class PageStorage extends StorageModule {
         for (const visit of newVisits) {
             await this.operation('createVisit', visit)
         }
+        console.log(
+            'VIJX',
+            '(DEXIE)',
+            'page-indexing',
+            'background',
+            'storage',
+            '<PageStorage>',
+            'createVisitsIfNeeded =>',
+            {
+                url,
+                normalizedUrl,
+                existingVisits,
+                newVisits,
+            },
+        )
     }
 
     async pageExists(url: string): Promise<boolean> {
@@ -279,6 +304,14 @@ export default class PageStorage extends StorageModule {
         if (!hasVisits) {
             await this.addPageVisit(url, time)
         }
+    }
+
+    async countPages() {
+        return this.operation('countPages', {})
+    }
+
+    async countVisits() {
+        return this.operation('countVisits', {})
     }
 
     async getPage(url: string): Promise<PipelineRes | null> {

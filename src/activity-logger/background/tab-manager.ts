@@ -42,7 +42,7 @@ export class TabManager {
             'background',
             'tab-manager',
             '<TabManager>',
-            'getTabState=>',
+            'getTabState =>',
             { id, tab: this._tabs.get(id) },
         )
         return this._tabs.get(id)

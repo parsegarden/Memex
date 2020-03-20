@@ -113,6 +113,17 @@ export class PageFetchBacklogBackground {
     private processEntries = async () => {
         const backlogEntries = await this.dequeueEntries()
 
+        console.log(
+            'VIJX',
+            'page-fetch-backlog',
+            'background',
+            '<PageFetchBacklogBackground>',
+            'processEntries =>',
+            {
+                backlogEntries,
+            },
+        )
+
         if (backlogEntries == null) {
             return
         }

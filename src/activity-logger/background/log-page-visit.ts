@@ -174,14 +174,18 @@ export default class PageVisitLogger {
         textOnly = true,
     ) {
         console.log(
-            '!!!',
             'VIJX',
+            '(START)',
             'activity-logger',
             'background',
             'log-page-visit',
             '<PageVisitLogger>',
-            'logPageVisit =>',
-            { tab, textOnly },
+            'logPageVisit => (A)',
+            {
+                url: tab.url,
+                tab,
+                textOnly,
+            },
         )
         const pageDoc: PageDoc = {
             url: tab.url,
@@ -198,6 +202,20 @@ export default class PageVisitLogger {
         }
 
         if (textOnly) {
+            console.log(
+                'VIJX',
+                '(START)',
+                'activity-logger',
+                'background',
+                'log-page-visit',
+                '<PageVisitLogger>',
+                'logPageVisit => (B)',
+                {
+                    url: tab.url,
+                    pageDoc,
+                },
+            )
+
             return this._addPageTerms({ pageDoc })
         }
 

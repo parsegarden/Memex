@@ -66,6 +66,7 @@ export class PageIndexingBackground {
             'this.storage.createOrUpdatePage =>',
             {
                 pageData,
+                visits,
             },
         )
 

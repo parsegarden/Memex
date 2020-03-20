@@ -91,6 +91,19 @@ export default class TabChangeListeners {
     }
 
     private getOrCreateTabIndexers(tabId: number) {
+        console.log(
+            'VIJX',
+            '(START)',
+            'activity-logger',
+            'background',
+            'tab-change-listeners',
+            '<TabChangeListeners>',
+            'getOrCreateTabIndexers =>',
+            {
+                tabId,
+            },
+        )
+
         let indexers = this.tabIndexers.get(tabId)
 
         if (!indexers) {
@@ -188,6 +201,21 @@ export default class TabChangeListeners {
      * and updating the internally held tab manager state.
      */
     public handleUrl: TabChangeListener = async (tabId, { url }, tab) => {
+        console.log(
+            'VIJX',
+            '(START)',
+            'activity-logger',
+            'background',
+            'tab-change-listeners',
+            '<TabChangeListeners>',
+            'handleUrl =>',
+            {
+                tabId,
+                url,
+                tab,
+            },
+        )
+
         try {
             if (!(await this._checkTabLoggable(tab))) {
                 return
@@ -213,7 +241,7 @@ export default class TabChangeListeners {
             'activity-logger',
             'background',
             'tab-change-listeners',
-            '<TabChangeLIsteners>',
+            '<TabChangeListeners>',
             '_handleVisitIndexing =>',
             {
                 tabId,

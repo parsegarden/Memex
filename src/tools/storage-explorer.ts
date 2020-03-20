@@ -115,7 +115,8 @@ async function main() {
         const existingPage = await pageStorageModule.getPage(
             testPage.pageDoc.url,
         )
-        console.log('VIJX', 'list-collections', 'existingPage', existingPage)
+        const pageCount = await pageStorageModule.countPages()
+        console.log('VIJX', 'list-collections', { existingPage, pageCount })
         for (const [storageModuleName, storageModule] of Object.entries(
             storageModules,
         )) {

@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 import 'core-js/es7/symbol'
 import { browser } from 'webextension-polyfill-ts'
-import { createSelfTests } from '@worldbrain/memex-common/lib/self-tests'
+//import { createSelfTests } from '@worldbrain/memex-common/lib/self-tests'
 
 import initStorex from './search/memex-storex'
 import getDb, { setStorex } from './search/get-db'
@@ -25,16 +25,16 @@ import {
 import { createLazySharedSyncLog } from './sync/background/shared-sync-log'
 import { createFirebaseSignalTransport } from './sync/background/signalling'
 import { DevAuthState } from 'src/authentication/background/setup'
-import { MemoryAuthService } from '@worldbrain/memex-common/lib/authentication/memory'
-import { TEST_USER } from '@worldbrain/memex-common/lib/authentication/dev'
+//import { MemoryAuthService } from '@worldbrain/memex-common/lib/authentication/memory'
+//import { TEST_USER } from '@worldbrain/memex-common/lib/authentication/dev'
 import { FeatureOptIns } from 'src/feature-opt-in/background/feature-opt-ins'
 import { FetchPageDataProcessor } from 'src/page-analysis/background/fetch-page-data-processor'
 import fetchPageData from 'src/page-analysis/background/fetch-page-data'
 import pipeline from 'src/search/pipeline'
-import StorageManager from '../external/@worldbrain/storex/ts/index'
+//import StorageManager from '../external/@worldbrain/storex/ts/index'
 
 export async function main() {
-    console.log('VIJX', 'background', 'main => (A)')
+    console.log('VIJX', '(STARTUP)', 'background', 'main => (A)')
 
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,
@@ -108,6 +108,7 @@ export async function main() {
     window['analytics'] = analytics
     window['tabMan'] = backgroundModules.activityLogger.tabManager
 
+    /*
     window['selfTests'] = await createSelfTests({
         storage: {
             manager: storageManager,
@@ -142,6 +143,7 @@ export async function main() {
             },
         },
     })
+    */
 }
 
 main()

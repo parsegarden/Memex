@@ -18,6 +18,18 @@ export const shouldLogTab: LoggableTabChecker = async function({ url }) {
     const isBlacklisted = await blacklist.checkWithBlacklist() // tslint:disable-line
     const isPaused = await getPauseState()
 
+    console.log(
+        'VIJX',
+        'activity-logger',
+        'background',
+        'util',
+        'shouldLogTab =>',
+        {
+            url,
+            isBlacklisted,
+        },
+    )
+
     return !isPaused && !isBlacklisted({ url })
 }
 

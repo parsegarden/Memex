@@ -156,11 +156,18 @@ export function extractTerms(text: string): Set<string> {
         return new Set()
     }
 
-    return new Set(
-        extractContent(transformedText, {
-            separator: DEFAULT_TERM_SEPARATOR,
-        }),
-    )
+    const tokens = extractContent(transformedText, {
+        separator: DEFAULT_TERM_SEPARATOR,
+    })
+    const uniqueTokens: Set<string> = new Set(tokens)
+
+    console.log('VIJX', 'search', 'pipeline', 'extractTerms =>', {
+        text,
+        tokens,
+        uniqueTokens,
+    })
+
+    return uniqueTokens
 }
 
 /**
@@ -187,8 +194,9 @@ const pipeline: PagePipeline = async ({
         )
     }
 
-    console.log('VIJX', 'search', 'pipeline', 'pipeline => (A)', {
+    console.log('VIJX', '(PROCESS)', 'search', 'pipeline', 'pipeline => (A)', {
         url,
+        title: content.title,
         fullText: content.fullText,
     })
 
@@ -208,13 +216,11 @@ const pipeline: PagePipeline = async ({
         wordEmbeddings = wordEmbeddingsObj.wordEmbeddings
     }
 
-    console.log('VIJX', 'search', 'pipeline', 'pipeline => (B)', {
+    console.log('VIJX', '(PROCESS)', 'search', 'pipeline', 'pipeline => (B)', {
         url,
         terms,
         titleTerms,
         urlTerms,
-        //wordpos,
-        //wordEmbeddings,
     })
 
     const wordposAsyncFunc = async term => {
@@ -266,11 +272,18 @@ const pipeline: PagePipeline = async ({
         }
         finalTerms = await nlpWrapper()
 
-        console.log('VIJX', 'search', 'pipeline', 'pipeline => (C)', {
-            url,
-            nlpNounTerms,
-            finalTerms,
-        })
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'search',
+            'pipeline',
+            'pipeline => (C)',
+            {
+                url,
+                nlpNounTerms,
+                finalTerms,
+            },
+        )
     }
 
     return Promise.resolve({

@@ -118,12 +118,19 @@ export default function transform({ text = '', lang = 'en' }) {
     // Remove non-alphabet
     searchableText = removeNonAlphabet(searchableText)
 
-    console.log('VIJX', 'util', 'transform-page-text', 'transform =>', {
-        text,
-        searchableText,
-        lenBefore: text.length,
-        lenAfter: searchableText.length,
-    })
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'util',
+        'transform-page-text',
+        'transform =>',
+        {
+            text,
+            searchableText,
+            lenBefore: text.length,
+            lenAfter: searchableText.length,
+        },
+    )
 
     return {
         text: searchableText,

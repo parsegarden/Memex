@@ -21,9 +21,11 @@ export const extractContent = (
         .split(separator)
         .map(word => word.toLowerCase())
         .filter(term => term.length)
-    console.log('VIJX', 'search', 'utils', 'extractContent =>', {
+
+    console.log('VIJX', '(PROCESS)', 'search', 'utils', 'extractContent =>', {
         content,
         lowercasedTerms,
     })
+
     return lowercasedTerms
 }

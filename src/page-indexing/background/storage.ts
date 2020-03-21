@@ -54,6 +54,16 @@ export default class PageStorage extends StorageModule {
                 collection: 'pages',
                 args: {},
             },
+            getAllPages: {
+                operation: 'findObjects',
+                collection: 'pages',
+                args: {},
+            },
+            getAllVisits: {
+                operation: 'findObjects',
+                collection: 'visits',
+                args: {},
+            },
             countVisits: {
                 operation: 'countObjects',
                 collection: 'visits',
@@ -312,6 +322,14 @@ export default class PageStorage extends StorageModule {
 
     async countVisits() {
         return this.operation('countVisits', {})
+    }
+
+    async getAllPages() {
+        return this.operation('getAllPages', {})
+    }
+
+    async getAllVisits() {
+        return this.operation('getAllVisits', {})
     }
 
     async getPage(url: string): Promise<PipelineRes | null> {

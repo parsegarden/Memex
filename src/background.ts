@@ -48,7 +48,7 @@ export async function main() {
     })
     console.log('VIJX', 'background', 'main => (B)', { fetchPageDataProcessor })
 
-    const storageManager = initStorex()
+    const storageManager = initStorex('parsegarden')
     console.log('VIJX', 'background', 'main => (C)', { storageManager })
     const backgroundModules = createBackgroundModules({
         storageManager,
@@ -68,10 +68,6 @@ export async function main() {
     })
     registerBackgroundModuleCollections(storageManager, backgroundModules)
     await storageManager.finishInitialization()
-
-    storageManager.setMiddleware([
-        await backgroundModules.sync.createSyncLoggingMiddleware(),
-    ])
 
     setStorex(storageManager)
 
@@ -97,7 +93,6 @@ export async function main() {
                 backgroundModules.search.remoteFunctions.bookmarks
                     .delPageBookmark,
         },
-        sync: backgroundModules.sync.remoteFunctions,
         features: new FeatureOptIns(),
     })
 

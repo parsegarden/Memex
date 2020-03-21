@@ -19,11 +19,16 @@ const extractRawPageContent: ExtractRawPageContent = async (
 ) => {
     console.log(
         'VIJX',
+        '(PROCESS)',
         'page-analysis',
         'content_script',
         'extract-page-content',
-        'extractPageContent => (A)',
-        { doc, url },
+        'extractRawPageContent =>',
+        {
+            body: doc.body.innerHTML,
+            doc,
+            url,
+        },
     )
 
     if (url.endsWith('.pdf')) {
@@ -38,6 +43,7 @@ const extractRawPageContent: ExtractRawPageContent = async (
             body: doc.body.innerHTML,
             lang: doc.documentElement.lang || DEF_LANG,
             metadata: getMetadata(doc, url, PAGE_METADATA_RULES),
+            html: doc.documentElement.outerHTML,
         }
     }
 }

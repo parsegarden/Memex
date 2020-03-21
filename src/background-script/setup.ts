@@ -234,16 +234,7 @@ export function createBackgroundModules(options: {
             checkAuthorizedForAutoBackup: async () =>
                 auth.remoteFunctions.isAuthorizedForFeature('backup'),
         }),
-        sync: new SyncBackground({
-            auth: auth.authService,
-            signalTransportFactory: options.signalTransportFactory,
-            storageManager,
-            getSharedSyncLog: options.getSharedSyncLog,
-            browserAPIs: options.browserAPIs,
-            appVersion: process.env.VERSION,
-            postReceiveProcessor,
-            disableEncryption: options.disableSyncEnryption,
-        }),
+        sync: null,
         storexHub: new StorexHubBackground({
             storageManager,
         }),
@@ -291,9 +282,7 @@ export async function setupBackgroundModules(
     setupBlacklistRemoteFunctions()
     backgroundModules.backupModule.storage.setupChangeTracking()
 
-    await backgroundModules.sync.setup()
     await backgroundModules.jobScheduler.setup()
-    backgroundModules.sync.registerRemoteEmitter()
 }
 
 export function getBackgroundStorageModules(
@@ -310,8 +299,6 @@ export function getBackgroundStorageModules(
         search: backgroundModules.search.storage,
         social: backgroundModules.social.storage,
         tags: backgroundModules.tags.storage,
-        clientSyncLog: backgroundModules.sync.clientSyncLog,
-        syncInfo: backgroundModules.sync.syncInfoStorage,
         pages: backgroundModules.pages.storage,
     }
 }

@@ -1,4 +1,6 @@
 import whenAllSettled from 'when-all-settled'
+import Mercury from '@postlight/mercury-parser'
+
 import { whenPageDOMLoaded } from 'src/util/tab-events'
 
 import getFavIcon from './get-fav-icon'
@@ -50,6 +52,10 @@ const analysePage: PageAnalyzer = async ({
         ).extractRawPageContent()
         const metadata = await extractPageMetadataFromRawContent(rawContent)
         const getFullText = async () => getPageFullText(rawContent, metadata)
+        const parsedWithMercury = await Mercury.parse(rawContent.url, {
+            //html: (rawContent as any).html,
+            contentText: 'text',
+        })
         console.log(
             'VIJX',
             'page-analysis',
@@ -57,9 +63,12 @@ const analysePage: PageAnalyzer = async ({
             'analysePage => (B)',
             'extractPageContent =>',
             {
-                rawContent,
+                url: rawContent.url,
+                body: (rawContent as any).body,
                 metadata,
                 getFullText,
+                rawContent,
+                parsedWithMercury,
             },
         )
         return { metadata, getFullText }

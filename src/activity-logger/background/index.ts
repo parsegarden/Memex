@@ -11,6 +11,13 @@ import PageVisitLogger from './log-page-visit'
 import { CONCURR_TAB_LOAD } from '../constants'
 import { SearchIndex } from 'src/search'
 import PageStorage from 'src/page-indexing/background/storage'
+import { url } from 'src/popup/selectors'
+
+let parsegardenSingleton = {
+    map: {},
+    array: [],
+}
+const parsegardenProcessed = {}
 
 export default class ActivityLoggerBackground {
     static SCROLL_UPDATE_FN = 'updateScrollState'
@@ -57,6 +64,67 @@ export default class ActivityLoggerBackground {
             pageVisitLogger: this.pageVisitLogger,
             browserAPIs: options.browserAPIs,
         })
+
+        this.setupParsegardenTokenCompilation()
+    }
+
+    async parsegardenCompilation() {
+        parsegardenSingleton = {
+            map: {},
+            array: [],
+        }
+
+        const pageCount = await this.pageStorage.countPages()
+        const visitCount = await this.pageStorage.countVisits()
+        const allPages = await this.pageStorage.getAllPages()
+        const allVisits = await this.pageStorage.getAllVisits()
+
+        allPages.forEach(page => {
+            if (parsegardenProcessed[page.url]) {
+                return
+            }
+            if (!page.parsegardenTerms) {
+                return
+            }
+            page.parsegardenTerms.forEach(token => {
+                if (
+                    parsegardenSingleton.map[token] &&
+                    parsegardenSingleton.map[token].urls
+                ) {
+                    parsegardenSingleton.map[token].urls.push(page.url)
+                } else {
+                    parsegardenSingleton.map[token] = {
+                        token,
+                        visitCount: 0,
+                        urls: [page.url],
+                    }
+                }
+            })
+            parsegardenProcessed[page.url] = true
+        })
+
+        parsegardenSingleton.array = Object.entries(
+            parsegardenSingleton.map,
+        ).map(([key, value]) => {
+            return value
+        })
+
+        parsegardenSingleton.array = parsegardenSingleton.array.sort((a, b) => {
+            return b.urls.length - a.urls.length
+        })
+
+        console.log('VIJX', 'DEBUG', '<ActivityLoggerBackground>', {
+            pageCount,
+            visitCount,
+            allPages,
+            allVisits,
+            parsegardenSingleton,
+        })
+    }
+
+    async setupParsegardenTokenCompilation() {
+        setTimeout(this.parsegardenCompilation.bind(this), 2000)
+        setInterval(this.parsegardenCompilation.bind(this), 2 * 60000)
     }
 
     static isTabLoaded = (tab: Tabs.Tab) => tab.status === 'complete'
@@ -196,20 +264,6 @@ export default class ActivityLoggerBackground {
 
             // PARSEGARDEN INTEGRATION POINT
             // This can be where the term index is compiled
-            const pageCount = await this.pageStorage.countPages()
-            const visitCount = await this.pageStorage.countVisits()
-            console.log(
-                'VIJX',
-                'activity-logger',
-                'background',
-                '<ActivityLoggerBackground>',
-                'setupTabLifecycleHandling =>',
-                {
-                    tabId,
-                    pageCount,
-                    visitCount,
-                },
-            )
         })
 
         // Runs stage 3 of the visit indexing

@@ -1,5 +1,6 @@
 import whenAllSettled from 'when-all-settled'
-import Mercury from '@postlight/mercury-parser'
+//import Mercury from '@postlight/mercury-parser'
+import Mercury from '../../../parsegarden/parser/src/mercury'
 
 import { whenPageDOMLoaded } from 'src/util/tab-events'
 
@@ -50,12 +51,39 @@ const analysePage: PageAnalyzer = async ({
         const rawContent = await runInTab<PageAnalyzerInterface>(
             tabId,
         ).extractRawPageContent()
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'page-analysis',
+            'background',
+            'analysePage => (B)',
+            'extractPageContent =>',
+            {
+                rawContent,
+            },
+        )
+
         const parsedWithMercury = await Mercury.parse(rawContent.url, {
             html: (rawContent as any).html,
         })
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'page-analysis',
+            'background',
+            'analysePage => (B)',
+            'extractPageContent =>',
+            {
+                parsedWithMercury,
+            },
+        )
+
         const metadata = await extractPageMetadataFromRawContent(rawContent)
         const getFullText = async () =>
             getPageFullText(rawContent, metadata, parsedWithMercury)
+
         console.log(
             'VIJX',
             '(PROCESS)',
@@ -72,6 +100,7 @@ const analysePage: PageAnalyzer = async ({
                 parsedWithMercury,
             },
         )
+
         return { metadata, getFullText, parsedWithMercury }
     }
 

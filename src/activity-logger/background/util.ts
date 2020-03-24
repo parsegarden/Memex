@@ -9,6 +9,19 @@ import { browser, Windows, Tabs } from 'webextension-polyfill-ts'
  * whether or not a tab should be logged.
  */
 export const shouldLogTab: LoggableTabChecker = async function({ url }) {
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'activity-logger',
+        'background',
+        'util',
+        'shouldLogTab => (A)',
+        {
+            url,
+            isLoggable: isLoggable({ url }),
+        },
+    )
+
     // Short-circuit before async logic, if possible
     if (!url || !isLoggable({ url })) {
         return false
@@ -20,13 +33,15 @@ export const shouldLogTab: LoggableTabChecker = async function({ url }) {
 
     console.log(
         'VIJX',
+        '(PROCESS)',
         'activity-logger',
         'background',
         'util',
-        'shouldLogTab =>',
+        'shouldLogTab => (B)',
         {
             url,
             isBlacklisted,
+            isPaused,
         },
     )
 

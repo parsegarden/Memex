@@ -141,6 +141,8 @@ export default class TabChangeListeners {
             '<TabChangeListeners>',
             'handleVisitIndexing =>',
             {
+                url: tab.url,
+                status: tab.status,
                 tabId,
                 tab,
             },
@@ -260,6 +262,8 @@ export default class TabChangeListeners {
             '<TabChangeListeners>',
             '_handleVisitIndexing =>',
             {
+                url: tab.url,
+                status: tab.status,
                 tabId,
                 tab,
                 shouldLogStubs: indexingPrefs.shouldLogStubs,

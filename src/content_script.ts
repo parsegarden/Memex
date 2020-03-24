@@ -39,15 +39,17 @@ export function main() {
     window['toolbarNotifications'] = toolbarNotifications
 
     initStore(rootStore)
-    initContentTooltip({ toolbarNotifications, store: rootStore })
+    //initContentTooltip({ toolbarNotifications, store: rootStore })
+    /*
     initRibbonAndSidebar({
         annotationsManager,
         toolbarNotifications,
         store: rootStore,
     })
-    initSocialIntegration({ annotationsManager })
+    */
+    //initSocialIntegration({ annotationsManager })
     initKeyboardShortcuts({ store: rootStore })
-    initHighlights(rootStore)
+    //initHighlights(rootStore)
 
     async function initStore(store) {
         store.dispatch(initBasicStore() as any)

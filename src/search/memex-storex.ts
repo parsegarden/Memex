@@ -1,7 +1,7 @@
 import initStorex from './storex'
 
-console.log('VIJX', '(DEXIE)', 'search', 'memex-storex', 'default =>')
 export default (dbName = 'parsegarden') => {
+    console.log('VIJX', '(DEXIE)', 'search', 'memex-storex', 'default =>')
     return initStorex({
         dbName,
     })

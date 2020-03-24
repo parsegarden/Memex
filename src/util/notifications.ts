@@ -8,7 +8,7 @@ import {
 } from 'src/util/notification-types'
 import browserIsChrome from './check-browser'
 
-export const DEF_ICON_URL = '/img/worldbrain-logo-narrow.png'
+export const DEF_ICON_URL = '/img/parsegarden/parsegarden.svg'
 export const DEF_TYPE = 'basic'
 
 export interface Props {

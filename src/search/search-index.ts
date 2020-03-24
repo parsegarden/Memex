@@ -18,6 +18,7 @@ export function combineSearchIndex(dependenices: {
 
     console.log(
         'VIJX',
+        '(STARTUP)',
         'search',
         'search-index',
         'combineSearchIndex =>',

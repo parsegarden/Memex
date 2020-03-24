@@ -93,7 +93,7 @@ export default class TabChangeListeners {
     private getOrCreateTabIndexers(tabId: number) {
         console.log(
             'VIJX',
-            '(START)',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'tab-change-listeners',
@@ -131,8 +131,23 @@ export default class TabChangeListeners {
     handleFavIcon: TabChangeListener = (tabId, _, tab) =>
         this.getOrCreateTabIndexers(tabId).favIcon(tab)
 
-    handleVisitIndexing: TabChangeListener = (tabId, _, tab) =>
-        this.getOrCreateTabIndexers(tabId).page(tab)
+    handleVisitIndexing: TabChangeListener = (tabId, _, tab) => {
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'activity-logger',
+            'background',
+            'tab-change-listeners',
+            '<TabChangeListeners>',
+            'handleVisitIndexing =>',
+            {
+                tabId,
+                tab,
+            },
+        )
+
+        return this.getOrCreateTabIndexers(tabId).page(tab)
+    }
 
     /**
      * Handles fetching of user indexing preferences from underyling browser storage.
@@ -203,7 +218,7 @@ export default class TabChangeListeners {
     public handleUrl: TabChangeListener = async (tabId, { url }, tab) => {
         console.log(
             'VIJX',
-            '(START)',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'tab-change-listeners',
@@ -238,6 +253,7 @@ export default class TabChangeListeners {
         await this._pageDOMLoaded({ tabId })
         console.log(
             'VIJX',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'tab-change-listeners',

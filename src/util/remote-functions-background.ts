@@ -9,8 +9,8 @@ export interface RemoteFunctionImplementations {
     notifications: NotificationCreator
     bookmarks: BookmarksInterface
     auth: AuthRemoteFunctionsInterface
-    subscription: SubscriptionsService
-    features: FeaturesInterface
+    subscription?: SubscriptionsService
+    features?: FeaturesInterface
 }
 
 // See `src/background.ts` for the concrete remote function bindings

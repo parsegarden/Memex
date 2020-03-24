@@ -28,7 +28,6 @@ import {
 } from 'src/imports/background/state-manager'
 import { setupImportBackgroundModule } from 'src/imports/background'
 import SyncBackground from 'src/sync/background'
-import { PostReceiveProcessor } from 'src/sync/background/post-receive-processor'
 import BackgroundScript from '.'
 import alarms from './alarms'
 import { setupNotificationClickListener } from 'src/util/notifications'
@@ -85,6 +84,7 @@ export function createBackgroundModules(options: {
 }): BackgroundModules {
     console.log(
         'VIJX',
+        '(STARTUP)',
         'background-script',
         'setup',
         'createBackgroundModules =>',
@@ -104,16 +104,7 @@ export function createBackgroundModules(options: {
         bookmarksStorage: bookmarks.storage,
         fetchPageData: options.fetchPageDataProcessor,
     })
-    console.log(
-        'VIJX',
-        '(DEXIE)',
-        'background-script',
-        'setup',
-        'createBackgroundModules =>',
-        {
-            pages,
-        },
-    )
+
     const searchIndex = combineSearchIndex({
         getDb: async () => storageManager,
         pages,
@@ -192,14 +183,6 @@ export function createBackgroundModules(options: {
             await pages.storage.createOrUpdatePage(content)
         },
     })
-
-    const postReceiveProcessor = options.includePostSyncProcessor
-        ? new PostReceiveProcessor({
-              pages,
-              pageFetchBacklog,
-              fetchPageData: options.fetchPageDataProcessor,
-          }).processor
-        : undefined
 
     return {
         auth,

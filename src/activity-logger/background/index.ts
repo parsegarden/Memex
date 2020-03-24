@@ -113,7 +113,7 @@ export default class ActivityLoggerBackground {
             return b.urls.length - a.urls.length
         })
 
-        console.log('VIJX', 'DEBUG', '<ActivityLoggerBackground>', {
+        console.log('VIJX', '(PARSEGARDEN)', '<ActivityLoggerBackground>', {
             pageCount,
             visitCount,
             allPages,
@@ -132,6 +132,7 @@ export default class ActivityLoggerBackground {
     setupRemoteFunctions() {
         console.log(
             'VIJX',
+            '(STARTUP)',
             'activity-logger',
             'background',
             '<ActivityLoggerBackground>',
@@ -304,12 +305,14 @@ export default class ActivityLoggerBackground {
     ) => {
         console.log(
             'VIJX',
-            '(START)',
+            '(PROCESS)',
             'activity-logger',
             'background',
             '<ActivityLoggerBackground>',
             'tabUpdatedListener =>',
             {
+                url: changeInfo.url,
+                status: changeInfo.status,
                 tabId,
                 changeInfo,
                 tab,

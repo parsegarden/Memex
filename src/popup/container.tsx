@@ -39,7 +39,7 @@ import { EVENT_NAMES } from '../analytics/internal/constants'
 const btnStyles = require('./components/Button.css')
 const styles = require('./components/Popup.css')
 
-export interface OwnProps {}
+export interface OwnProps { }
 
 interface StateProps {
     blacklistConfirm: boolean
@@ -139,11 +139,6 @@ class PopupContainer extends PureComponent<Props> {
 
         return (
             <React.Fragment>
-                <Search
-                    searchValue={this.props.searchValue}
-                    onSearchChange={this.props.handleSearchChange}
-                    onSearchEnter={this.onSearchEnter}
-                />
                 <div className={styles.item}>
                     <LinkButton
                         btnClass={btnStyles.openIcon}
@@ -164,12 +159,6 @@ class PopupContainer extends PureComponent<Props> {
                         className={btnStyles.settingsIcon}
                         btnClass={btnStyles.settings}
                     />
-                    <ButtonIcon
-                        href="https://worldbrain.io/help"
-                        icon="help"
-                        btnClass={btnStyles.help}
-                    />
-                    {/*<NotifButton />*/}
                 </div>
             </React.Fragment>
         )

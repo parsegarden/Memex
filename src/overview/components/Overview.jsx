@@ -8,10 +8,7 @@ import SidebarContainer, {
 import { OVERVIEW_URL } from 'src/constants'
 import Onboarding from '../onboarding'
 import { DeleteConfirmModal } from '../delete-confirm-modal'
-import {
-    SidebarContainer as SidebarLeft,
-    CollectionsContainer as CollectionsButton,
-} from '../sidebar-left'
+import { SidebarContainer as SidebarLeft } from '../sidebar-left'
 import { HelpBtn } from '../help-btn'
 import { Header, acts as searchBarActs } from '../search-bar'
 import { Results, acts as resultActs } from '../results'
@@ -55,7 +52,6 @@ class Overview extends PureComponent {
         return (
             <div>
                 <Head />
-                <CollectionsButton />
                 <Header />
                 <SidebarLeft />
                 <Results />

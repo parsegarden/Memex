@@ -57,8 +57,8 @@ export class PageIndexingBackground {
             rejectNoContent,
         })
         console.log(
-            '!!!',
             'VIJX',
+            '(PROCESS)',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',

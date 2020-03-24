@@ -7,7 +7,7 @@ const styles = require('./notifications.css')
 
 const images = {
     arrow: getExtURL('/img/arrowUp.svg'),
-    logo: getExtURL('/img/worldbrain-logo-narrow-bw-48.png'),
+    logo: getExtURL('/img/parsegarden/parsegarden.svg'),
 }
 
 export default function GoToDashboard({ onCloseRequested }) {
@@ -20,7 +20,7 @@ export default function GoToDashboard({ onCloseRequested }) {
                 thirdRowImage={images.arrow}
             >
                 Via the little{' '}
-                <span className={styles.logo}/> icon in
+                <span className={styles.logo} /> icon in
                 the browser menu
             </NotificationLayout>
         </div>

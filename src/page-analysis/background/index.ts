@@ -50,14 +50,15 @@ const analysePage: PageAnalyzer = async ({
         const rawContent = await runInTab<PageAnalyzerInterface>(
             tabId,
         ).extractRawPageContent()
-        const metadata = await extractPageMetadataFromRawContent(rawContent)
-        const getFullText = async () => getPageFullText(rawContent, metadata)
         const parsedWithMercury = await Mercury.parse(rawContent.url, {
-            //html: (rawContent as any).html,
-            contentText: 'text',
+            html: (rawContent as any).html,
         })
+        const metadata = await extractPageMetadataFromRawContent(rawContent)
+        const getFullText = async () =>
+            getPageFullText(rawContent, metadata, parsedWithMercury)
         console.log(
             'VIJX',
+            '(PROCESS)',
             'page-analysis',
             'background',
             'analysePage => (B)',
@@ -71,7 +72,7 @@ const analysePage: PageAnalyzer = async ({
                 parsedWithMercury,
             },
         )
-        return { metadata, getFullText }
+        return { metadata, getFullText, parsedWithMercury }
     }
 
     // Fetch the data
@@ -89,12 +90,19 @@ const analysePage: PageAnalyzer = async ({
         },
     )
 
-    console.log('VIJX', 'page-analysis', 'background', 'analysePage => (C)', {
-        favIconURI,
-        screenshotURI,
-        content: content.metadata || {},
-        getFullText: content.getFullText,
-    })
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'page-analysis',
+        'background',
+        'analysePage => (C)',
+        {
+            favIconURI,
+            screenshotURI,
+            content,
+            getFullText: content.getFullText,
+        },
+    )
 
     return {
         favIconURI,

@@ -21,12 +21,12 @@
 
 .logo {
     composes: iconPosition;
-    background-image: url('/img/memex-logo.png');
+    background-image: url('/img/parsegarden/parsegarden.svg');
 }
 
 .logoSquared {
     composes: iconPosition;
-    background-image: url('/img/worldbrain-logo-narrow-bw-48.png');
+    background-image: url('/img/parsegarden/parsegarden.svg');
 }
 
 /* OTHER */

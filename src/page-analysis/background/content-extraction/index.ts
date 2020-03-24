@@ -17,10 +17,32 @@ export default function extractPageMetadataFromRawContent(
 export async function getPageFullText(
     rawContent: RawPageContent,
     metadata: PageContent,
+    parsedWithMercury: any = null,
 ) {
-    return rawContent.type === 'html'
-        ? transformPageHTML({
-              html: rawContent.body,
-          }).text
-        : metadata.fullText
+    let text
+    let mercuryText
+    if (rawContent.type === 'html') {
+        text = transformPageHTML({
+            html: rawContent.body,
+        }).text
+        if (parsedWithMercury) {
+            mercuryText = transformPageHTML({
+                html: parsedWithMercury.content,
+            }).text
+        }
+    } else {
+        text = metadata.fullText
+    }
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'page-analysis',
+        'background',
+        'content-extraction',
+        {
+            text,
+            mercuryText,
+        },
+    )
+    return mercuryText
 }

@@ -102,11 +102,13 @@ export default class PageVisitLogger {
     ) {
         console.log(
             'VIJX',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'log-page-visit',
             '<PageVisitLogger>',
             'logPageStub => (A)',
+            '_fetchPage =>',
             { tab, secsSinceLastVisit },
         )
         const internalTabState = this._tabManager.getTabState(tab.id)
@@ -150,11 +152,13 @@ export default class PageVisitLogger {
 
             console.log(
                 'VIJX',
+                '(PROCESS)',
                 'activity-logger',
                 'background',
                 'log-page-visit',
                 '<PageVisitLogger>',
                 'logPageStub => (B)',
+                '_createPage =>',
                 { url: tab.url },
             )
             await this._createPage({
@@ -175,7 +179,7 @@ export default class PageVisitLogger {
     ) {
         console.log(
             'VIJX',
-            '(START)',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'log-page-visit',
@@ -204,7 +208,7 @@ export default class PageVisitLogger {
         if (textOnly) {
             console.log(
                 'VIJX',
-                '(START)',
+                '(PROCESS)',
                 'activity-logger',
                 'background',
                 'log-page-visit',
@@ -225,6 +229,22 @@ export default class PageVisitLogger {
         if (internalTabState == null) {
             return
         }
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'activity-logger',
+            'background',
+            'log-page-visit',
+            '<PageVisitLogger>',
+            'logPageVisit => (C)',
+            '_createPage =>',
+            {
+                url: tab.url,
+                pageDoc,
+                visitTime: internalTabState.visitTime,
+            },
+        )
 
         await this._createPage({
             pageDoc,

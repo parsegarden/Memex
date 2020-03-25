@@ -187,6 +187,21 @@ function extractResult(opts) {
 
     const result = select({ ...opts, extractionOpts: extractor[type] })
 
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'parsegarden',
+        'parser',
+        'extractors',
+        'extractResult =>',
+        {
+            type,
+            extractor,
+            fallback,
+            result,
+        },
+    )
+
     // If custom parser succeeds, return the result
     if (result) {
         return result
@@ -202,8 +217,34 @@ function extractResult(opts) {
 const RootExtractor = {
     extract(extractor = GenericExtractor, opts) {
         const { contentOnly, extractedTitle } = opts
+
+        console.log(
+            'VIJX',
+            'DEBUG',
+            '(PROCESS)',
+            'parsegarden',
+            'parser',
+            'extractors',
+            '<RootExtractor>',
+            'extract =>',
+            `Using extractor for ${extractor.domain}`,
+            {
+                opts,
+            },
+        )
+
         // This is the generic extractor. Run its extract method
-        if (extractor.domain === '*') return extractor.extract(opts)
+        if (extractor.domain === '*' || true) {
+            let extraction
+            try {
+                extraction = GenericExtractor.extract(opts)
+            } catch (err) {
+                console.log('VIJX', 'DEBUG', {
+                    err,
+                })
+            }
+            return extraction
+        }
 
         opts = {
             ...opts,

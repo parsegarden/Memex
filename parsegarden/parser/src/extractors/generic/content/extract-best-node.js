@@ -25,5 +25,22 @@ export default function extractBestNode($, opts) {
     $ = scoreContent($, opts.weightNodes)
     const $topCandidate = findTopCandidate($)
 
+    console.log(
+        'VIJX',
+        '(PROCESS)',
+        'parsegarden',
+        'parser',
+        'extractors',
+        'generic',
+        'content',
+        'extract-best-node',
+        'extractBestNode =>',
+        {
+            $,
+            opts,
+            $topCandidate,
+        },
+    )
+
     return $topCandidate
 }

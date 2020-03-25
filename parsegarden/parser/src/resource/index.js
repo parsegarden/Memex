@@ -82,6 +82,7 @@ const Resource = {
 
         let $ = this.encodeDoc({ content, contentType })
 
+        /*
         console.log(
             'VIJX',
             '(PROCESS)',
@@ -97,6 +98,7 @@ const Resource = {
                 childrenLength: $.root().children().length,
             },
         )
+        */
 
         if ($.root().children().length === 0) {
             throw new Error('No children, likely a bad parse.')
@@ -104,6 +106,7 @@ const Resource = {
 
         $ = normalizeMetaTags($)
 
+        /*
         console.log(
             'VIJX',
             '(PROCESS)',
@@ -119,9 +122,11 @@ const Resource = {
                 childrenLength: $.root().children().length,
             },
         )
+        */
 
         $ = convertLazyLoadedImages($)
 
+        /*
         console.log(
             'VIJX',
             '(PROCESS)',
@@ -137,9 +142,11 @@ const Resource = {
                 childrenLength: $.root().children().length,
             },
         )
+        */
 
         $ = clean($)
 
+        /*
         console.log(
             'VIJX',
             '(PROCESS)',
@@ -155,6 +162,7 @@ const Resource = {
                 childrenLength: $.root().children().length,
             },
         )
+        */
 
         return $
     },

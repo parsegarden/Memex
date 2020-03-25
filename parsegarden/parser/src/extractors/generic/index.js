@@ -29,11 +29,30 @@ const GenericExtractor = {
 
     extract(options) {
         const { html, $ } = options
+        let loaded
 
         if (html && !$) {
-            const loaded = cheerio.load(html)
+            loaded = cheerio.load(html)
             options.$ = loaded
         }
+
+        console.log(
+            'VIJX',
+            'DEBUG',
+            '(PROCESS)',
+            'parsegarden',
+            'parser',
+            'extractors',
+            'generic',
+            '<GenericExtractor>',
+            'extract =>',
+            'content =>',
+            {
+                html,
+                loaded,
+                options,
+            },
+        )
 
         const title = this.title(options)
         const date_published = this.date_published(options)

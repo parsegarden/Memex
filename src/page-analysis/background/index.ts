@@ -39,12 +39,19 @@ const analysePage: PageAnalyzer = async ({
     // Wait until its DOM has loaded, in case we got invoked before that.
     await whenPageDOMLoaded({ tabId })
 
-    console.log('VIJX', 'page-analysis', 'background', 'analysePage => (A)', {
-        tabId,
-        allowContent,
-        allowScreenshot,
-        allowFavIcon,
-    })
+    console.log(
+        'VIJX',
+        'page-analysis',
+        'background',
+        'analysePage => (A)',
+        'extractPageContent =>',
+        {
+            tabId,
+            allowContent,
+            allowScreenshot,
+            allowFavIcon,
+        },
+    )
 
     // Set up to run these functions in the content script in the tab.
     const extractPageContent = async () => {
@@ -58,8 +65,9 @@ const analysePage: PageAnalyzer = async ({
             'page-analysis',
             'background',
             'analysePage => (B)',
-            'extractPageContent =>',
+            'extractPageContent => (A)',
             {
+                url: rawContent.url,
                 rawContent,
             },
         )
@@ -74,8 +82,10 @@ const analysePage: PageAnalyzer = async ({
             'page-analysis',
             'background',
             'analysePage => (B)',
-            'extractPageContent =>',
+            'extractPageContent => (B)',
             {
+                url: parsedWithMercury.url,
+                content: parsedWithMercury.content,
                 parsedWithMercury,
             },
         )
@@ -90,7 +100,7 @@ const analysePage: PageAnalyzer = async ({
             'page-analysis',
             'background',
             'analysePage => (B)',
-            'extractPageContent =>',
+            'extractPageContent => (C)',
             {
                 url: rawContent.url,
                 body: (rawContent as any).body,

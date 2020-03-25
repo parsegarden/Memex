@@ -43,6 +43,7 @@ const Mercury = {
                 html,
                 validateUrl: validateUrl(parsedUrl),
                 headers,
+                customExtractor,
             },
         )
 
@@ -64,8 +65,6 @@ const Mercury = {
             'mercury',
             'parse => (B)',
             {
-                headers,
-                $,
                 failed: $.failed,
             },
         )
@@ -81,7 +80,19 @@ const Mercury = {
         }
 
         const Extractor = getExtractor(url, parsedUrl, $)
-        // console.log(`Using extractor for ${Extractor.domain}`);
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'parsegarden',
+            'parser',
+            'mercury',
+            'parse => (C)',
+            'extract =>',
+            `Using extractor for ${Extractor.domain}`,
+            {
+                Extractor,
+            },
+        )
 
         // if html still has not been set (i.e., url passed to Mercury.parse),
         // set html from the response of Resource.create
@@ -108,7 +119,20 @@ const Mercury = {
             parsedUrl,
             fallback,
             contentType,
+            contentOnly: true,
         })
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'parsegarden',
+            'parser',
+            'mercury',
+            'parse => (D)',
+            {
+                result,
+            },
+        )
 
         const { title, next_page_url } = result
 

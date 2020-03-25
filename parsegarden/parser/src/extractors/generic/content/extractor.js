@@ -37,27 +37,119 @@ const GenericContentExtractor = {
 
         $ = $ || cheerio.load(html)
 
+        console.log(
+            'VIJX',
+            'DEBUG',
+            '(PROCESS)',
+            'parsegarden',
+            'parser',
+            'extractors',
+            'generic',
+            '<GenericContentExtractor>',
+            'extract =>',
+            'getContentNode =>',
+            {
+                html,
+                title,
+                url,
+                opts,
+            },
+        )
+
+        try {
+            $('iframe').remove()
+            $('script').remove()
+            $('head').remove()
+            $('img').remove()
+            $('button').remove()
+            $('svg').remove()
+            $('time').remove()
+            $('figure').remove()
+            $('noscript').remove()
+            $('nav').remove()
+            $('header').remove()
+            $('footer').remove()
+            $('div')
+                .filter((i, el) => {
+                    let elem = $(el)
+                    const trimText = $(el)
+                        .text()
+                        .trim()
+                    let levels = 1
+                    while ((elem = elem.children().first()).length) {
+                        levels++
+                    }
+                    return (
+                        trimText.split(' ').length < 2 ||
+                        trimText.length < 10 ||
+                        (levels >= 3 && trimText.length < 40)
+                    )
+                })
+                .remove()
+            console.log('VIJX', 'DEBUG', {
+                doc: $.html(),
+            })
+            const root = $.root()
+            const body = root.find('body')
+            const bodyChildren = body.contents()
+            /*
+            console.log(
+                'VIJX',
+                'DEBUG',
+                {
+                    root: $.html(),
+                    numRootChildren: $(':root').contents().length,
+                    rootChildren: $(':root').html(),
+                    numBodyChildren: $(':root body').contents(':not(iframe)').length,
+                    bodyChildren: $(':root body :not(iframe)').html(),
+                }
+            )
+            */
+            console.log('VIJX', 'DEBUG', {
+                body: body.html(),
+            })
+            /*
+            bodyChildren.each((i, elem) => {
+                console.log(
+                    'VIJX',
+                    'DEBUG',
+                    i,
+                    {
+                        parent: $(elem).parent().html(),
+                        elem: $(elem).html(),
+                    }
+                )
+            })
+            */
+        } catch (err) {
+            console.log('VIJX', 'DEBUG', {
+                err,
+            })
+        }
+
         // Cascade through our extraction-specific opts in an ordered fashion,
         // turning them off as we try to extract content.
         let node = this.getContentNode($, title, url, opts)
 
+        /*
         if (nodeIsSufficient(node)) {
             return this.cleanAndReturnNode(node, $)
         }
-
+        
         // We didn't succeed on first pass, one by one disable our
         // extraction opts and try again.
         // eslint-disable-next-line no-restricted-syntax
         for (const key of Reflect.ownKeys(opts).filter(k => opts[k] === true)) {
             opts[key] = false
             $ = cheerio.load(html)
-
+        
             node = this.getContentNode($, title, url, opts)
-
+        
             if (nodeIsSufficient(node)) {
                 break
             }
         }
+        */
 
         return this.cleanAndReturnNode(node, $)
     },

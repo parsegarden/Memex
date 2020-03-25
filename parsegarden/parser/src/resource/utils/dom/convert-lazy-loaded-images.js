@@ -8,6 +8,7 @@ import { IS_LINK, IS_IMAGE, IS_SRCSET } from './constants'
 // attribute that a is a placeholer. We need to be able to properly fill in
 // the src attribute so the images are no longer lazy loaded.
 export default function convertLazyLoadedImages($) {
+    /*
     console.log(
         'VIJX',
         '(PROCESS)',
@@ -23,6 +24,7 @@ export default function convertLazyLoadedImages($) {
             childrenLength: $.root().children().length,
         },
     )
+    */
 
     $('img').each((_, img) => {
         const attrs = getAttrs(img)
@@ -47,6 +49,7 @@ export default function convertLazyLoadedImages($) {
         })
     })
 
+    /*
     console.log(
         'VIJX',
         '(PROCESS)',
@@ -62,6 +65,7 @@ export default function convertLazyLoadedImages($) {
             childrenLength: $.root().children().length,
         },
     )
+    */
 
     return $
 }

@@ -37,9 +37,22 @@ const GenericContentExtractor = {
 
         $ = $ || cheerio.load(html)
 
+        const getTextMap = function($el) {
+            const textNodes = $el
+                .find('*')
+                .contents()
+                .filter(function() {
+                    return this.nodeType === 3
+                })
+            const uniqueMap = {}
+            textNodes.each(function(i, el) {
+                uniqueMap[this.data] = true
+            })
+            return { uniqueMap, textNodes }
+        }
+
         console.log(
             'VIJX',
-            'DEBUG',
             '(PROCESS)',
             'parsegarden',
             'parser',
@@ -86,41 +99,18 @@ const GenericContentExtractor = {
                     )
                 })
                 .remove()
-            console.log('VIJX', 'DEBUG', {
-                doc: $.html(),
-            })
+
             const root = $.root()
             const body = root.find('body')
-            const bodyChildren = body.contents()
-            /*
-            console.log(
-                'VIJX',
-                'DEBUG',
-                {
-                    root: $.html(),
-                    numRootChildren: $(':root').contents().length,
-                    rootChildren: $(':root').html(),
-                    numBodyChildren: $(':root body').contents(':not(iframe)').length,
-                    bodyChildren: $(':root body :not(iframe)').html(),
-                }
-            )
-            */
+            const { uniqueMap, textNodes } = getTextMap(body)
+
             console.log('VIJX', 'DEBUG', {
+                url,
+                title,
                 body: body.html(),
+                uniqueMap,
+                textNodes,
             })
-            /*
-            bodyChildren.each((i, elem) => {
-                console.log(
-                    'VIJX',
-                    'DEBUG',
-                    i,
-                    {
-                        parent: $(elem).parent().html(),
-                        elem: $(elem).html(),
-                    }
-                )
-            })
-            */
         } catch (err) {
             console.log('VIJX', 'DEBUG', {
                 err,

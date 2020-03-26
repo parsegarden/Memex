@@ -15,12 +15,6 @@ const wordpos: any = new WordPOS({
     dictPath: 'parsegarden/wordpos/dict',
     profile: true,
 })
-/*
-console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordpos)', {
-    WordPOS,
-    wordpos,
-})
-*/
 
 import nlp from 'compromise'
 nlp.extend(require('compromise-dates'))
@@ -208,7 +202,7 @@ const pipeline: PagePipeline = async ({
     if (!wordEmbeddings) {
         const wordEmbeddingsObj = await loadModels()
         /*
-        console.log('VIJX', 'search', 'pipeline', 'DEBUG(wordEmbeddings)', {
+        console.log('VIJX', 'search', 'pipeline', {
             wordEmbeddings,
             getVector: wordEmbeddings.getVector,
         })

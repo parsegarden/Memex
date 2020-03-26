@@ -73,9 +73,7 @@ async function main() {
     registerBackgroundModuleCollections(storageManager, backgroundModules)
     const storageModules = getBackgroundStorageModules(backgroundModules)
 
-    console.log('DEBUG(A)')
     await storageManager.finishInitialization()
-    console.log('DEBUG(B)')
     const testPage = {
         pageDoc: {
             url:
@@ -88,7 +86,6 @@ async function main() {
         visits: [],
     }
     await backgroundModules.search.searchIndex.addPage(testPage)
-    console.log('DEBUG(C)')
 
     const display = console['log'].bind(console) // Circumvent linter
     if (args.command === 'list-operations') {

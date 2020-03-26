@@ -1,4 +1,5 @@
 import { getMetadata } from 'page-metadata-parser'
+import $ from 'jquery'
 
 import PAGE_METADATA_RULES from '../page-metadata-rules'
 import { ExtractRawPageContent } from '../types'
@@ -17,6 +18,11 @@ const extractRawPageContent: ExtractRawPageContent = async (
     doc = document,
     url = location.href,
 ) => {
+    const clonedBody = $('body')
+        .clone()
+        .find(':hidden')
+        .remove()
+
     console.log(
         'VIJX',
         '(PROCESS)',
@@ -25,7 +31,8 @@ const extractRawPageContent: ExtractRawPageContent = async (
         'extract-page-content',
         'extractRawPageContent =>',
         {
-            body: doc.body.innerHTML,
+            body: doc.body.innerHTML.length,
+            clonedBody: clonedBody.length,
             doc,
             url,
         },
@@ -40,7 +47,7 @@ const extractRawPageContent: ExtractRawPageContent = async (
         return {
             type: 'html',
             url,
-            body: doc.body.innerHTML,
+            body: clonedBody.html(), // doc.body.innerHTML,
             lang: doc.documentElement.lang || DEF_LANG,
             metadata: getMetadata(doc, url, PAGE_METADATA_RULES),
             html: doc.documentElement.outerHTML,

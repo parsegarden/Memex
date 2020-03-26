@@ -1,4 +1,4 @@
-console.log('VIJX', 'DEBUG', 'chrome')
+console.log('VIJX', '(EXTENSION)', 'chrome')
 
 export default () => {
     chrome.contextMenus.removeAll(function() {

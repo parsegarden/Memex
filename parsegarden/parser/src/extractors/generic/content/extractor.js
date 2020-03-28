@@ -37,6 +37,8 @@ const GenericContentExtractor = {
 
         $ = $ || cheerio.load(html)
 
+        let outputText = ''
+
         const getTextMap = function($el) {
             const textNodes = $el
                 .find('*')
@@ -46,7 +48,7 @@ const GenericContentExtractor = {
                 })
             const uniqueMap = {}
             textNodes.each(function(i, el) {
-                uniqueMap[this.data] = true
+                uniqueMap[this.data.trim()] = true
             })
             return { uniqueMap, textNodes }
         }
@@ -70,9 +72,12 @@ const GenericContentExtractor = {
         )
 
         try {
+            $('head').remove()
             $('iframe').remove()
             $('script').remove()
-            $('head').remove()
+            $('header').remove()
+            $('footer').remove()
+            $('form').remove()
             $('img').remove()
             $('button').remove()
             $('svg').remove()
@@ -80,9 +85,9 @@ const GenericContentExtractor = {
             $('figure').remove()
             $('noscript').remove()
             $('nav').remove()
-            $('header').remove()
-            $('footer').remove()
-            $('div')
+            $('textarea').remove()
+            $('input').remove()
+            $('div, a, span')
                 .filter((i, el) => {
                     let elem = $(el)
                     const trimText = $(el)
@@ -95,7 +100,7 @@ const GenericContentExtractor = {
                     return (
                         trimText.split(' ').length < 2 ||
                         trimText.length < 10 ||
-                        (levels >= 3 && trimText.length < 40)
+                        false //(levels >= 3 && trimText.length < 40)
                     )
                 })
                 .remove()
@@ -103,13 +108,18 @@ const GenericContentExtractor = {
             const root = $.root()
             const body = root.find('body')
             const { uniqueMap, textNodes } = getTextMap(body)
+            outputText = Object.keys(uniqueMap)
+                .join(' ')
+                .trim()
 
             console.log('VIJX', 'DEBUG', {
                 url,
                 title,
+                html,
                 body: body.html(),
                 uniqueMap,
                 textNodes,
+                outputText,
             })
         } catch (err) {
             console.log('VIJX', 'DEBUG', {
@@ -117,11 +127,13 @@ const GenericContentExtractor = {
             })
         }
 
+        return outputText
+
         // Cascade through our extraction-specific opts in an ordered fashion,
         // turning them off as we try to extract content.
+        /*
         let node = this.getContentNode($, title, url, opts)
 
-        /*
         if (nodeIsSufficient(node)) {
             return this.cleanAndReturnNode(node, $)
         }
@@ -139,9 +151,9 @@ const GenericContentExtractor = {
                 break
             }
         }
-        */
 
         return this.cleanAndReturnNode(node, $)
+        */
     },
 
     // Get node given current options

@@ -220,6 +220,7 @@ const RootExtractor = {
 
         console.log(
             'VIJX',
+            'DEBUG',
             '(PROCESS)',
             'parsegarden',
             'parser',

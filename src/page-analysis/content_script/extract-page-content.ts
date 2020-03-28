@@ -18,25 +18,31 @@ const extractRawPageContent: ExtractRawPageContent = async (
     doc = document,
     url = location.href,
 ) => {
-    const clonedBody = $('body')
-        .clone()
-        .find(':hidden')
-        .remove()
+    let clonedBody
 
-    console.log(
-        'VIJX',
-        '(PROCESS)',
-        'page-analysis',
-        'content_script',
-        'extract-page-content',
-        'extractRawPageContent =>',
-        {
-            body: doc.body.innerHTML.length,
-            clonedBody: clonedBody.length,
-            doc,
-            url,
-        },
-    )
+    try {
+        clonedBody = $('body')
+            .clone()
+            .find(':hidden')
+            .remove()
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'page-analysis',
+            'content_script',
+            'extract-page-content',
+            'extractRawPageContent =>',
+            {
+                body: doc.body.innerHTML.length,
+                clonedBody: clonedBody.length,
+                doc,
+                url,
+            },
+        )
+    } catch (err) {
+        console.error(err)
+    }
 
     if (url.endsWith('.pdf')) {
         return {

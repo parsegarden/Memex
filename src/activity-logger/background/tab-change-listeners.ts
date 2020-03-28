@@ -217,7 +217,7 @@ export default class TabChangeListeners {
      * Handles scheduling the main page indexing logic that happens on browser tab URL change,
      * and updating the internally held tab manager state.
      */
-    public handleUrl: TabChangeListener = async (tabId, { url }, tab) => {
+    public handleUrl: TabChangeListener = async (tabId, { url = '' }, tab) => {
         console.log(
             'VIJX',
             '(PROCESS)',

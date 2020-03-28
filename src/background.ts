@@ -57,7 +57,9 @@ browser.contextMenus.removeAll().then(function() {
 })
 
 export async function main() {
-    console.log('VIJX', '(STARTUP)', 'background', 'main => (A)')
+    console.log('VIJX', '(BEGIN)', '(STARTUP)', 'background', 'main => (A)', {
+        browser,
+    })
 
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,
@@ -67,13 +69,14 @@ export async function main() {
         fetchPageData,
         pagePipeline: pipeline,
     })
-    console.log('VIJX', 'background', 'main => (B)', {
+    console.log('VIJX', '(STARTUP)', 'background', 'main => (B)', {
         fetchPageDataProcessor,
+        localStorageChangesManager,
     })
 
     const storageManager = initStorex('parsegarden')
 
-    console.log('VIJX', 'background', 'main => (C)', {
+    console.log('VIJX', '(STARTUP)', 'background', 'main => (C)', {
         storageManager,
     })
     const backgroundModules = createBackgroundModules({
@@ -88,7 +91,7 @@ export async function main() {
             devAuthState: process.env.DEV_AUTH_STATE as DevAuthState,
         },
     })
-    console.log('VIJX', '(DEXIE)', 'background', 'main =>', {
+    console.log('VIJX', '(STARTUP)', 'background', 'main => (D)', {
         storageManager,
         backgroundModules,
     })
@@ -111,6 +114,11 @@ export async function main() {
                 backgroundModules.search.remoteFunctions.bookmarks
                     .delPageBookmark,
         },
+    })
+
+    console.log('VIJX', '(END)', '(STARTUP)', 'background', 'main => (E)', {
+        storageManager,
+        backgroundModules,
     })
 
     // Attach interesting features onto global window scope for interested users

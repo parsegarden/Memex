@@ -1,7 +1,7 @@
 {
     "name": "Parsegarden Browser Extension",
     "short_name": "Parsegarden",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "offline_enabled": true,
     "description": "Parse every page you visit.",
     "background": {

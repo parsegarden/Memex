@@ -19,8 +19,23 @@ export class TabManager {
     trackTab = (
         { id, active, url, windowId }: Tabs.Tab,
         extraProps: Partial<TabProps> = {},
-    ) =>
-        this._tabs.set(
+    ) => {
+        console.log(
+            'VIJX',
+            '(EVENT)',
+            'activity-logger',
+            'background',
+            '<TabManager>',
+            'tabsAPI.onCreated =>',
+            'trackTab =>',
+            {
+                url,
+                active,
+                id,
+            },
+        )
+
+        return this._tabs.set(
             id,
             new Tab({
                 id,
@@ -30,6 +45,7 @@ export class TabManager {
                 ...extraProps,
             }),
         )
+    }
 
     /**
      * @param {number} id The ID of the tab as assigned by web ext API.

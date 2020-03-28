@@ -60,12 +60,17 @@ export default class PageVisitLogger {
 
         console.log(
             'VIJX',
+            '(PROCESS)',
             'activity-logger',
             'background',
             'log-page-visit',
             '<PageVisitLogger>',
             'preparePageLogging => (A)',
-            { tab: params.tab, allowScreenshot: params.allowScreenshot },
+            {
+                url: params.tab.url,
+                tab: params.tab,
+                allowScreenshot: params.allowScreenshot,
+            },
         )
 
         try {
@@ -76,12 +81,16 @@ export default class PageVisitLogger {
             })
             console.log(
                 'VIJX',
+                '(PROCESS)',
                 'activity-logger',
                 'background',
                 'log-page-visit',
                 '<PageVisitLogger>',
                 'preparePageLogging => (B)',
-                { analysisRes },
+                {
+                    url: params.tab.url,
+                    analysisRes,
+                },
             )
             return analysisRes
         } catch (err) {
@@ -189,6 +198,7 @@ export default class PageVisitLogger {
                 url: tab.url,
                 tab,
                 textOnly,
+                pageAnalysis,
             },
         )
         const pageDoc: PageDoc = {

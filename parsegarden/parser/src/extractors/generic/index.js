@@ -53,6 +53,11 @@ const GenericExtractor = {
             },
         )
 
+        return {
+            content: this.content({ ...options }),
+        }
+
+        /*
         const title = this.title(options)
         const date_published = this.date_published(options)
         const author = this.author(options)
@@ -79,6 +84,7 @@ const GenericExtractor = {
             word_count,
             direction,
         }
+        */
     },
 }
 

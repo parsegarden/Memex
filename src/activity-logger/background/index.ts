@@ -1,4 +1,10 @@
-import { Runtime, WebNavigation, Tabs, Browser } from 'webextension-polyfill-ts'
+import {
+    Runtime,
+    WebNavigation,
+    Tabs,
+    Browser,
+    Windows,
+} from 'webextension-polyfill-ts'
 
 import { makeRemotelyCallable } from 'src/util/webextensionRPC'
 import { mapChunks } from 'src/util/chunk'
@@ -17,7 +23,6 @@ let parsegardenSingleton = {
     map: {},
     array: [],
 }
-const parsegardenProcessed = {}
 
 export default class ActivityLoggerBackground {
     static SCROLL_UPDATE_FN = 'updateScrollState'
@@ -27,6 +32,7 @@ export default class ActivityLoggerBackground {
     private tabsAPI: Tabs.Static
     private runtimeAPI: Runtime.Static
     private webNavAPI: WebNavigation.Static
+    private windowsAPI: Windows.Static
     private tabChangeListener: TabChangeListeners
     private pageVisitLogger: PageVisitLogger
     private toggleLoggingPause = initPauser()
@@ -43,7 +49,7 @@ export default class ActivityLoggerBackground {
         searchIndex: SearchIndex
         browserAPIs: Pick<
             Browser,
-            'tabs' | 'runtime' | 'webNavigation' | 'storage'
+            'tabs' | 'runtime' | 'webNavigation' | 'storage' | 'windows'
         >
         pageStorage: PageStorage
     }) {
@@ -51,6 +57,7 @@ export default class ActivityLoggerBackground {
         this.tabsAPI = options.browserAPIs.tabs
         this.runtimeAPI = options.browserAPIs.runtime
         this.webNavAPI = options.browserAPIs.webNavigation
+        this.windowsAPI = options.browserAPIs.windows
         this.searchIndex = options.searchIndex
         this.pageStorage = options.pageStorage
 
@@ -80,12 +87,14 @@ export default class ActivityLoggerBackground {
         const allVisits = await this.pageStorage.getAllVisits()
 
         allPages.forEach(page => {
-            if (parsegardenProcessed[page.url]) {
-                return
-            }
             if (!page.parsegardenTerms) {
                 return
             }
+            console.log('VIJX', 'DEBUG', '(PARSEGARDEN)', {
+                url: page.url,
+                parsegardenTerms: page.parsegardenTerms,
+            })
+
             page.parsegardenTerms.forEach(token => {
                 if (
                     parsegardenSingleton.map[token] &&
@@ -100,7 +109,6 @@ export default class ActivityLoggerBackground {
                     }
                 }
             })
-            parsegardenProcessed[page.url] = true
         })
 
         parsegardenSingleton.array = Object.entries(
@@ -113,13 +121,19 @@ export default class ActivityLoggerBackground {
             return b.urls.length - a.urls.length
         })
 
-        console.log('VIJX', '(PARSEGARDEN)', '<ActivityLoggerBackground>', {
-            pageCount,
-            visitCount,
-            allPages,
-            allVisits,
-            parsegardenSingleton,
-        })
+        console.log(
+            'VIJX',
+            '(PARSEGARDEN)',
+            '<ActivityLoggerBackground>',
+            'parsegardenCompilation =>',
+            {
+                pageCount,
+                visitCount,
+                allPages,
+                allVisits,
+                parsegardenSingleton,
+            },
+        )
     }
 
     async setupParsegardenTokenCompilation() {
@@ -248,6 +262,7 @@ export default class ActivityLoggerBackground {
         console.log(
             'VIJX',
             '(STARTUP)',
+            '(EVENT)',
             'activity-logger',
             'background',
             '<ActivityLoggerBackground>',
@@ -257,6 +272,18 @@ export default class ActivityLoggerBackground {
         this.tabsAPI.onCreated.addListener(this.tabManager.trackTab)
 
         this.tabsAPI.onActivated.addListener(async ({ tabId }) => {
+            console.log(
+                'VIJX',
+                '(EVENT)',
+                'activity-logger',
+                'background',
+                '<ActivityLoggerBackground>',
+                'tabsAPI.onActivated =>',
+                {
+                    isTracked: this.tabManager.isTracked(tabId),
+                },
+            )
+
             if (!this.tabManager.isTracked(tabId)) {
                 await this.trackNewTab(tabId)
             }
@@ -264,11 +291,21 @@ export default class ActivityLoggerBackground {
             this.tabManager.activateTab(tabId)
 
             // PARSEGARDEN INTEGRATION POINT
-            // This can be where the term index is compiled
+            const tab = await this.tabsAPI.get(tabId)
+            await this.tabChangeListener.handleUrl(tabId, { url: tab.url }, tab)
         })
 
         // Runs stage 3 of the visit indexing
         this.tabsAPI.onRemoved.addListener(tabId => {
+            console.log(
+                'VIJX',
+                '(EVENT)',
+                'activity-logger',
+                'background',
+                '<ActivityLoggerBackground>',
+                'tabsAPI.onRemoved =>',
+            )
+
             // Remove tab from tab tracking state and update the visit with tab-derived metadata
             const tab = this.tabManager.removeTab(tabId)
 
@@ -276,7 +313,28 @@ export default class ActivityLoggerBackground {
                 updateVisitInteractionData(tab, this.searchIndex)
             }
         })
+
         this.tabsAPI.onUpdated.addListener(this.tabUpdatedListener)
+
+        this.windowsAPI.onFocusChanged.addListener(async windowId => {
+            const activeTabs = await this.tabsAPI.query({
+                active: true,
+                lastFocusedWindow: true,
+            })
+            console.log(
+                'VIJX',
+                '(EVENT)',
+                'activity-logger',
+                'background',
+                '<ActivityLoggerBackground>',
+                'windowsAPI.onFocusChanged =>',
+                {
+                    windowId,
+                    //tabId: activeTab.id,
+                    activeTab: activeTabs[0],
+                },
+            )
+        })
     }
 
     /**
@@ -305,14 +363,18 @@ export default class ActivityLoggerBackground {
     ) => {
         console.log(
             'VIJX',
+            '(BEGIN)',
+            '(EVENT)',
             '(PROCESS)',
             'activity-logger',
             'background',
             '<ActivityLoggerBackground>',
+            'tabsAPI.onUpdated =>',
             'tabUpdatedListener =>',
             {
                 url: changeInfo.url,
                 status: changeInfo.status,
+                favIconUrl: changeInfo.favIconUrl,
                 tabId,
                 changeInfo,
                 tab,

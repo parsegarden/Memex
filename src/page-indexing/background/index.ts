@@ -200,6 +200,7 @@ export class PageIndexingBackground {
     async createPageFromTab(props: PageCreationProps) {
         console.log(
             'VIJX',
+            '(PROCESS)',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
@@ -220,6 +221,7 @@ export class PageIndexingBackground {
 
         console.log(
             'VIJX',
+            '(PROCESS)',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
@@ -243,6 +245,7 @@ export class PageIndexingBackground {
 
         console.log(
             'VIJX',
+            '(PROCESS)',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',
@@ -256,6 +259,7 @@ export class PageIndexingBackground {
     async createPageFromUrl(props: PageCreationProps) {
         console.log(
             'VIJX',
+            '(PROCESS)',
             'page-indexing',
             'background',
             '<PageIndexingBackground>',

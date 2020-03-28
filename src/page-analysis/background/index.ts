@@ -39,77 +39,86 @@ const analysePage: PageAnalyzer = async ({
     // Wait until its DOM has loaded, in case we got invoked before that.
     await whenPageDOMLoaded({ tabId })
 
-    console.log(
-        'VIJX',
-        'page-analysis',
-        'background',
-        'analysePage => (A)',
-        'extractPageContent =>',
-        {
-            tabId,
-            allowContent,
-            allowScreenshot,
-            allowFavIcon,
-        },
-    )
+    console.log('VIJX', 'page-analysis', 'background', 'analysePage => (A)', {
+        tabId,
+        allowContent,
+        allowScreenshot,
+        allowFavIcon,
+    })
 
     // Set up to run these functions in the content script in the tab.
     const extractPageContent = async () => {
-        const rawContent = await runInTab<PageAnalyzerInterface>(
-            tabId,
-        ).extractRawPageContent()
+        let rawContent
+        let metadata
+        let getFullText
+        let parsedWithMercury
+        try {
+            rawContent = await runInTab<PageAnalyzerInterface>(
+                tabId,
+            ).extractRawPageContent()
 
-        console.log(
-            'VIJX',
-            '(PROCESS)',
-            'page-analysis',
-            'background',
-            'analysePage => (B)',
-            'extractPageContent => (A)',
-            {
-                url: rawContent.url,
-                rawContent,
-            },
-        )
+            console.log(
+                'VIJX',
+                '(PROCESS)',
+                'page-analysis',
+                'background',
+                'analysePage => (B)',
+                'extractPageContent => (A)',
+                {
+                    rawContent,
+                },
+            )
+        } catch (err) {
+            console.error(err)
+        }
 
-        const parsedWithMercury = await Mercury.parse(rawContent.url, {
-            html: (rawContent as any).html,
-        })
+        try {
+            parsedWithMercury = await Mercury.parse(rawContent.url, {
+                html: (rawContent as any).html,
+            })
 
-        console.log(
-            'VIJX',
-            '(PROCESS)',
-            'page-analysis',
-            'background',
-            'analysePage => (B)',
-            'extractPageContent => (B)',
-            {
-                url: parsedWithMercury.url,
-                content: parsedWithMercury.content,
-                parsedWithMercury,
-            },
-        )
+            console.log(
+                'VIJX',
+                '(PROCESS)',
+                'page-analysis',
+                'background',
+                'analysePage => (B)',
+                'extractPageContent => (B)',
+                {
+                    url: parsedWithMercury.url,
+                    content: parsedWithMercury.content,
+                    parsedWithMercury,
+                },
+            )
+        } catch (err) {
+            console.error(err)
+        }
 
-        const metadata = await extractPageMetadataFromRawContent(rawContent)
-        const getFullText = async () =>
-            getPageFullText(rawContent, metadata, parsedWithMercury)
+        try {
+            metadata = await extractPageMetadataFromRawContent(rawContent)
+            getFullText = async () =>
+                getPageFullText(rawContent, metadata, parsedWithMercury)
 
-        console.log(
-            'VIJX',
-            '(PROCESS)',
-            'page-analysis',
-            'background',
-            'analysePage => (B)',
-            'extractPageContent => (C)',
-            {
-                url: rawContent.url,
-                body: (rawContent as any).body,
-                metadata,
-                getFullText,
-                rawContent,
-                parsedWithMercury,
-            },
-        )
+            console.log(
+                'VIJX',
+                '(PROCESS)',
+                'page-analysis',
+                'background',
+                'analysePage => (B)',
+                'extractPageContent => (C)',
+                {
+                    url: rawContent.url,
+                    body: (rawContent as any).body,
+                    metadata,
+                    getFullText,
+                    rawContent,
+                    parsedWithMercury,
+                },
+            )
+        } catch (err) {
+            console.error(err)
+            return {}
+        }
 
         return { metadata, getFullText, parsedWithMercury }
     }

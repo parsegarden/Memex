@@ -52,7 +52,7 @@ export default async function makeScreenshotOfTabAsap({ tabId }) {
     await whenTabActive({ tabId })
     // Some delay appears required to not fail. Perhaps the browser needs
     // to complete some rendering before the screen is captured?
-    await delay(300)
+    await delay(500)
     const image = await snapNow({ tabId })
     console.log(
         'VIJX',

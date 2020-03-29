@@ -147,6 +147,19 @@ class Tab implements TabState {
      * @param {number} [now=Date.now()] When the active state changed.
      */
     toggleActiveState(skipRemoteCall = false, now = Date.now()) {
+        console.log(
+            'VIJX',
+            'activity-logger',
+            'background',
+            'tab-state',
+            '<Tab>',
+            'toggleActiveState =>',
+            {
+                activeTime: this.activeTime,
+                now,
+                lastActivated: this.lastActivated,
+            },
+        )
         if (this.isActive) {
             this.activeTime = this.activeTime + now - this.lastActivated
             this._pauseLogTimer()

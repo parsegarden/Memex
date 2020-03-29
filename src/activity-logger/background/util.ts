@@ -58,6 +58,18 @@ export const updateVisitInteractionData: VisitInteractionUpdater = (
     searchIndex: SearchIndex,
 ) => {
     const { scrollState } = tabState
+    console.log(
+        'VIJX',
+        'activity-logger',
+        'background',
+        'utils',
+        'updateVisitInteractionData =>',
+        {
+            activeTime: tabState.activeTime,
+            tabState,
+            scrollState,
+        },
+    )
     return searchIndex
         .updateTimestampMeta(tabState.url, +tabState.visitTime, {
             duration: tabState.activeTime,

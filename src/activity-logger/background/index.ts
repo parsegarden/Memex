@@ -327,6 +327,9 @@ export default class ActivityLoggerBackground {
 
         // Runs stage 3 of the visit indexing
         this.tabsAPI.onRemoved.addListener(tabId => {
+            // Remove tab from tab tracking state and update the visit with tab-derived metadata
+            const tab = this.tabManager.removeTab(tabId)
+
             console.log(
                 'VIJX',
                 '(EVENT)',
@@ -334,10 +337,12 @@ export default class ActivityLoggerBackground {
                 'background',
                 '<ActivityLoggerBackground>',
                 'tabsAPI.onRemoved =>',
+                'updateVisitInteractionData =>',
+                {
+                    tabId,
+                    tab,
+                },
             )
-
-            // Remove tab from tab tracking state and update the visit with tab-derived metadata
-            const tab = this.tabManager.removeTab(tabId)
 
             if (tab != null) {
                 updateVisitInteractionData(tab, this.searchIndex)
@@ -431,7 +436,8 @@ export default class ActivityLoggerBackground {
         // PARSEGARDEN INTEGRATION POINT
         // This can be where the term index is compiled
         const page = await this.pageStorage.getPage(tab.url)
-        updatePageContextMenu(page)
+        const visits = await this.pageStorage.getPageVisits(tab.url)
+        updatePageContextMenu(page, visits)
     }
 }
 

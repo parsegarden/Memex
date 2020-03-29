@@ -24,42 +24,14 @@ import { FetchPageDataProcessor } from 'src/page-analysis/background/fetch-page-
 import fetchPageData from 'src/page-analysis/background/fetch-page-data'
 import pipeline from 'src/search/pipeline'
 import { dangerousPleaseBeSureDeleteAndRecreateDatabase } from './storage/utils'
-
-browser.contextMenus.removeAll().then(function() {
-    const rootId = browser.contextMenus.create({
-        id: 'container',
-        contexts: ['all'],
-        title: 'Current page',
-        type: 'normal',
-    })
-
-    browser.contextMenus.create({
-        id: 'page',
-        contexts: ['all'],
-        title: 'Page',
-        type: 'normal',
-        parentId: rootId,
-    })
-    browser.contextMenus.create({
-        id: 'visits',
-        contexts: ['all'],
-        title: 'Visits',
-        type: 'normal',
-        parentId: rootId,
-    })
-    browser.contextMenus.create({
-        id: 'tokens',
-        contexts: ['all'],
-        title: 'Tokens',
-        type: 'normal',
-        parentId: rootId,
-    })
-})
+import { initContextMenu } from './chrome'
 
 export async function main() {
     console.log('VIJX', '(BEGIN)', '(STARTUP)', 'background', 'main => (A)', {
         browser,
     })
+
+    initContextMenu()
 
     const localStorageChangesManager = new StorageChangesManager({
         storage: browser.storage,

@@ -18,6 +18,7 @@ import { CONCURR_TAB_LOAD } from '../constants'
 import { SearchIndex } from 'src/search'
 import PageStorage from 'src/page-indexing/background/storage'
 import { url } from 'src/popup/selectors'
+import { updatePageContextMenu } from '../../chrome'
 
 let parsegardenSingleton = {
     map: {},
@@ -90,10 +91,13 @@ export default class ActivityLoggerBackground {
             if (!page.parsegardenTerms) {
                 return
             }
+
+            /*
             console.log('VIJX', 'DEBUG', '(PARSEGARDEN)', {
                 url: page.url,
                 parsegardenTerms: page.parsegardenTerms,
             })
+            */
 
             page.parsegardenTerms.forEach(token => {
                 if (
@@ -137,8 +141,8 @@ export default class ActivityLoggerBackground {
     }
 
     async setupParsegardenTokenCompilation() {
-        setTimeout(this.parsegardenCompilation.bind(this), 2000)
-        setInterval(this.parsegardenCompilation.bind(this), 2 * 60000)
+        setTimeout(this.parsegardenCompilation.bind(this), 1 * 1000)
+        setInterval(this.parsegardenCompilation.bind(this), 4 * 60000)
     }
 
     static isTabLoaded = (tab: Tabs.Tab) => tab.status === 'complete'
@@ -246,7 +250,7 @@ export default class ActivityLoggerBackground {
      */
     private setupScrollStateHandling() {
         this.runtimeAPI.onMessage.addListener(
-            ({ funcName, ...scrollState }, { tab }) => {
+            async ({ funcName, ...scrollState }, { tab }) => {
                 if (
                     funcName !== ActivityLoggerBackground.SCROLL_UPDATE_FN ||
                     tab == null
@@ -254,6 +258,13 @@ export default class ActivityLoggerBackground {
                     return
                 }
                 this.tabManager.updateTabScrollState(tab.id, scrollState)
+
+                // PARSEGARDEN INTEGRATION POINT
+                await this.tabChangeListener.handleUrl(
+                    tab.id,
+                    { url: tab.url },
+                    tab,
+                )
             },
         )
     }
@@ -278,7 +289,7 @@ export default class ActivityLoggerBackground {
                 'activity-logger',
                 'background',
                 '<ActivityLoggerBackground>',
-                'tabsAPI.onActivated =>',
+                'tabsAPI.onActivated => (A)',
                 {
                     isTracked: this.tabManager.isTracked(tabId),
                 },
@@ -293,6 +304,25 @@ export default class ActivityLoggerBackground {
             // PARSEGARDEN INTEGRATION POINT
             const tab = await this.tabsAPI.get(tabId)
             await this.tabChangeListener.handleUrl(tabId, { url: tab.url }, tab)
+
+            const page = await this.pageStorage.getPage(tab.url)
+            const visits = await this.pageStorage.getPageVisits(tab.url)
+
+            console.log(
+                'VIJX',
+                '(EVENT)',
+                'activity-logger',
+                'background',
+                '<ActivityLoggerBackground>',
+                'tabsAPI.onActivated => (B)',
+                {
+                    url: page.url,
+                    page,
+                    visits,
+                },
+            )
+
+            updatePageContextMenu(page, visits)
         })
 
         // Runs stage 3 of the visit indexing
@@ -400,6 +430,8 @@ export default class ActivityLoggerBackground {
 
         // PARSEGARDEN INTEGRATION POINT
         // This can be where the term index is compiled
+        const page = await this.pageStorage.getPage(tab.url)
+        updatePageContextMenu(page)
     }
 }
 

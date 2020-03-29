@@ -303,6 +303,14 @@ export default class PageStorage extends StorageModule {
         return !!visits.length
     }
 
+    async getPageVisits(url: string): Promise<any> {
+        const normalizedUrl = normalizeUrl(url, {})
+        const visits = await this.operation('findVisitsByUrl', {
+            url: normalizedUrl,
+        })
+        return visits
+    }
+
     async addPageVisit(url: string, time: number) {
         const normalizedUrl = normalizeUrl(url, {})
         await this.operation('createVisit', { url: normalizedUrl, time })

@@ -168,10 +168,10 @@ export default class TabChangeListeners {
         ])
 
         return {
-            shouldLogStubs: !!storage[IDXING_PREF_KEYS.STUBS],
+            shouldLogStubs: false,
             shouldLogVisits: !!storage[IDXING_PREF_KEYS.VISITS],
             shouldCaptureScreenshots: true,
-            logDelay: storage[IDXING_PREF_KEYS.VISIT_DELAY],
+            logDelay: 1,
         }
     }
 
@@ -260,7 +260,7 @@ export default class TabChangeListeners {
             'background',
             'tab-change-listeners',
             '<TabChangeListeners>',
-            '_handleVisitIndexing =>',
+            '_handleVisitIndexing => (A)',
             {
                 url: tab.url,
                 status: tab.status,
@@ -300,6 +300,20 @@ export default class TabChangeListeners {
                 indexingPrefs.logDelay,
             )
         }
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'activity-logger',
+            'background',
+            'tab-change-listeners',
+            '<TabChangeListeners>',
+            '_handleVisitIndexing => (B)',
+            {
+                url: tab.url,
+                preparation,
+            },
+        )
     }
 
     private _handleFavIcon: TabChangeListener = async (tabId, _, tab) => {

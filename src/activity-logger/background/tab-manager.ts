@@ -5,7 +5,7 @@ import { TabState, NavState } from './types'
 
 export class TabManager {
     static DELAY_UNIT = 1000
-    static DEF_LOG_DELAY = 2
+    static DEF_LOG_DELAY = 1
 
     private _tabs = new Map<number, Tab>()
 
@@ -191,6 +191,20 @@ export class TabManager {
         delay = TabManager.DEF_LOG_DELAY,
     ) {
         const tab = this.getTabState(id)
+
+        console.log(
+            'VIJX',
+            '(PROCESS)',
+            'activity-logger',
+            'background',
+            'tab-manager',
+            '<TabManager>',
+            'scheduleTabLog =>',
+            {
+                tab,
+                delay,
+            },
+        )
 
         if (tab != null) {
             return tab.scheduleLog(logCb, delay * TabManager.DELAY_UNIT)

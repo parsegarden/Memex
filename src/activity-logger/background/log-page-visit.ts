@@ -184,7 +184,7 @@ export default class PageVisitLogger {
     async logPageVisit(
         tab: Tabs.Tab,
         pageAnalysis: PageLoggingPreparation,
-        textOnly = true,
+        textOnly = false,
     ) {
         console.log(
             'VIJX',
@@ -215,6 +215,7 @@ export default class PageVisitLogger {
             }),
         }
 
+        /*
         if (textOnly) {
             console.log(
                 'VIJX',
@@ -232,6 +233,7 @@ export default class PageVisitLogger {
 
             return this._addPageTerms({ pageDoc })
         }
+        */
 
         const internalTabState = this._tabManager.getTabState(tab.id)
 
